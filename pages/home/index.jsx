@@ -3,6 +3,12 @@ import {useAddress, useWeb3} from "../../blockchain/BlockchainContext";
 import {useUser} from "../../contexts/AppContext";
 import { redirect } from 'next/navigation';
 import {useRouter} from "next/router";
+import {navItems} from "../../components/navbar/navbarLists";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import * as React from "react";
 
 
 export default function home() {
@@ -13,7 +19,6 @@ export default function home() {
     const [error, setError] = useState(null)
 
     const shouldRedirect = !user
-
 
     useEffect(() => {
         if (shouldRedirect) {
@@ -30,6 +35,12 @@ export default function home() {
                 <h1>{"Hola " + user.name}</h1>
                 <h2>{"Eres admin? "} {user.isAdmin ? "si" : "no"}</h2>
                 <h2>{"Tu address" + user.address}</h2>
+
+
+                    {
+                        navItems.map( ({ Name, Icon })  => (
+                            Name
+                        ))}
                 </>
             )}
         </div>
