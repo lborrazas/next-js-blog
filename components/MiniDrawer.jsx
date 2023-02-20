@@ -12,7 +12,6 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import GrassIcon from '@mui/icons-material/Grass';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -21,6 +20,8 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import {useState} from "react";
 import {navItems} from "./navbar/navbarLists";
+import {redirect} from "next/navigation";
+import {useRouter} from "next/router";
 
 
 const drawerWidth = 240;
@@ -93,6 +94,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 export default function MiniDrawer({children}) {
     const theme = useTheme();
     const [open, setOpen] = useState(false);
+    const router = useRouter()
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -133,9 +135,9 @@ export default function MiniDrawer({children}) {
                 <Divider />
                 <List>
                     {
-                        navItems.map( ({ Name, Icon })  => (
+                        navItems.map( ({ Name, Icon, Url })  => (
                         <ListItem key={Name} disablePadding sx={{ display: 'block' }}>
-                            <ListItemButton
+                            <ListItemButton onClick={() => router.push(Url)}
                                 sx={{
                                     minHeight: 48,
                                     justifyContent: open ? 'initial' : 'center',
@@ -149,7 +151,8 @@ export default function MiniDrawer({children}) {
                                         justifyContent: 'center',
                                     }}
                                 >
-                                    <span> {<Icon/>} </span>
+                                    <span> {<Icon  color={router.pathname == Url ? "primary" : "inherit"}
+                                    />} </span>
                                 </ListItemIcon>
                                 <ListItemText primary={Name} sx={{ opacity: open ? 1 : 0 }} />
                             </ListItemButton>
