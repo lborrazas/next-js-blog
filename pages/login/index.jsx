@@ -4,7 +4,6 @@ import contractCollector from "../../blockchain/ContractCollector";
 import Web3 from "web3";
 import {useRouter} from "next/router";
 import {User, useSetUser} from "../../contexts/AppContext";
-import useSWR from "swr"
 import axios from 'axios'
 import style from "./login.module.css";
 
@@ -32,14 +31,17 @@ export default function Login() {
                 const vmContract_ = contractCollector(web3)
                 setVmContract(vmContract_)
                 let body={'address':account[0]}
-                const is_registered = await axios.post('/api/getuser',body)
-                if(is_registered.data[0]){
-                    console.log(is_registered.data[0])
-                    setUser(new User(is_registered.data[0].id,is_registered.data[0].name , is_registered.data[0].email, account[0], is_registered.data[0].isAdmin))
-                    router.push("/home")
-                }else{
-                    router.push("/signup")
-                }
+                setUser(new User(1,"mate","mate",account[0],true))
+                router.push("/home")
+                // const is_registered = await axios.post('/api/getuser',body)
+                // if(is_registered.data[0]){
+                //     console.log(is_registered.data[0])
+                //     setUser(new User(is_registered.data[0].id,is_registered.data[0].name , is_registered.data[0].email, account[0], is_registered.data[0].isAdmin))
+                //     setUser(new User(is_registered.data[0].id,is_registered.data[0].name , is_registered.data[0].email, account[0], is_registered.data[0].isAdmin))
+                //     router.push("/home")
+                // }else{
+                //     router.push("/signup")
+                // }
 
             } catch (err) {
                 setError(err.message)
