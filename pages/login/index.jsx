@@ -4,6 +4,9 @@ import contractCollector from "../../blockchain/ContractCollector";
 import Web3 from "web3";
 import {useRouter} from "next/router";
 import {User, useSetUser} from "../../contexts/AppContext";
+import useSWR from "swr"
+import axios from 'axios'
+import style from "./login.module.css";
 
 export default function Login() {
     const setWeb3 = useSetWeb3()
@@ -28,8 +31,16 @@ export default function Login() {
                 /*Create a contract copy*/
                 const vmContract_ = contractCollector(web3)
                 setVmContract(vmContract_)
-                router.push("/home")
-                setUser(new User(1, "mate", "matematica", account[0], true))
+                let body={'address':account[0]}
+                const is_registered = await axios.post('/api/getuser',body)
+                if(is_registered.data[0]){
+                    console.log(is_registered.data[0])
+                    setUser(new User(is_registered.data[0].id,is_registered.data[0].name , is_registered.data[0].email, account[0], is_registered.data[0].isAdmin))
+                    router.push("/home")
+                }else{
+                    router.push("/signup")
+                }
+
             } catch (err) {
                 setError(err.message)
             }
@@ -40,7 +51,18 @@ export default function Login() {
     }
 
     return (
-        <button onClick={connectWalletHandler}> {"Hola Mate"} </button>
-    )
+   
+        <div className={style.container}>
+            <div className={style.loginContainer}>
+                <h1 className={style.loginTitle}>IxaTesis</h1>
+                <button className={style.buttonLogin}
+                    onClick={async () => {
+                        await connectWalletHandler()
+                    }}> Iniciar Sesión
+                </button>
+               
+                {error && <p>{error}</p>}
+            </div>
+        </div>)
 
 }

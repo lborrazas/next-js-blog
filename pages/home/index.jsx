@@ -16,6 +16,7 @@ export default function home() {
     const address = useAddress()
     const web3 = useWeb3()
     const user = useUser()
+    
     const [error, setError] = useState(null)
 
     const shouldRedirect = !user
