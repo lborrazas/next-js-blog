@@ -1,0 +1,59 @@
+.container {
+    height: 100%;
+    background-color: rgb(213, 213, 213);
+    display: grid;
+}
+
+.signupContainer {
+    margin: auto;
+    padding: 30px;
+    width: 500px;
+    background-color: white;
+    box-shadow: 2px 2px 64px 2px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    transition: 5s;
+    rotate: 0deg;
+}
+
+.brandTitle {
+    font-size: 2rem;
+    color: #12121e;
+}
+
+.signupInputTitle {
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.signupTitle {
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.signupInput {
+    width: 90%;
+    height: 30px;
+    border-radius: 5px;
+}
+
+.buttonSignup {
+    width: 100%;
+    margin-top: 15px;
+    height: 50px;
+    border-radius: 5px;
+    border: solid 1px white;
+    background-color: #12121e;
+    color: white;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+.buttonSignup:hover {
+    background: white;
+    color: #12121e;
+    border: solid 1px #12121e;
+    transition: 0.5s;
+}
