@@ -1,61 +1,42 @@
 .container {
-    height: 100%;
-    background-color: rgb(213, 213, 213);
-    display: grid;
+  height: 100%;
+  background-color: rgb(213, 213, 213);
+  display: grid;
+}
+
+.loginPage {
+  display: grid;
+  min-height: 100vh;
+  background-color: rgb(240, 255, 227);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-image: url("../../public/hexagons.svg");
 }
 
 .loginContainer {
-    margin: auto;
-    padding: 30px;
-    width: 500px;
-    background-color: white;
-    box-shadow: 2px 2px 64px 2px rgba(0, 0, 0, 0.2);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    transition: 5s;
-    rotate: 0deg;
+  margin: auto;
+  width: 500px;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4rem 6rem;
+  border: 1px solid #2c6030;
+  border-radius: 8px;
+  background: linear-gradient(-45deg, #ffddf9, #e6bcff, #d4f8ff, #ffddf9);
+  background-size: 400% 400%;
+  animation: gradient 10s ease infinite;
 }
 
-.loginTitle {
-    font-size: 2rem;
-    font-family: sans-serif;
-    color: #12121e;
-}
-
-.buttonLogin {
-    width: 100%;
-    height: 50px;
-    border-radius: 5px;
-    border: solid 1px white;
-    background-color: #12121e;
-    color: white;
-    cursor: pointer;
-    transition: 0.5s;
-}
-
-.buttonLogin:hover {
-    background: white;
-    color: #12121e;
-    border: solid 1px #12121e;
-    transition: 0.5s;
-}
-
-.buttonSignup {
-    width: 100%;
-    height: 50px;
-    border-radius: 5px;
-    border: solid 1px grey;
-    background-color: white;
-    color: #12121e;
-    cursor: pointer;
-    transition: 0.5s;
-}
-
-.buttonSignup:hover {
-    background: grey;
-    color: #12121e;
-    border: solid 1px #12121e;
-    transition: 0.5s;
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
