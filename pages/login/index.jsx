@@ -43,6 +43,7 @@ export default function Login() {
         /*Create a contract copy*/
         const vmContract_ = contractCollector(web3);
         setVmContract(vmContract_);
+        console.log(account[0])
         let body = { address: account[0] };
         const is_registered = await axios.post("/api/getuser", body);
         if (is_registered.data[0]) {
