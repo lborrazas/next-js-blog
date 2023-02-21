@@ -13,6 +13,7 @@ import axios from "axios";
 import style from "./login.module.css";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import { CircularProgress } from "@mui/material";
 
 export default function Login() {
   const setWeb3 = useSetWeb3();
@@ -20,6 +21,7 @@ export default function Login() {
   const setVmContract = useSetVmContract();
   const setUser = useSetUser();
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const connectWalletHandler = async () => {
@@ -28,6 +30,7 @@ export default function Login() {
       typeof window.ethereum !== "undefined"
     ) {
       try {
+        setIsLoading(true);
         await window.ethereum.request({ method: "eth_requestAccounts" });
         let web3 = new Web3(window.ethereum);
         /*set web3 instance*/
@@ -58,9 +61,11 @@ export default function Login() {
           router.push("/signup");
         }
       } catch (err) {
+        setIsLoading(false);
         setError(err.message);
       }
     } else {
+      setIsLoading(false);
       alert("please install Metamask");
     }
   };
@@ -71,17 +76,21 @@ export default function Login() {
         <Typography component="h1" variant="h4">
           IxaTesis
         </Typography>
-        <Button
-          onClick={connectWalletHandler}
-          fullWidth
-          variant="contained"
-          sx={{
-            mt: 3,
-            mb: 2,
-          }}
-        >
-          Iniciar Sesión
-        </Button>
+        {isLoading ? (
+          <CircularProgress />
+        ) : (
+          <Button
+            onClick={connectWalletHandler}
+            fullWidth
+            variant="contained"
+            sx={{
+              mt: 3,
+              mb: 2,
+            }}
+          >
+            Iniciar Sesión
+          </Button>
+        )}
         {error && <Typography variant="body2">{error}</Typography>}
       </div>
     </div>
