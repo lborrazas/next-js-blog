@@ -1,13 +1,8 @@
+import React from "react";
 import "../styles/global.css";
 import { BlockchainProvider } from "../blockchain/BlockchainContext";
-import { AppProvider, useUser } from "../contexts/AppContext";
-
-import React from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import Sidebar from "../components/Sidebar";
-import Layout, { siteTitle } from "../components/layout";
-import Head from "next/head";
-import utilStyles from "../styles/utils.module.css";
+import { AppProvider } from "../contexts/AppContext";
+import Layout from "../components/layout";
 import { ThemeProvider } from "@mui/material";
 
 import { createTheme } from "@mui/material/styles";

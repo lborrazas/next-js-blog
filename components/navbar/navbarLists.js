@@ -7,5 +7,6 @@ export const navItems = [
   { Name: "Inicio", Icon: HomeIcon, Url: "/home" },
   { Name: "Clientes", Icon: GroupsIcon, Url: "" },
   { Name: "Parcelas", Icon: GrassIcon, Url: "/plot" },
+  { Name: "Crear Parcela", Icon: GrassIcon, Url: "/create" },
   { Name: "Metricas", Icon: AutoGraphIcon, Url: "" },
 ];

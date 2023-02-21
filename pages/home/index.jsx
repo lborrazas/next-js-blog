@@ -9,6 +9,8 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import * as React from "react";
+
+import RedirectPage from "../../components/redirect/RedirectPage";
 import { CircularProgress } from "@mui/material";
 
 export default function home() {
@@ -30,8 +32,7 @@ export default function home() {
   return (
     <div>
       {shouldRedirect ? (
-        <div><p>Redirecting to login page...</p>
-         <CircularProgress/></div>
+        <RedirectPage />
       ) : (
         <>
           <h1>{"Hola " + user.name}</h1>
