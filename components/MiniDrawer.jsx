@@ -185,7 +185,7 @@ export default function MiniDrawer({children}) {
                     ))}
                 </List>
             </Drawer>
-            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+            <Box component="main" sx={{ flexGrow: 1, p: 3, backgroundColor: '#f7f7fa'}}>
                 <DrawerHeader />
                 {children}
             </Box>
