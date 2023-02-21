@@ -45,6 +45,7 @@ export default function Login() {
         setVmContract(vmContract_);
         let body = { address: account[0] };
         const is_registered = await axios.post("/api/getuser", body);
+       // if (is_registered.data[0]) {
         if (true) {
           //console.log(is_registered.data[0]);
           setUser(
