@@ -1,25 +1,31 @@
-import Head from 'next/head';
-import Image from 'next/image';
-import styles from './layout.module.css';
-import utilStyles from '../styles/utils.module.css';
-import Link from 'next/link';
+import Head from "next/head";
+import Image from "next/image";
+import styles from "./layout.module.css";
+import utilStyles from "../styles/utils.module.css";
+import Link from "next/link";
 import Sidebar from "./Sidebar";
 import React from "react";
-import {useUser} from "../contexts/AppContext";
+import { useUser } from "../contexts/AppContext";
 import MiniDrawer from "./MiniDrawer";
 import CssBaseline from "@mui/material/CssBaseline";
-const name = 'Mate';
-export const siteTitle = 'Next.js Sample Website';
+export const siteTitle = "Next.js Sample Website";
+import "./layout.module.css";
 
 export default function Layout({ children }) {
+  const user = useUser();
 
-    const user = useUser()
 
-    return (
-        <>
-            <CssBaseline />
-                {/*{user ? <MiniDrawer> {children} </MiniDrawer> : <main>{children}</main>}*/}
-                { <MiniDrawer> {children} </MiniDrawer>}
-        </>
-        );
+  return (
+    <main>
+      <CssBaseline />
+      {user ? (
+        <MiniDrawer> {children} </MiniDrawer>
+      ) : (
+        <div
+        >
+          {children}
+        </div>
+      )}
+    </main>
+  );
 }
