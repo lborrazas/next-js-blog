@@ -90,7 +90,7 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-export default function MiniDrawer({ children }) {
+export default function Sidebar({ children }) {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const router = useRouter();
