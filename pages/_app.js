@@ -27,7 +27,6 @@ let theme = createTheme({
 
 export default function App({Component, pageProps}) {
 
-    const user = useUser()
     return (
         <BlockchainProvider>
             <AppProvider>

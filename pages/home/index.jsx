@@ -16,6 +16,7 @@ export default function home() {
     const address = useAddress()
     const web3 = useWeb3()
     const user = useUser()
+    
     const [error, setError] = useState(null)
 
     const shouldRedirect = !user
@@ -35,12 +36,6 @@ export default function home() {
                 <h1>{"Hola " + user.name}</h1>
                 <h2>{"Eres admin? "} {user.isAdmin ? "si" : "no"}</h2>
                 <h2>{"Tu address" + user.address}</h2>
-
-
-                    {
-                        navItems.map( ({ Name, Icon })  => (
-                            Name
-                        ))}
                 </>
             )}
         </div>
