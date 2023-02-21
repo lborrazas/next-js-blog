@@ -6,6 +6,9 @@ import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
+import {Button, Stack} from "@mui/material";
+import Typography from "@mui/material/Typography";
+import Iconify from '../../components/iconify';
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -18,8 +21,8 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export default function plot() {
     const user = useUser()
-    const vmContract = useVmContract()
-    const address = useAddress()
+    //const vmContract = useVmContract()
+    //const address = useAddress()
     const router  = useRouter()
     const [tokens,setTokens] = useState(null)
 
@@ -35,17 +38,26 @@ export default function plot() {
         setTokens(plots)
     }
 
-    allTokens()
+    //allTokens()
 
-    if (!tokens){
+   // if (!tokens){
+    if (false){
         return(<div className="App">Loading...</div>)
     }
     else{
         return(
             <Box sx={{ flexGrow: 1 }}>
+                <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+                    <Typography variant="h4" gutterBottom>
+                        Dashboard
+                    </Typography>
+                    <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
+                        Refresh
+                    </Button>
+                </Stack>
                 <Grid container spacing={2}>
-                    <Grid item xs={6} md={12}>
-                        <Item>xs=6 md=8</Item>
+                    <Grid  item xs={6} md={12}>
+                        <Item >xs=6 md=8</Item>
                     </Grid>
                     <Grid item xs={6} md={4}>
                         <Item>xs=6 md=4</Item>

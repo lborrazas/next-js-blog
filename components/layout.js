@@ -18,7 +18,8 @@ export default function Layout({ children }) {
     return (
         <>
             <CssBaseline />
-                {user ? <MiniDrawer> {children} </MiniDrawer> : <main>{children}</main>}
+                {/*{user ? <MiniDrawer> {children} </MiniDrawer> : <main>{children}</main>}*/}
+                { <MiniDrawer> {children} </MiniDrawer>}
         </>
         );
 }
