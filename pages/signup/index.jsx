@@ -7,6 +7,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
+import { useRouter } from "next/router";
 
 export default function SignUp() {
   const [error, setError] = useState("");
@@ -14,7 +15,7 @@ export default function SignUp() {
   const email = useRef();
   const setUser = useSetUser();
   const address = useAddress();
-
+  const router = useRouter();
   useEffect(() => {
     setError("");
   }, [username, email]);

@@ -1,9 +1,3 @@
-.container {
-  height: 100%;
-  background-color: rgb(213, 213, 213);
-  display: grid;
-}
-
 .loginPage {
   display: grid;
   min-height: 100vh;

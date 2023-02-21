@@ -43,18 +43,18 @@ export default function Login() {
         /*Create a contract copy*/
         const vmContract_ = contractCollector(web3);
         setVmContract(vmContract_);
+        console.log(account[0])
         let body = { address: account[0] };
         const is_registered = await axios.post("/api/getuser", body);
         if (is_registered.data[0]) {
-          console.log(is_registered.data[0]);
           setUser(
-            new User(
-              is_registered.data[0].id,
-              is_registered.data[0].name,
-              is_registered.data[0].email,
-              account[0],
-              is_registered.data[0].isAdmin
-            )
+              new User(
+                  is_registered.data[0].id,
+                  is_registered.data[0].name,
+                  is_registered.data[0].email,
+                  account[0],
+                  is_registered.data[0].isAdmin
+              )
           );
           router.push("/home");
         } else {

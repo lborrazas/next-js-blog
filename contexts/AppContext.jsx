@@ -10,9 +10,7 @@ export class User {
   }
 }
 
-const UserContext = createContext(
-  new User("mate", "mate", "mate", "mate", true)
-);
+const UserContext = createContext(null);
 const SetUserContext = createContext(null);
 
 export function AppProvider({ children }) {
