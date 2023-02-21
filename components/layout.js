@@ -14,7 +14,6 @@ import "./layout.module.css";
 export default function Layout({ children }) {
   const user = useUser();
 
-
   return (
     <main>
       <CssBaseline />
