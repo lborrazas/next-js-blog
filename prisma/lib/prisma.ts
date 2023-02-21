@@ -1,16 +1,14 @@
 //import { PrismaClient } from "@prisma/client";
 
-const { PrismaClient } = require('./../../node_modules/.prisma/client'); 
+const { PrismaClient } = require("./../../node_modules/.prisma/client");
 
-let prisma:PrismaClient;
+let prisma: PrismaClient;
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === "production") {
   prisma = new PrismaClient();
 } else {
   if (!global.prisma) {
-    
-    global.prisma = new PrismaClient(
-      {
+    global.prisma = new PrismaClient({
       datasources: {
         db: {
           provider: "postgresql",
@@ -18,8 +16,7 @@ if (process.env.NODE_ENV === 'production') {
           max: 10,
         },
       },
-    } 
-    );
+    });
   }
   prisma = global.prisma;
 }
