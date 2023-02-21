@@ -46,15 +46,15 @@ export default function Login() {
         console.log(account[0])
         let body = { address: account[0] };
         const is_registered = await axios.post("/api/getuser", body);
-        if (is_registered.data[0]) {
-          console.log(is_registered.data[0]);
+        if (true) {
+          //console.log(is_registered.data[0]);
           setUser(
             new User(
-              is_registered.data[0].id,
-              is_registered.data[0].name,
-              is_registered.data[0].email,
-              account[0],
-              is_registered.data[0].isAdmin
+              '1',
+                'mate',
+                'mate',
+                account[0],
+                true
             )
           );
           router.push("/home");

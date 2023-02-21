@@ -8,20 +8,17 @@ import Sidebar from "../components/Sidebar";
 import Layout, { siteTitle } from "../components/layout";
 import Head from "next/head";
 import utilStyles from "../styles/utils.module.css";
-import { ThemeProvider } from "@mui/material";
+import {ThemeProvider} from "@mui/material";
+import palette from "../theme/palette.js"
 
 import { createTheme } from "@mui/material/styles";
 
 let theme = createTheme({
-  palette: {
-    primary: {
-      main: "#2c6030",
-    },
-    secondary: {
-      main: "#edf2ff",
-    },
-  },
+    palette: palette
 });
+
+
+
 
 export default function App({ Component, pageProps }) {
   return (
