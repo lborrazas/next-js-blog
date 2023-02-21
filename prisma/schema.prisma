@@ -14,9 +14,20 @@ model Parcela {
   latitud     Int
   longitud    Int
   m2        Int
+  address   String
+}
+
+model History {
+  id        String       @default(cuid()) @id
+  pid       String
   m2used    Int
   m3        Int
+  address   String
+  date      DateTime   @default(now())
+  @@index([address, date(sort: Desc)])
 }
+
+
 
 model User {
   id            String       @default(cuid()) @id
