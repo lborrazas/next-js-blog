@@ -91,6 +91,7 @@ export default function home({ users }) {
       alert('parcela already exist')
     }else{
     router.push("/home")
+    }
   };
 
   return (
