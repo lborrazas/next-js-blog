@@ -17,7 +17,7 @@ model Parcela {
   address   String
 }
 
-model History {
+model History { 
   id        String       @default(cuid()) @id
   pid       String
   m2used    Int

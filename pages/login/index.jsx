@@ -2,12 +2,13 @@ import {
   useSetAddress,
   useSetVmContract,
   useSetWeb3,
+  useVmContract,
 } from "../../blockchain/BlockchainContext";
 import { useState } from "react";
 import contractCollector from "../../blockchain/ContractCollector";
 import Web3 from "web3";
 import { useRouter } from "next/router";
-import { User, useSetUser } from "../../contexts/AppContext";
+import { User, useSetUser, useSetTokens, useTokens} from "../../contexts/AppContext";
 import useSWR from "swr";
 import axios from "axios";
 import style from "./login.module.css";
@@ -18,11 +19,27 @@ import { CircularProgress } from "@mui/material";
 export default function Login() {
   const setWeb3 = useSetWeb3();
   const setAddress = useSetAddress();
-  const setVmContract = useSetVmContract();
+  
   const setUser = useSetUser();
+  const setTokens = useSetTokens();
   const router = useRouter();
+  const setVmContract = useSetVmContract()
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+
+
+  
+const allTokens = async (vmContract) => {
+  let max = await vmContract.methods.tokenCounter().call();
+  let plots = [];
+  for (let i = 0; i < max; i++) {
+      let address_temp = await vmContract.methods.ownerOf(i).call()
+      let parse = await vmContract.methods.tokenIdToParcelasIndex(i).call();
+          plots.push(parse);    
+  }
+  return plots
+}
+
 
   const connectWalletHandler = async () => {
     if (
@@ -46,6 +63,8 @@ export default function Login() {
         console.log(account[0])
         let body = { address: account[0] };
         const is_registered = await axios.post("/api/getuser", body);
+        const tokens = await allTokens(vmContract_)
+        setTokens(tokens)
         if (is_registered.data[0]) {
           setUser(
               new User(

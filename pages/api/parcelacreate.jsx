@@ -16,8 +16,8 @@ export default async function handle(req, res) {
 try {
     const posts = await prisma.parcela.findMany({
         where:{
-            latitud:data.latitud,
-            longitud:data.longitud
+            latitud:Number(data.latitud),
+            longitud:Number(data.longitud)
         },
     }
     );

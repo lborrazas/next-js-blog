@@ -1,4 +1,4 @@
-import { useUser } from "../../contexts/AppContext";
+import { useUser,setTokens, useTokens} from "../../contexts/AppContext";
 import { useAddress, useVmContract } from "../../blockchain/BlockchainContext";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -11,42 +11,42 @@ import Typography from "@mui/material/Typography";
 import Iconify from "../../components/iconify";
 import ParcelasGridViewer from "../../components/pagesComponents/parcelasGridViewer";
 import ParcelasWidgetViewer from "../../components/pagesComponents/parcelasWidgetViewer";
+import axios from "axios";
+import { Token } from "@mui/icons-material";
+import useSWR from 'swr';
+
 
 const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
+    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: "center",
+    color: theme.palette.text.secondary,
 }));
 
 export default function plot() {
-  const user = useUser();
-  const vmContract = useVmContract()
-  const address = useAddress()
-  const router = useRouter();
-  const [tokens, setTokens] = useState(null);
-
-  const allTokens = async () => {
-    let max = await vmContract.methods.tokenCounter().call();
-    let plots = [];
-    for (let i = 0; i < max; i++) {
-      //let address_temp= await vmContract.methods.ownerOf(i).call()
-      let parse = await vmContract.methods.tokenIdToParcelasIndex(i).call();
-      plots.push(parse);
+    const user = useUser();
+    const vmContract = useVmContract()
+    const address = useAddress()
+    const router = useRouter();
+    const tokens =  useTokens();
+    const [parcelas, setParcelas] = useState([]);
+    
+    const fetcher = (url) => fetch(url).then((res) => res.json())
+    const { data, error } = useSWR(address ? `/api/enhance/mytokens/${address}`:null, fetcher)        
+    console.log(error)
+          
+    
+    if (error) {
+        
+        return <div>failed to load</div>;}
+    if (!data) {
+        //if (false){
+        return (<div className="App">Loading...</div>)
     }
-      setTokens(plots)
-  }
-
-
-    allTokens()
-
-   if (!tokens){
-    //if (false){
-        return(<div className="App">Loading...</div>)
-    }
-    else{
-        return(
+    else {
+        console.log(data)
+        return (
             <Box sx={{ flexGrow: 1 }}>
                 <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
                     <Typography variant="h4" gutterBottom>
@@ -58,8 +58,8 @@ export default function plot() {
                 </Stack>
                 <Grid container spacing={2} >
                     <Grid item xs={12} md={12}>
-                        <Item  sx={{height: "42vH"}} >
-                            <ParcelasGridViewer></ParcelasGridViewer>
+                        <Item sx={{ height: "42vH" }} >
+                            <ParcelasGridViewer tokens={data} ></ParcelasGridViewer>
                         </Item>
                     </Grid>
                     <Grid item xs={12} sm={6} md={3}>

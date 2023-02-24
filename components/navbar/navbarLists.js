@@ -3,6 +3,7 @@ import GroupsIcon from '@mui/icons-material/Groups';
 import AutoGraphIcon from '@mui/icons-material/AutoGraph';
 import HomeIcon from '@mui/icons-material/Home';
 import GrassIcon from '@mui/icons-material/Grass';
+import SyncAltIcon from '@mui/icons-material/SyncAlt';
 
 export const navItems = [
     { Name: "Inicio", Icon: HomeIcon, Url: "/home"},
@@ -10,4 +11,5 @@ export const navItems = [
     { Name: "Parcelas", Icon: TokenIcon, Url: "/plot"},
     { Name: "Crear Parcela", Icon: GrassIcon, Url: "/create" },
     { Name: "Metricas", Icon: AutoGraphIcon, Url: ""},
+    { Name: "Transfer", Icon: SyncAltIcon, Url: "/transfer"},
 ]

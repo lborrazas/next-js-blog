@@ -26,63 +26,66 @@ export function colorGrading(number) {
     return grading
 }
 
-export const parcelas = [
-    new Parcela(1, 20, 30, 50, 99, 250),
-    new Parcela(2, 20, 30, 50, 80, 250),
-    new Parcela(3, 20, 30, 50, 70, 250),
-    new Parcela(4, 20, 30, 50, 4, 250),
-    new Parcela(4, 20, 30, 50, 12, 250),
-    new Parcela(4, 20, 30, 50, 40, 250),
-    new Parcela(4, 20, 30, 50, 100, 250),
-    new Parcela(4, 20, 30, 50, 94, 250),
-    new Parcela(4, 20, 30, 50, 90, 250),
-    new Parcela(4, 20, 30, 50, 20, 250),
-    new Parcela(4, 20, 30, 50, 10, 250),
-    new Parcela(4, 20, 30, 50, 40, 250),
-    new Parcela(4, 20, 30, 50, 2, 250),
-    new Parcela(4, 20, 30, 50, 49, 250),
-    new Parcela(4, 20, 30, 50, 85, 250),
-    new Parcela(4, 20, 30, 50, 75, 250),
-    new Parcela(4, 20, 30, 50, 94, 250),
-    new Parcela(4, 20, 30, 50, 100, 250),
-    new Parcela(1, 20, 30, 50, 99, 250),
-    new Parcela(2, 20, 30, 50, 80, 250),
-    new Parcela(3, 20, 30, 50, 70, 250),
-    new Parcela(4, 20, 30, 50, 4, 250),
-    new Parcela(4, 20, 30, 50, 12, 250),
-    new Parcela(4, 20, 30, 50, 40, 250),
-    new Parcela(4, 20, 30, 50, 100, 250),
-    new Parcela(4, 20, 30, 50, 94, 250),
-    new Parcela(4, 20, 30, 50, 90, 250),
-    new Parcela(4, 20, 30, 50, 20, 250),
-    new Parcela(4, 20, 30, 50, 10, 250),
-    new Parcela(4, 20, 30, 50, 40, 250),
-    new Parcela(4, 20, 30, 50, 2, 250),
-    new Parcela(4, 20, 30, 50, 49, 250),
-    new Parcela(4, 20, 30, 50, 85, 250),
-    new Parcela(4, 20, 30, 50, 75, 250),
-    new Parcela(4, 20, 30, 50, 94, 250),
-    new Parcela(4, 20, 30, 50, 100, 250),
-    new Parcela(1, 20, 30, 50, 99, 250),
-    new Parcela(2, 20, 30, 50, 80, 250),
-    new Parcela(3, 20, 30, 50, 70, 250),
-    new Parcela(4, 20, 30, 50, 4, 250),
-    new Parcela(4, 20, 30, 50, 12, 250),
-    new Parcela(4, 20, 30, 50, 40, 250),
-    new Parcela(4, 20, 30, 50, 100, 250),
-    new Parcela(4, 20, 30, 50, 94, 250),
-    new Parcela(4, 20, 30, 50, 90, 250),
-    new Parcela(4, 20, 30, 50, 20, 250),
-    new Parcela(4, 20, 30, 50, 10, 250),
-    new Parcela(4, 20, 30, 50, 40, 250),
-    new Parcela(4, 20, 30, 50, 2, 250),
-    new Parcela(4, 20, 30, 50, 49, 250),
-    new Parcela(4, 20, 30, 50, 85, 250),
-    new Parcela(4, 20, 30, 50, 75, 250),
-    new Parcela(4, 20, 30, 50, 94, 250),
-    new Parcela(4, 20, 30, 50, 100, 250)
-]
-export default function ParcelasGridViewer() {
+ export const parcelas = [
+     new Parcela(1, 20, 30, 50, 99, 250),
+     new Parcela(2, 20, 30, 50, 80, 250),
+//     new Parcela(3, 20, 30, 50, 70, 250),
+//     new Parcela(4, 20, 30, 50, 4, 250),
+//     new Parcela(4, 20, 30, 50, 12, 250),
+//     new Parcela(4, 20, 30, 50, 40, 250),
+//     new Parcela(4, 20, 30, 50, 100, 250),
+//     new Parcela(4, 20, 30, 50, 94, 250),
+//     new Parcela(4, 20, 30, 50, 90, 250),
+//     new Parcela(4, 20, 30, 50, 20, 250),
+//     new Parcela(4, 20, 30, 50, 10, 250),
+//     new Parcela(4, 20, 30, 50, 40, 250),
+//     new Parcela(4, 20, 30, 50, 2, 250),
+//     new Parcela(4, 20, 30, 50, 49, 250),
+//     new Parcela(4, 20, 30, 50, 85, 250),
+//     new Parcela(4, 20, 30, 50, 75, 250),
+//     new Parcela(4, 20, 30, 50, 94, 250),
+//     new Parcela(4, 20, 30, 50, 100, 250),
+//     new Parcela(1, 20, 30, 50, 99, 250),
+//     new Parcela(2, 20, 30, 50, 80, 250),
+//     new Parcela(3, 20, 30, 50, 70, 250),
+//     new Parcela(4, 20, 30, 50, 4, 250),
+//     new Parcela(4, 20, 30, 50, 12, 250),
+//     new Parcela(4, 20, 30, 50, 40, 250),
+//     new Parcela(4, 20, 30, 50, 100, 250),
+//     new Parcela(4, 20, 30, 50, 94, 250),
+//     new Parcela(4, 20, 30, 50, 90, 250),
+//     new Parcela(4, 20, 30, 50, 20, 250),
+//     new Parcela(4, 20, 30, 50, 10, 250),
+//     new Parcela(4, 20, 30, 50, 40, 250),
+//     new Parcela(4, 20, 30, 50, 2, 250),
+//     new Parcela(4, 20, 30, 50, 49, 250),
+//     new Parcela(4, 20, 30, 50, 85, 250),
+//     new Parcela(4, 20, 30, 50, 75, 250),
+//     new Parcela(4, 20, 30, 50, 94, 250),
+//     new Parcela(4, 20, 30, 50, 100, 250),
+//     new Parcela(1, 20, 30, 50, 99, 250),
+//     new Parcela(2, 20, 30, 50, 80, 250),
+//     new Parcela(3, 20, 30, 50, 70, 250),
+//     new Parcela(4, 20, 30, 50, 4, 250),
+//     new Parcela(4, 20, 30, 50, 12, 250),
+//     new Parcela(4, 20, 30, 50, 40, 250),
+//     new Parcela(4, 20, 30, 50, 100, 250),
+//     new Parcela(4, 20, 30, 50, 94, 250),
+//     new Parcela(4, 20, 30, 50, 90, 250),
+//     new Parcela(4, 20, 30, 50, 20, 250),
+//     new Parcela(4, 20, 30, 50, 10, 250),
+//     new Parcela(4, 20, 30, 50, 40, 250),
+//     new Parcela(4, 20, 30, 50, 2, 250),
+//     new Parcela(4, 20, 30, 50, 49, 250),
+//     new Parcela(4, 20, 30, 50, 85, 250),
+//     new Parcela(4, 20, 30, 50, 75, 250),
+//     new Parcela(4, 20, 30, 50, 94, 250),
+//     new Parcela(4, 20, 30, 50, 100, 250)
+ ]
+
+export default function ParcelasGridViewer({tokens}) {
+    console.log(tokens)
+    
     return (
         <Grid container spacing={2}>
             <Grid item xs={12} md={4}>
@@ -105,15 +108,15 @@ export default function ParcelasGridViewer() {
             </Grid>
             <Grid item xs={12} md={8}>
                 <Box paddingX="90px" textAlign="left">
-                {
-                    parcelas.map( (parcela) => (
+                {   
+                    tokens.map( (parcela) => (
                         <TokenIcon sx={{ fontSize: 50, color:  colorGrading(parcela.m2used) }}/>
                         // <Box>{parcela.id}</Box>
                     ))
                   //
             }
                 </Box>
-                <Paper elevation={0}> Parcelas </Paper>
+                <Paper elevation={0}> Parcelas </Paper> 
             </Grid>
         </Grid>
     );
