@@ -1,30 +1,30 @@
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import {Stack} from "@mui/material";
-import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
-import TokenIcon from '@mui/icons-material/Token';
+    import Grid from "@mui/material/Grid";
+    import Typography from "@mui/material/Typography";
+    import {Stack} from "@mui/material";
+    import Paper from "@mui/material/Paper";
+    import Box from "@mui/material/Box";
+    import TokenIcon from '@mui/icons-material/Token';
 
 
-export class Parcela {
-    constructor(id, latitud, longitud, m2, m2used, m3){
-        this.id = id
-        this.latitud = latitud
-        this.longitud = longitud
-        this.m2 = m2
-        this.m2used = m2used
-        this.m3 = m3
+    export class Parcela {
+        constructor(id, latitud, longitud, m2, m2used, m3){
+            this.id = id
+            this.latitud = latitud
+            this.longitud = longitud
+            this.m2 = m2
+            this.m2used = m2used
+            this.m3 = m3
+        }
     }
-}
 
-export function colorGrading(number) {
-    let grading = ""
-    if (number <= 10) grading = "red"
-    if (10 < number &&  number <= 30) grading = "orange"
-    if (30 < number &&  number <= 80) grading = "yellowgreen"
-    if (80 < number &&  number <= 100) grading = "green"
-    return grading
-}
+    export function colorGrading(number) {
+        let grading = ""
+        if (number <= 10) grading = "red"
+        if (10 < number &&  number <= 30) grading = "orange"
+        if (30 < number &&  number <= 80) grading = "yellowgreen"
+        if (80 < number &&  number <= 100) grading = "green"
+        return grading
+    }
 
  export const parcelas = [
      new Parcela(1, 20, 30, 50, 99, 250),
