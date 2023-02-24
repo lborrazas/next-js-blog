@@ -89,8 +89,8 @@ export default function home({ users }) {
     console.log(result)
     if (result.data == -1) {
       alert('parcela already exist')
-    } else {
-      router.push("/home")
+    }else{
+    router.push("/home")
     }
   };
 
