@@ -24,6 +24,7 @@ export default function home() {
   const averageHeight = useRef();
   const vmContract = useVmContract();
 
+
   const [error, setError] = useState(null);
 
   const shouldRedirect = !user;
@@ -43,6 +44,7 @@ export default function home() {
     );
     let a = await vmContract.methods.createCollectible(latitude.current.value,longitude.current.value).send({ from: address })
     const parcela = {
+      address:address,
       latitud: Number(latitude.current.value),
       longitud: Number(longitude.current.value),
       m2:Number(area.current.value),
@@ -51,10 +53,13 @@ export default function home() {
     };
    
 
-    await axios.post("/api/parcelacreate", parcela);
-
+    const result = await axios.post("/api/parcelacreate", parcela);
+    console.log(result)
+    if (result.data == -1){
+      alert('parcela already exist')
+    }else{
     router.push("/home")
-    
+    }
 
   };
 
