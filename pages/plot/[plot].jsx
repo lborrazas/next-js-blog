@@ -8,9 +8,9 @@ import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import { Button, Stack } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import Iconify from "../../components/iconify";
-import ParcelasGridViewer, { Parcela } from "../../components/pagesComponents/parcelasGridViewer";
 import ParcelasWidgetViewer from "../../components/pagesComponents/parcelasWidgetViewer";
+import Co2Graph from "../../components/pagesComponents/co2Graph";
+import { Parcela } from "../../components/pagesComponents/parcelasGridViewer";
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -20,34 +20,32 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
 }));
 
-export default function plot() {
+export async function getServerSideProps(context) {
+    const { id } = context.query;
+  
+    // Realiza una llamada a la API o base de datos para obtener los datos de la publicación con el ID correspondiente
+    //const parcela = await prisma.parcela.findById() fetch(`https://mi-api.com/posts/${id}`).then(res => res.json());
+    const laparce = new Parcela(1, 10, 20, 100, 40, 200)
+    const parcela =JSON.parse(JSON.stringify(laparce))
+    // Devuelve los datos como propiedades para renderizar la página
+    return {
+      props: {
+        parcela
+      },
+    };
+  }
+  
+
+export default function plot({parcela}) {
     const user = useUser();
     const vmContract = useVmContract()
     const address = useAddress()
     const router = useRouter();
     const [tokens, setTokens] = useState(null);
 
-    const allTokens = async () => {
-        let max = await vmContract.methods.tokenCounter().call();
-        let plots = [];
-        for (let i = 0; i < max; i++) {
-            //let address_temp= await vmContract.methods.ownerOf(i).call()
-            let parse = await vmContract.methods.tokenIdToParcelasIndex(i).call();
-            plots.push(parse);
-        }
-        setTokens(plots)
-    }
-    function handleCLick() {
-        const parcela = new Parcela(1, 10, 20, 100, 40, 200)
-        router.push({
-            pathname: `/plot/${parcela.id}`
-        })
-    }
+    console.log(parcela)
 
-
-    allTokens()
-
-    if (!tokens) {
+    if (!parcela) {
         //if (false){
         return (<div className="App">Loading...</div>)
     }
@@ -56,18 +54,20 @@ export default function plot() {
             <Box sx={{ flexGrow: 1 }}>
                 <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
                     <Typography variant="h4" gutterBottom>
-                        Dashboard
+                        {"Parcela " + parcela.latitud +" : " + parcela.longitud}
                     </Typography>
-                     <Button onClick={() => handleCLick()} variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}  >
-                        Refresh
+                    <Button variant="contained">
+                        Actualizar  
                     </Button>
                 </Stack>
                 <Grid container spacing={2} >
                     <Grid item xs={12} md={12}>
                         <Item sx={{ height: "42vH" }} >
-                            <ParcelasGridViewer></ParcelasGridViewer>
+                            <Co2Graph/>
                         </Item>
                     </Grid>
+
+                    //aca abajo van las fotos
                     <Grid item xs={12} sm={6} md={3}>
                         <ParcelasWidgetViewer title="Total de Parcelas" total={31} icon={'material-symbols:token'} />
                     </Grid>
@@ -89,3 +89,5 @@ export default function plot() {
     }
 
 }
+
+
