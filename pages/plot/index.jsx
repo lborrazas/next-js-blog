@@ -50,7 +50,6 @@ export default function plot() {
         
         return <div>failed to load</div>;}
     if (!data) {
-
         //if (false){
         return (<div className="App">Loading...</div>)
     }
