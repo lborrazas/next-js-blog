@@ -9,5 +9,6 @@ export const navItems = [
     { Name: "Clientes", Icon: GroupsIcon, Url: ""},
     { Name: "Parcelas", Icon: TokenIcon, Url: "/plot"},
     { Name: "Crear Parcela", Icon: GrassIcon, Url: "/create" },
+    { Name: "Actualizar Parcela", Icon: GrassIcon, Url: "/update/3" },
     { Name: "Metricas", Icon: AutoGraphIcon, Url: ""},
 ]

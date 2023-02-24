@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef } from "react";
-const { PrismaClient } = require("./../../node_modules/.prisma/client");
+const { PrismaClient } = require(".prisma/client");
 const prisma = new PrismaClient();
 
 import { useUser } from "../../contexts/AppContext";
 import { useAddress, useVmContract, useWeb3 } from "../../blockchain/BlockchainContext";
 import { useRouter } from "next/router";
 import useSWR from "swr";
-import style from "./create.module.css";
+import style from "./update.module.css";
 import axios from "axios";
 import RedirectPage from "../../components/redirect/RedirectPage";
 import Slider from "@mui/material/Slider";
@@ -97,7 +97,7 @@ export default function home({ users }) {
       shouldRedirect ? (<RedirectPage /> ) : 
       <><Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
             <Typography component="h1" variant="h4">
-              Crear parcela
+              Actualizar informacón de la parcela 
             </Typography>
             <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
               Refresh
@@ -108,11 +108,13 @@ export default function home({ users }) {
             <Grid item xs={12}>
                 <InputLabel id="userOwner-label">Dueño</InputLabel>
                 <Select
+                  className={`${style.disabledSelect}`}
                   margin="normal"
                   value={"null"}
                   fullWidth
                   id="userOwner"
                   label="Dueño"
+                  readOnly="true"
                   name="userOwner"
                   autoComplete="userOwner"
                 >

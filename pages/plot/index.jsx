@@ -42,7 +42,6 @@ export default function plot() {
     allTokens()
 
    if (!tokens){
-    //if (false){
         return(<div className="App">Loading...</div>)
     }
     else{
