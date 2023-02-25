@@ -12,62 +12,101 @@ import { useRouter } from "next/router";
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-
+import useSWR from 'swr';
+import DialogTitle from '@mui/material/DialogTitle';
+import Dialog from '@mui/material/Dialog';
 import RedirectPage from "../../components/redirect/RedirectPage";
+import { func } from "prop-types";
 
 
 export default function transfer() {
-    const [error, setError] = useState("");
+    const [errorb, setError] = useState("");
     const username = useRef();
-    const email = useRef();
-
-    const setUser = useSetUser();
+    const [forwardAddress, setForwardAddress] = useState("");
     const address = useAddress();
     const router = useRouter();
     const vmContract = useVmContract();
-    useEffect(() => {
 
-        setError("");
-    }, [username, email]);
+    const fetcher = (url) => fetch(url).then((res) => res.json())
+    const { data, error } = useSWR(address ? `api/parcela/${address}` : null, fetcher)
 
-    const [parcela, setParcela] = useState('');
+    const [parcela, setParcela] = useState({ lat: null, long: null, id: null });
+
+
+   // const [open, setOpen] = useState(false);
+
+    //const handleOpen = () => {
+     //   setOpen(true);
+    //};
+
+    //const handleClose = (tran) => {
+     //   if (tran) {
+
+            //transaccion(tran)
+       // }
+       // setOpen(false);
+    //};
 
     const handleChange = (event) => {
         // SelectChangeEvent
         setParcela(event.target.value);
+
     };
 
 
-    const myTokens = async () => {
-
+    async function transaccion(add) {
         let max = await vmContract.methods.tokenCounter().call();
         let tokens_temp = [];
+        let id = [];
         for (let i = 0; i < max; i++) {
             let address_temp = await vmContract.methods.ownerOf(i).call()
             let parse = await vmContract.methods.tokenIdToParcelasIndex(i).call();
-            if (address == address_temp) {
+            if (parse.latitud == parcela.lat && parse.longitud == parcela.long) {
                 tokens_temp.push(parse);
+                id.push(i)
             }
         }
-        return tokens_temp
+        contract.methods.safeTransferFrom(address, add, id[0]).send({ from: address }).then((receipt) => {
+            console.log(`NFT ${id[0]} transferred from ${address} to ${add}`);
+            alert(`NFT ${id[0]} transferred from ${address} to ${add}`);
+        });
+    }
+
+
+
+    async function handleCLick(add) {
+        germen_address = '0x5CBf6A1Ce51917A25F14164d5396AdDEAc73D26f'
+        if (add == germen_address) {
+            let body = { address: add };
+            const is_registered = await axios.post("/api/getuser", body);
+            if (is_registered[0]) {
+                popUP(`${add} is nor register on our database`, add)
+            }
+            else { popUP(``, add) }
+        }
+        else { console.log('no esta bien la address') }
     }
 
 
     const handleSignup = (e) => {
         e.preventDefault();
         const data = new FormData(e.currentTarget);
-        if (data.get("username") === "" || data.get("email") === "") {
+        if (data.get("parcela") === "" || data.get("address") === "") {
             setError("Los campos no pueden ser vacios");
         } else {
-            cosasParaSignup(data.get("username"), data.get("email"));
+            // handleCLick(data.get("address"));
         }
     };
+    console.log(parcela)
 
-
-    if (currentTokens) {
-        return(<RedirectPage />)
+    if (error) {
+        return <div>failed to load</div>;
+    }
+    if (!data) {
+        return (<RedirectPage />)
     }
     else {
+        console.log(parcela)
         return (
 
             <div className={style.signupPage}>
@@ -75,18 +114,19 @@ export default function transfer() {
                     <Typography component="h1" variant="h4">
                         IxaTesis
                     </Typography>
-                    <Box component="form" onSubmit={handleSignup} noValidate sx={{ mt: 1 }}>
-                        <InputLabel id="">Age</InputLabel>
+                    <Box component="form" noValidate sx={{ mt: 1 }}>
+                        <InputLabel id="">Parcela</InputLabel>
                         <Select
                             labelId="parcelas"
-                            id="demo-simple-selec"
+                            id="parcela"
+                            name="parcela"
                             value={parcela}
                             label="parcela"
                             onChange={handleChange}
                         >
                             {
-                                currentTokens.map((parcela) => (
-                                    <MenuItem value={10}>Lat:{parcela.latitude},Long:{parcela.longitud}</MenuItem>
+                                data.map((parcela) => (
+                                    <MenuItem key={parcela.id} value={parcela}>  Lat:{parcela.latitud}, Long:{parcela.longitud} m2:{parcela.m2}</MenuItem>
                                     // <Box>{parcela.id}</Box>
                                 ))
                                 //
@@ -94,11 +134,6 @@ export default function transfer() {
 
 
                         </Select>
-
-
-
-
-
                         <TextField
                             margin="normal"
                             required
@@ -107,20 +142,40 @@ export default function transfer() {
                             label="Address"
                             name="address"
                             autoComplete="address"
+                            value={forwardAddress}
                         />
                         <Button
+                            onClick={() => handleSignup()}
                             type="submit"
                             fullWidth
                             variant="contained"
+
                             sx={{
                                 mt: 3,
                                 mb: 2,
                             }}
                         >
-                            Crear cuenta
+                            Transferir
                         </Button>
                     </Box>
-                    {error && <Typography variant="body2">{error}</Typography>}
+                    <Dialog open={false} >
+                        <DialogTitle>Popup Modal Title</DialogTitle>
+
+                        <TextField>
+                            This is the content of the popup modal.
+                        </TextField>
+
+                        <Button onClick={(false)} color="primary">
+                            Decline
+                        </Button>
+                        <Button onClick={(true)} color="primary">
+                            Accept
+                        </Button>
+
+                    </Dialog>
+
+
+                    {errorb && <Typography variant="body2">{errorb}</Typography>}
                 </div>
             </div>
         );
