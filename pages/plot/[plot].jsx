@@ -37,6 +37,30 @@ export async function getServerSideProps(context) {
         }
     )
 
+    
+    const owner = await prisma.user.findMany({
+        where: {
+            address: parcela[0].address
+        }
+    })
+
+    let aux = await prisma.history.findMany({
+        where: {
+            pid: parcela.id,
+        },
+        orderBy: {
+            date: 'desc'
+        },
+        take: 1
+    });
+
+    const lastLog  = JSON.parse(JSON.stringify(aux[0]))
+
+    
+  
+
+    
+
 
 
     // fetch(`https://mi-api.com/posts/${id}`).then(res => res.json());
@@ -45,21 +69,23 @@ export async function getServerSideProps(context) {
 
     return {
         props: {
-            parcela
+            parcela,
+            lastLog,
+            owner
         },
     };
 }
 
 
-export default function plot({ parcela }) {
+export default function plot({ parcela, lastLog, owner }) {
 
-    const user = useUser();
-    const vmContract = useVmContract()
-    const address = useAddress()
+        const user = useUser();
+        const vmContract = useVmContract()
+        const address = useAddress()
     const router = useRouter();
-    const [tokens, setTokens] = useState(null);
     parcela = parcela[0]
-
+    owner = owner[0]
+    
 
     //const fetcher = (url) => fetch(url).then((res) => res.json())
     //const { data, error } = useSWR(`/api/getparcela`, fetcher({longitud:parcela.longitud,latitud:parcela.latitud}))      
@@ -75,17 +101,19 @@ export default function plot({ parcela }) {
         return (<div className="App">Loading...</div>)
     }
     else {
+        console.log(parcela)
         return (
             <Box sx={{ flexGrow: 1 }}>
                 <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-                    <Typography variant="h4" gutterBottom>
-                        {"Parcela " + parcela.latitud + " : " + parcela.longitud}
-                    </Typography>
-                    <Typography variant="h5" gutterBottom>
-                        {"Dueño " + parcela.addres}
-                    </Typography>
-
-                    <Button variant="contained">
+                    <Box>
+                        <Typography variant="h4" gutterBottom>
+                            {"Parcela " + parcela.latitud + " : " + parcela.longitud}
+                        </Typography>
+                        <Typography variant="h5" gutterBottom>
+                            {"Dueño " + owner.name}
+                        </Typography>
+                    </Box>
+                    <Button id="actualizar" variant="contained">
                         Actualizar
                     </Button>
                 </Stack>
