@@ -31,20 +31,24 @@ export default function transfer() {
     const { data, error } = useSWR(address ? `api/parcela/${address}` : null, fetcher)
 
     const [parcela, setParcela] = useState({ lat: null, long: null, id: null });
+    const [mess, setMess] = useState("")
 
+    const [open, setOpen] = useState(false);
 
-   // const [open, setOpen] = useState(false);
+    const popUP = () => {
+        setOpen(true)
 
-    //const handleOpen = () => {
-     //   setOpen(true);
-    //};
+    }
+    const handleClose = (tran_bool) => {
+        setOpen(false);
+    };
 
     //const handleClose = (tran) => {
-     //   if (tran) {
+    //   if (tran) {
 
-            //transaccion(tran)
-       // }
-       // setOpen(false);
+    //transaccion(tran)
+    // }
+    // setOpen(false);
     //};
 
     const handleChange = (event) => {
@@ -54,37 +58,50 @@ export default function transfer() {
     };
 
 
-    async function transaccion(add) {
+    async function transaccion() {
         let max = await vmContract.methods.tokenCounter().call();
         let tokens_temp = [];
-        let id = [];
+        let parcela_id = [];
         for (let i = 0; i < max; i++) {
-            let address_temp = await vmContract.methods.ownerOf(i).call()
             let parse = await vmContract.methods.tokenIdToParcelasIndex(i).call();
-            if (parse.latitud == parcela.lat && parse.longitud == parcela.long) {
+            console.log("===================") 
+            console.log(Number(parse.latitud))  
+            console.log(parcela.latitud)  
+             
+            console.log(parcela.longitud)  
+            console.log(Number(parse.longitud))  
+            console.log("===================") 
+            if (Number(parse.latitud) === parcela.latitud && Number(parse.longitud) === parcela.longitud) {
                 tokens_temp.push(parse);
-                id.push(i)
+                parcela_id.push(i)
+                console.log('entro')
             }
         }
-        contract.methods.safeTransferFrom(address, add, id[0]).send({ from: address }).then((receipt) => {
-            console.log(`NFT ${id[0]} transferred from ${address} to ${add}`);
-            alert(`NFT ${id[0]} transferred from ${address} to ${add}`);
-        });
+        console.log("_________________________")
+        console.log(parcela)
+        // axios.post('/api/transfer',{body:{toAdd:forwardAddress,fromAdd:address,id:parcela_id}})
+        //await vmContract.methods.safeTransferFrom(address, forwardAddress, id[0]).send({ from: address })
+        console.log(parcela_id)
+        console.log(`NFT ${parcela_id[0]} transferred from ${address} to ${forwardAddress}`);
+        alert(`NFT ${parcela_id[0]} transferred from ${address} to ${forwardAddress}`);
+        ;
     }
 
 
 
-    async function handleCLick(add) {
-        germen_address = '0x5CBf6A1Ce51917A25F14164d5396AdDEAc73D26f'
-        if (add == germen_address) {
-            let body = { address: add };
-            const is_registered = await axios.post("/api/getuser", body);
-            if (is_registered[0]) {
-                popUP(`${add} is nor register on our database`, add)
-            }
-            else { popUP(``, add) }
+    async function handleCLick() {
+        const germen_address = '0x5CBf6A1Ce51917A25F14164d5396AdDEAc73D26f'
+        let body = { address: forwardAddress };
+        const is_registered = await axios.post("/api/getuser", body);
+        
+        if (is_registered.data[0]) {
+            
+            setMess(`address is nor register on our database`)
+            popUP()
         }
-        else { console.log('no esta bien la address') }
+        else {setMess(``)
+             popUP() }
+
     }
 
 
@@ -94,7 +111,9 @@ export default function transfer() {
         if (data.get("parcela") === "" || data.get("address") === "") {
             setError("Los campos no pueden ser vacios");
         } else {
-            // handleCLick(data.get("address"));
+            setForwardAddress(data.get("address"))
+            handleCLick();
+
         }
     };
     console.log(parcela)
@@ -114,7 +133,7 @@ export default function transfer() {
                     <Typography component="h1" variant="h4">
                         IxaTesis
                     </Typography>
-                    <Box component="form" noValidate sx={{ mt: 1 }}>
+                    <Box component="form" onSubmit={handleSignup} noValidate sx={{ mt: 1 }}>
                         <InputLabel id="">Parcela</InputLabel>
                         <Select
                             labelId="parcelas"
@@ -127,7 +146,7 @@ export default function transfer() {
                             {
                                 data.map((parcela) => (
                                     <MenuItem key={parcela.id} value={parcela}>  Lat:{parcela.latitud}, Long:{parcela.longitud} m2:{parcela.m2}</MenuItem>
-                                    // <Box>{parcela.id}</Box>
+
                                 ))
                                 //
                             }
@@ -142,10 +161,10 @@ export default function transfer() {
                             label="Address"
                             name="address"
                             autoComplete="address"
-                            value={forwardAddress}
+
                         />
                         <Button
-                            onClick={() => handleSignup()}
+
                             type="submit"
                             fullWidth
                             variant="contained"
@@ -158,17 +177,20 @@ export default function transfer() {
                             Transferir
                         </Button>
                     </Box>
-                    <Dialog open={false} >
+                    <Dialog open={open} >
                         <DialogTitle>Popup Modal Title</DialogTitle>
 
-                        <TextField>
+                        <Typography>
                             This is the content of the popup modal.
-                        </TextField>
+                        </Typography>
+                        <Typography>
+                            {mess}
+                        </Typography>
 
-                        <Button onClick={(false)} color="primary">
+                        <Button onClick={() => setOpen(false)} color="primary">
                             Decline
                         </Button>
-                        <Button onClick={(true)} color="primary">
+                        <Button onClick={() => transaccion()} color="primary">
                             Accept
                         </Button>
 
