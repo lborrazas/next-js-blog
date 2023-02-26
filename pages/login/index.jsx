@@ -14,6 +14,10 @@ import style from "./login.module.css";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { CircularProgress } from "@mui/material";
+import {SiweMessage} from "siwe";
+import {getCsrfToken, signIn, useSession} from "next-auth/react";
+import {useAccount, useConnect, useNetwork, useSignMessage} from "wagmi";
+import {InjectedConnector} from "wagmi/connectors/injected";
 
 export default function Login() {
   const setWeb3 = useSetWeb3();
@@ -23,6 +27,50 @@ export default function Login() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const { address, isConnected } = useAccount()
+  const { chain } = useNetwork()
+  const { signMessageAsync } = useSignMessage()
+  const { connect } = useConnect({
+    connector: new InjectedConnector(),
+  });
+  const { data: session, status } = useSession()
+
+
+  const handleLogin = async () => {
+    try {
+      const callbackUrl = "/protected"
+      const message = new SiweMessage({
+        domain: window.location.host,
+        address: address,
+        statement: "Sign in with Ethereum to the app.",
+        uri: window.location.origin,
+        version: "1",
+        chainId: chain?.id,
+        nonce: await getCsrfToken(),
+      })
+      const signature = await signMessageAsync({
+        message: message.prepareMessage(),
+      })
+      console.log(message)
+      signIn("credentials", {
+        message: JSON.stringify(message),
+        redirect: false,
+        signature,
+        callbackUrl,
+      })
+      console.log(session)
+
+      let body = {address: address };
+      const is_registered = await axios.post("/api/getuser", body);
+      if (is_registered.data[0]) {
+        router.push("/home");
+      } else {
+        router.push("/signup");
+      }
+    } catch (error) {
+      window.alert(error)
+    }
+  }
 
   const connectWalletHandler = async () => {
     if (
@@ -41,7 +89,7 @@ export default function Login() {
         setAddress(account[0]);
 
         /*Create a contract copy*/
-        const vmContract_ = contractCollector(web3);
+        const vmContract_ = contractCollector();
         setVmContract(vmContract_);
         console.log(account[0])
         let body = { address: account[0] };
@@ -80,7 +128,7 @@ export default function Login() {
           <CircularProgress />
         ) : (
           <Button
-            onClick={connectWalletHandler}
+            onClick={handleLogin}
             fullWidth
             variant="contained"
             sx={{

@@ -3,7 +3,9 @@ import Web3 from "web3";
 const provider = new Web3.providers.HttpProvider(
   "https://goerli.infura.io/v3/9b821f4efc254bca9defbb8ce63f6063"
 );
-const web3 = new Web3(provider);
+
+import { useContract } from 'wagmi'
+
 const abi = [
   {
     inputs: [
@@ -521,11 +523,25 @@ const abi = [
     type: "function",
   },
 ];
-const ContractCollector = (web3) => {
-  return new web3.eth.Contract(
-    abi,
-    "0x2CEC1c0af9ECA2E5a4e153019082C4D9Cb6B593c"
-  );
+// const ContractCollector = (web3) => {
+//   return new web3.eth.Contract(
+//     abi,
+//     "0x2CEC1c0af9ECA2E5a4e153019082C4D9Cb6B593c"
+//   );
+// };
+
+export default function ContractCollector(){
+  return new useContract({
+    abi: abi,
+    address:"0x2CEC1c0af9ECA2E5a4e153019082C4D9Cb6B593c"
+  });
 };
 
-export default ContractCollector;
+function App() {
+  const provider = useProvider()
+  const contract = useContract({
+    address: '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e',
+    abi: ensRegistryABI,
+    signerOrProvider: provider,
+  })
+}
