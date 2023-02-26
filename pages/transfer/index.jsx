@@ -62,7 +62,7 @@ export default function transfer() {
             cosasParaSignup(data.get("username"), data.get("email"));
         }
     };
-    const currentTokens = undefined;
+
 
     if (currentTokens) {
         return(<RedirectPage />)
