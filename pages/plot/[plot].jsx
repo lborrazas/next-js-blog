@@ -11,6 +11,10 @@ import Typography from "@mui/material/Typography";
 import ParcelasWidgetViewer from "../../components/pagesComponents/parcelasWidgetViewer";
 import Co2Graph from "../../components/pagesComponents/co2Graph";
 import { Parcela } from "../../components/pagesComponents/parcelasGridViewer";
+import { useSWR } from "swr";
+
+const { PrismaClient } = require("./../../node_modules/.prisma/client");
+const prisma = new PrismaClient();
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -21,49 +25,102 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export async function getServerSideProps(context) {
-    const { id } = context.query;
-  
+    const data = context.query;
+    console.log(data)
     // Realiza una llamada a la API o base de datos para obtener los datos de la publicación con el ID correspondiente
-    //const parcela = await prisma.parcela.findById() fetch(`https://mi-api.com/posts/${id}`).then(res => res.json());
-    const laparce = new Parcela(1, 10, 20, 100, 40, 200)
-    const parcela =JSON.parse(JSON.stringify(laparce))
-    // Devuelve los datos como propiedades para renderizar la página
-    return {
-      props: {
-        parcela
-      },
-    };
-  }
+    const parcela = await prisma.parcela.findMany(
+        {
+            where: {
+                latitud: 1,
+                longitud: 1
+            },
+        }
+    )
+
+    
+    const owner = await prisma.user.findMany({
+        where: {
+            address: parcela[0].address
+        }
+    })
+
+    let aux = await prisma.history.findMany({
+        where: {
+            pid: parcela.id,
+        },
+        orderBy: {
+            date: 'desc'
+        },
+        take: 1
+    });
+
+    const lastLog  = JSON.parse(JSON.stringify(aux[0]))
+
+    
   
 
-export default function plot({parcela}) {
-    const user = useUser();
-    const vmContract = useVmContract()
-    const address = useAddress()
-    const router = useRouter();
-    const [tokens, setTokens] = useState(null);
+    
 
-    console.log(parcela)
+
+
+    // fetch(`https://mi-api.com/posts/${id}`).then(res => res.json());
+    //const parcela =JSON.parse(JSON.stringify(laparce))
+    // Devuelve los datos como propiedades para renderizar la página
+
+    return {
+        props: {
+            parcela,
+            lastLog,
+            owner
+        },
+    };
+}
+
+
+export default function plot({ parcela, lastLog, owner }) {
+
+        const user = useUser();
+        const vmContract = useVmContract()
+        const address = useAddress()
+    const router = useRouter();
+    parcela = parcela[0]
+    owner = owner[0]
+    
+
+    //const fetcher = (url) => fetch(url).then((res) => res.json())
+    //const { data, error } = useSWR(`/api/getparcela`, fetcher({longitud:parcela.longitud,latitud:parcela.latitud}))      
+    //console.log(error)
+
+
+    //if (error) {
+
+    //  return <div>failed to load</div>;}
 
     if (!parcela) {
         //if (false){
         return (<div className="App">Loading...</div>)
     }
     else {
+        console.log(parcela)
         return (
             <Box sx={{ flexGrow: 1 }}>
                 <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-                    <Typography variant="h4" gutterBottom>
-                        {"Parcela " + parcela.latitud +" : " + parcela.longitud}
-                    </Typography>
-                    <Button variant="contained">
-                        Actualizar  
+                    <Box>
+                        <Typography variant="h4" gutterBottom>
+                            {"Parcela " + parcela.latitud + " : " + parcela.longitud}
+                        </Typography>
+                        <Typography variant="h5" gutterBottom>
+                            {"Dueño " + owner.name}
+                        </Typography>
+                    </Box>
+                    <Button id="actualizar" variant="contained">
+                        Actualizar
                     </Button>
                 </Stack>
                 <Grid container spacing={2} >
                     <Grid item xs={12} md={12}>
                         <Item sx={{ height: "42vH" }} >
-                            <Co2Graph/>
+                            <Co2Graph />
                         </Item>
                     </Grid>
 
