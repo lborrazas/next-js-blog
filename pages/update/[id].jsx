@@ -68,7 +68,7 @@ export default function home({ users }) {
     );
     let a = await vmContract.methods.createCollectible(latitude.current.value, longitude.current.value).send({ from: address })
     const parcela = {
-      address: address,
+      //address: address,
       latitud: Number(latitude.current.value),
       longitud: Number(longitude.current.value),
       m2: Number(area.current.value),

@@ -10,7 +10,6 @@ import RedirectPage from "../../components/redirect/RedirectPage";
 import Slider from "@mui/material/Slider";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import { useGridApiContext } from '@material-ui/x-grid';
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";

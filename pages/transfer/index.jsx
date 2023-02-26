@@ -28,7 +28,7 @@ export default function transfer() {
     const vmContract = useVmContract();
 
     const fetcher = (url) => fetch(url).then((res) => res.json())
-    const { data, error } = useSWR(address ? `api/parcela/${address}` : null, fetcher)
+    const { data, error } = useSWR(address ? `api/parcela/address/${address}` : null, fetcher)
 
     const [parcela, setParcela] = useState({ lat: null, long: null, id: null });
     const [mess, setMess] = useState("")
