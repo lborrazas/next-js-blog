@@ -112,7 +112,8 @@ export default function home({ users }) {
                   <InputLabel id="userOwner-label">Dueño</InputLabel>
                   <Select
                     margin="normal"
-                    value={"null"}
+                    defaultValue={"null"}
+                    default={"null"}
                     fullWidth
                     id="userOwner"
                     label="Dueño"
@@ -153,7 +154,7 @@ export default function home({ users }) {
                   </Typography>
                   <Slider
                     id="areaPercent"
-                    defaultValue={50}
+                    defaultValue={0}
                     aria-label="Default"
                     valueLabelDisplay="auto"
                     ref={sliderRef} />
