@@ -1,4 +1,4 @@
-import { useUser,setTokens, useTokens} from "../../contexts/AppContext";
+import { useUser, setTokens, useTokens } from "../../contexts/AppContext";
 import { useAddress, useVmContract } from "../../blockchain/BlockchainContext";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -38,17 +38,18 @@ export default function plot() {
     }
 
 
-    const tokens =  useTokens();
+    const tokens = useTokens();
     const [parcelas, setParcelas] = useState([]);
-    
+
     const fetcher = (url) => fetch(url).then((res) => res.json())
-    const { data, error } = useSWR(address ? `/api/enhance/mytokens/${address}`:null, fetcher)        
+    const { data, error } = useSWR(address ? `/api/enhance/mytokens/${address}` : null, fetcher)
     console.log(error)
-          
-    
+
+
     if (error) {
-        
-        return <div>failed to load</div>;}
+
+        return <div>failed to load</div>;
+    }
     if (!data) {
         //if (false){
         return (<div className="App">Loading...</div>)
@@ -60,7 +61,7 @@ export default function plot() {
                     <Typography variant="h4" gutterBottom>
                         Dashboard
                     </Typography>
-                     <Button onClick={() => handleCLick()} variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}  >
+                    <Button onClick={() => handleCLick()} variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}  >
                         Refresh
                     </Button>
                 </Stack>

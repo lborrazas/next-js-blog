@@ -12,62 +12,120 @@ import { useRouter } from "next/router";
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-
+import useSWR from 'swr';
+import DialogTitle from '@mui/material/DialogTitle';
+import Dialog from '@mui/material/Dialog';
 import RedirectPage from "../../components/redirect/RedirectPage";
+import { func } from "prop-types";
 
 
 export default function transfer() {
-    const [error, setError] = useState("");
+    const [errorb, setError] = useState("");
     const username = useRef();
-    const email = useRef();
-
-    const setUser = useSetUser();
+    const [forwardAddress, setForwardAddress] = useState("");
     const address = useAddress();
     const router = useRouter();
     const vmContract = useVmContract();
-    useEffect(() => {
 
-        setError("");
-    }, [username, email]);
+    const fetcher = (url) => fetch(url).then((res) => res.json())
+    const { data, error } = useSWR(address ? `api/parcela/${address}` : null, fetcher)
 
-    const [parcela, setParcela] = useState('');
+    const [parcela, setParcela] = useState({ lat: null, long: null, id: null });
+    const [mess, setMess] = useState("")
+
+    const [open, setOpen] = useState(false);
+
+    const popUP = () => {
+        setOpen(true)
+
+    }
+    const handleClose = (tran_bool) => {
+        setOpen(false);
+    };
+
+    //const handleClose = (tran) => {
+    //   if (tran) {
+
+    //transaccion(tran)
+    // }
+    // setOpen(false);
+    //};
 
     const handleChange = (event) => {
         // SelectChangeEvent
         setParcela(event.target.value);
+
     };
 
 
-    const myTokens = async () => {
-
+    async function transaccion() {
         let max = await vmContract.methods.tokenCounter().call();
         let tokens_temp = [];
+        let parcela_id = [];
         for (let i = 0; i < max; i++) {
-            let address_temp = await vmContract.methods.ownerOf(i).call()
             let parse = await vmContract.methods.tokenIdToParcelasIndex(i).call();
-            if (address == address_temp) {
+            console.log("===================") 
+            console.log(Number(parse.latitud))  
+            console.log(parcela.latitud)  
+             
+            console.log(parcela.longitud)  
+            console.log(Number(parse.longitud))  
+            console.log("===================") 
+            if (Number(parse.latitud) === parcela.latitud && Number(parse.longitud) === parcela.longitud) {
                 tokens_temp.push(parse);
+                parcela_id.push(i)
+                console.log('entro')
             }
         }
-        return tokens_temp
+        console.log("_________________________")
+        console.log(parcela)
+        // axios.post('/api/transfer',{body:{toAdd:forwardAddress,fromAdd:address,id:parcela_id}})
+        //await vmContract.methods.safeTransferFrom(address, forwardAddress, id[0]).send({ from: address })
+        console.log(parcela_id)
+        console.log(`NFT ${parcela_id[0]} transferred from ${address} to ${forwardAddress}`);
+        alert(`NFT ${parcela_id[0]} transferred from ${address} to ${forwardAddress}`);
+        ;
+    }
+
+
+
+    async function handleCLick() {
+        const germen_address = '0x5CBf6A1Ce51917A25F14164d5396AdDEAc73D26f'
+        let body = { address: forwardAddress };
+        const is_registered = await axios.post("/api/getuser", body);
+        
+        if (is_registered.data[0]) {
+            
+            setMess(`address is nor register on our database`)
+            popUP()
+        }
+        else {setMess(``)
+             popUP() }
+
     }
 
 
     const handleSignup = (e) => {
         e.preventDefault();
         const data = new FormData(e.currentTarget);
-        if (data.get("username") === "" || data.get("email") === "") {
+        if (data.get("parcela") === "" || data.get("address") === "") {
             setError("Los campos no pueden ser vacios");
         } else {
-            cosasParaSignup(data.get("username"), data.get("email"));
+            setForwardAddress(data.get("address"))
+            handleCLick();
+
         }
     };
-    const currentTokens = undefined;
+    console.log(parcela)
 
-    if (currentTokens) {
-        return(<RedirectPage />)
+    if (error) {
+        return <div>failed to load</div>;
+    }
+    if (!data) {
+        return (<RedirectPage />)
     }
     else {
+        console.log(parcela)
         return (
 
             <div className={style.signupPage}>
@@ -76,29 +134,25 @@ export default function transfer() {
                         IxaTesis
                     </Typography>
                     <Box component="form" onSubmit={handleSignup} noValidate sx={{ mt: 1 }}>
-                        <InputLabel id="">Age</InputLabel>
+                        <InputLabel id="">Parcela</InputLabel>
                         <Select
                             labelId="parcelas"
-                            id="demo-simple-selec"
+                            id="parcela"
+                            name="parcela"
                             value={parcela}
                             label="parcela"
                             onChange={handleChange}
                         >
                             {
-                                currentTokens.map((parcela) => (
-                                    <MenuItem value={10}>Lat:{parcela.latitude},Long:{parcela.longitud}</MenuItem>
-                                    // <Box>{parcela.id}</Box>
+                                data.map((parcela) => (
+                                    <MenuItem key={parcela.id} value={parcela}>  Lat:{parcela.latitud}, Long:{parcela.longitud} m2:{parcela.m2}</MenuItem>
+
                                 ))
                                 //
                             }
 
 
                         </Select>
-
-
-
-
-
                         <TextField
                             margin="normal"
                             required
@@ -107,20 +161,43 @@ export default function transfer() {
                             label="Address"
                             name="address"
                             autoComplete="address"
+
                         />
                         <Button
+
                             type="submit"
                             fullWidth
                             variant="contained"
+
                             sx={{
                                 mt: 3,
                                 mb: 2,
                             }}
                         >
-                            Crear cuenta
+                            Transferir
                         </Button>
                     </Box>
-                    {error && <Typography variant="body2">{error}</Typography>}
+                    <Dialog open={open} >
+                        <DialogTitle>Popup Modal Title</DialogTitle>
+
+                        <Typography>
+                            This is the content of the popup modal.
+                        </Typography>
+                        <Typography>
+                            {mess}
+                        </Typography>
+
+                        <Button onClick={() => setOpen(false)} color="primary">
+                            Decline
+                        </Button>
+                        <Button onClick={() => transaccion()} color="primary">
+                            Accept
+                        </Button>
+
+                    </Dialog>
+
+
+                    {errorb && <Typography variant="body2">{errorb}</Typography>}
                 </div>
             </div>
         );

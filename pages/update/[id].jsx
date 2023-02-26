@@ -1,6 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-const { PrismaClient } = require(".prisma/client");
-const prisma = new PrismaClient();
 
 import { useUser } from "../../contexts/AppContext";
 import { useAddress, useVmContract, useWeb3 } from "../../blockchain/BlockchainContext";
@@ -32,16 +30,6 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-export async function getServerSideProps(context) {
-  const users = await prisma.user.findMany();
-
-  return {
-    props: {
-      users,
-    },
-  }
-}
-
 export default function home({ users }) {
   const router = useRouter();
   const address = useAddress();
@@ -56,17 +44,22 @@ export default function home({ users }) {
   const vmContract = useVmContract();
 
 
-  const [error, setError] = useState(null);
+  const [errora, setError] = useState(null);
 
   const shouldRedirect = !user;
+  let id ='clef5scf80004f9fcn8gwd3vt'
+  const fetcher = (url) => fetch(url).then((res) => res.json())
+  const { data, error } = useSWR(id?  `/api/parcela/${id}` : null, fetcher)
+  // body: {"latitude":1,"longitud":1} 
+
+  console.log('dsadasddasd')
+
 
   useEffect(() => {
     if (shouldRedirect) {
       router.push("/login");
     }
   }, [shouldRedirect, router]);
-
-
 
   const handleSave = async (e) => {
     e.preventDefault();
@@ -75,6 +68,7 @@ export default function home({ users }) {
     );
     let a = await vmContract.methods.createCollectible(latitude.current.value, longitude.current.value).send({ from: address })
     const parcela = {
+      address: address,
       latitud: Number(latitude.current.value),
       longitud: Number(longitude.current.value),
       m2: Number(area.current.value),
@@ -83,119 +77,128 @@ export default function home({ users }) {
       address: Number(userOwner.current.value),
     };
 
-
-    await axios.post("/api/parcelacreate", parcela);
-
-    router.push("/home")
-
-
-  };
-
-  return (
-    <Box sx={{ flexGrow: 1 }}> 
-      {
-      shouldRedirect ? (<RedirectPage /> ) : 
-      <><Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-            <Typography component="h1" variant="h4">
-              Actualizar informacón de la parcela 
-            </Typography>
-            <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
-              Refresh
-            </Button>
-          </Stack>
-          <Item  sx={{height: "50vH"}} >
-          <Grid container component="form" onSubmit={handleSave} spacing={1}>
-            <Grid item xs={12}>
-                <InputLabel id="userOwner-label">Dueño</InputLabel>
-                <Select
-                  className={`${style.disabledSelect}`}
-                  margin="normal"
-                  value={"null"}
-                  fullWidth
-                  id="userOwner"
-                  label="Dueño"
-                  readOnly="true"
-                  name="userOwner"
-                  autoComplete="userOwner"
-                >
-                  <MenuItem selected defaultChecked value={"null"}>
-                    Sin asignar
-                  </MenuItem>
-                  {users.map((user) => (
-                    <MenuItem value={user.address}>{user.name}</MenuItem>
-                  ))}
-                </Select>
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  inputRef={latitude}
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="latitude"
-                  label="Latitud"
-                  name="latitude" />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  inputRef={longitude}
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="longitude"
-                  label="Longitud"
-                  name="longitude" />
-              </Grid>
-              <Grid item xs={6}>
-                <Typography component="h3" variant="h4">
-                  Porcentaje de área usada
-                </Typography>
-                <Slider
-                  id="areaPercent"
-                  defaultValue={50}
-                  aria-label="Default"
-                  valueLabelDisplay="auto"
-                  ref={sliderRef} />
-              </Grid>
-              <Grid item xs={3}>
-                <TextField
-                  inputRef={area}
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="area"
-                  label="Área"
-                  name="area" />
-              </Grid>
-              <Grid item xs={3}>
-                <TextField
-                  inputRef={averageHeight}
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="averageHeight"
-                  label="Altura promedio"
-                  name="averageHeight"
-                  autoComplete="averageHeight" />
-              </Grid>
-              <Grid item xs={3}>
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{
-                    mt: 3,
-                    mb: 2,
-                  }}
-                >
-                  Guardar
-                </Button>
-                {error && <Typography variant="body2">{error}</Typography>}
-              </Grid>
-            </Grid>
-            </Item>
-            </>
+    console.log(result)
+    if (result.data == -1) {
+      alert('parcela already exist')
+    } else {
+      router.push("/home")
     }
-    </Box >
-  );
+  };
+  if (error) {
+ 
+    return <div> failed to load</div>;
+  }
+  if (!data) {
+    return (<div className="App">Loading...</div>)
+  }
+  else {
+    return (
+      <Box sx={{ flexGrow: 1 }}>
+        {
+          shouldRedirect ? (<RedirectPage />) :
+            <><Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+              <Typography component="h1" variant="h4">
+                Actualizar informacón de la parcela
+              </Typography>
+              <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
+                Refresh
+              </Button>
+            </Stack>
+              <Item sx={{ height: "50vH" }} >
+                <Grid container component="form" onSubmit={handleSave} spacing={1}>
+                  <Grid item xs={12}>
+                    <InputLabel id="userOwner-label">Dueño</InputLabel>
+                    <Select
+                      className={`${style.disabledSelect}`}
+                      margin="normal"
+                      value={data[0].address}
+                      fullWidth
+                      id="userOwner"
+                      label="Dueño"
+                      readOnly="false"
+                      name="userOwner"
+                      autoComplete="userOwner"
+                    >
+                      <MenuItem selected defaultChecked value={data[0].address}>
+                        {data[0].userName}
+                      </MenuItem>
+                    </Select>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      inputRef={latitude}
+                      value={data[0].latitud}
+                      margin="normal"
+                      required
+                      fullWidth
+                      id="latitude"
+                      label="Latitud"
+                      name="latitude" />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      inputRef={longitude}
+                      value={data[0].longitud}
+                      margin="normal"
+                      required
+                      fullWidth
+                      id="longitude"
+                      label="Longitud"
+                      name="longitude" />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography component="h3" variant="h4">
+                      Porcentaje de área usada
+                    </Typography>
+                    <Slider
+                      id="areaPercent"
+                      value={data[0].m2used}
+                      aria-label="Default"
+                      valueLabelDisplay="auto"
+                      ref={sliderRef} />
+                  </Grid>
+                  <Grid item xs={3}>
+                    <TextField
+                      inputRef={area}
+                      value={data[0].m2}
+                      margin="normal"
+                      required
+                      fullWidth
+                      id="area"
+                      label="Área"
+                      name="area" />
+                  </Grid>
+                  <Grid item xs={3}>
+                    <TextField
+                      inputRef={averageHeight}
+                      value={data[0].m3}
+                      margin="normal"
+                      required
+                      fullWidth
+                      id="averageHeight"
+                      label="Altura promedio"
+                      name="averageHeight"
+                      autoComplete="averageHeight" />
+                  </Grid>
+                  <Grid item xs={3}>
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      sx={{
+                        mt: 3,
+                        mb: 2,
+                      }}
+                    >
+                      Guardar
+                    </Button>
+                    {error && <Typography variant="body2">{error}</Typography>}
+                  </Grid>
+                </Grid>
+              </Item>
+            </>
+        }
+      </Box >
+    );
+  }
 }
