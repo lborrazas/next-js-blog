@@ -159,7 +159,7 @@ export default function home({ users }) {
                   </Typography>
                   <Slider
                     id="areaPercent"
-                    defaultValue={50}
+                    defaultValue={0}
                     aria-label="Default"
                     valueLabelDisplay="auto"
                     ref={sliderRef} />

@@ -3,23 +3,42 @@ const prisma = new PrismaClient();
 
 export default async function handle(req, res) {
     const { address } = req.query;
-    try{
-        const result = await prisma.$queryRaw`SELECT p.*, h.*
-        FROM "Parcela" p
-        LEFT JOIN (
-          SELECT pid, MAX(date) AS max_date
-          FROM "History"
-          WHERE address = ${address}
-          GROUP BY pid
-        ) latest ON p.id = latest.pid
-        LEFT JOIN "History" h ON latest.pid = h.pid AND latest.max_date = h.date
-        WHERE p.address = ${address}`
-        res.status(200).json(result);
+    if(address == 'admin'){
+        try{
+            const result = await prisma.$queryRaw`SELECT p.*, h.*
+            FROM "Parcela" p
+            LEFT JOIN (
+              SELECT pid, MAX(date) AS max_date
+              FROM "History"
+              GROUP BY pid
+            ) latest ON p.id = latest.pid
+            LEFT JOIN "History" h ON latest.pid = h.pid AND latest.max_date = h.date`
+            res.status(200).json(result);
+        }
+        catch(err){
+            console.log(err);
+            res.status(508).json({ err: "Error occured while adding a new food." });
+        }
+    }else{
+        try{
+            const result = await prisma.$queryRaw`SELECT p.*, h.*
+            FROM "Parcela" p
+            LEFT JOIN (
+              SELECT pid, MAX(date) AS max_date
+              FROM "History"
+              WHERE address = ${address}
+              GROUP BY pid
+            ) latest ON p.id = latest.pid
+            LEFT JOIN "History" h ON latest.pid = h.pid AND latest.max_date = h.date
+            WHERE p.address = ${address}`
+            res.status(200).json(result);
+        }
+        catch(err){
+            console.log(err);
+            res.status(508).json({ err: "Error occured while adding a new food." });
+        }
     }
-    catch(err){
-        console.log(err);
-        res.status(508).json({ err: "Error occured while adding a new food." });
-    }
+    
 
 
 
