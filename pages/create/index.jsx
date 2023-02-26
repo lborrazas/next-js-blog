@@ -55,6 +55,7 @@ export default function home({ users }) {
   const userOwner = useRef();
   const vmContract = useVmContract();
 
+  const [owner,setOwner]=useState()
 
   const [error, setError] = useState(null);
 
@@ -70,30 +71,37 @@ export default function home({ users }) {
 
   const handleSave = async (e) => {
     e.preventDefault();
-    console.log(Number(
-      sliderRef.current.innerText)
-    );
-    let a = await vmContract.methods.createCollectible(latitude.current.value, longitude.current.value).send({ from: address })
     const parcela = {
-      address: address,
+      address: owner,
       latitud: Number(latitude.current.value),
       longitud: Number(longitude.current.value),
       m2: Number(area.current.value),
       m2used: Number(sliderRef.current.innerText),
       m3: Number(averageHeight.current.value),
-      address: Number(userOwner.current.value),
     };
-
-
     const result = await axios.post("/api/parcelacreate", parcela);
-    console.log(result)
-    if (result.data == -1) {
+
+    if (result.data == -2) {
       alert('parcela already exist')
-    }else{
+    
+     
+    }else{ 
+      console.log(Number(sliderRef.current.innerText));
+      let a = await vmContract.methods.createCollectible(longitude.current.value, latitude.current.value).send({ from: address })
+
+
+
     router.push("/home")
     }
   };
 
+   const handleChange = (event) => {
+        // SelectChangeEvent
+        setOwner(event.target.value.address);
+
+    };
+
+  
   return (
     <Box sx={{ flexGrow: 1 }}>
       {
@@ -112,18 +120,16 @@ export default function home({ users }) {
                   <InputLabel id="userOwner-label">Dueño</InputLabel>
                   <Select
                     margin="normal"
-                    value={"null"}
+                    value={owner}
                     fullWidth
                     id="userOwner"
                     label="Dueño"
                     name="userOwner"
                     autoComplete="userOwner"
+                    onChange={handleChange}
                   >
-                    <MenuItem selected defaultChecked value={"null"}>
-                      Sin asignar
-                    </MenuItem>
                     {users.map((user) => (
-                      <MenuItem value={user.address}>{user.name}</MenuItem>
+                      <MenuItem key={user.id} value={user}>{user.name}</MenuItem>
                     ))}
                   </Select>
                 </Grid>
@@ -153,7 +159,7 @@ export default function home({ users }) {
                   </Typography>
                   <Slider
                     id="areaPercent"
-                    defaultValue={50}
+                    defaultValue={0}
                     aria-label="Default"
                     valueLabelDisplay="auto"
                     ref={sliderRef} />

@@ -3,7 +3,5 @@ const prisma = new PrismaClient();
 
 export default async function handle(req, res) {
   const posts = await prisma.user.findMany();
-  console.log("fetched");
-  console.log("juan es putaszpp");
   res.json(posts);
 }
