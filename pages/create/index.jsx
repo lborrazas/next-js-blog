@@ -1,18 +1,48 @@
 import { useState, useEffect, useRef } from "react";
+const { PrismaClient } = require("./../../node_modules/.prisma/client");
+const prisma = new PrismaClient();
 
 import { useUser } from "../../contexts/AppContext";
 import { useAddress, useVmContract, useWeb3 } from "../../blockchain/BlockchainContext";
 import { useRouter } from "next/router";
+import useSWR from "swr";
 import style from "./create.module.css";
 import axios from "axios";
 import RedirectPage from "../../components/redirect/RedirectPage";
 import Slider from "@mui/material/Slider";
 import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
+import MenuItem from "@mui/material/MenuItem";
+import InputLabel from "@mui/material/InputLabel";
 import Typography from "@mui/material/Typography";
+import Select from "@mui/material/Select";
+import Iconify from "../../components/iconify";
 import Button from "@mui/material/Button";
+import Paper from "@mui/material/Paper";
+import { styled } from "@mui/material/styles";
 
-export default function home() {
+
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+  ...theme.typography.body2,
+  padding: theme.spacing(5),
+  textAlign: "left",
+  color: theme.palette.text.secondary,
+}));
+
+export async function getServerSideProps(context) {
+  const users = await prisma.user.findMany();
+
+  return {
+    props: {
+      users,
+    },
+  }
+}
+
+export default function home({ users }) {
   const router = useRouter();
   const address = useAddress();
   const web3 = useWeb3();
@@ -22,7 +52,10 @@ export default function home() {
   const area = useRef();
   const sliderRef = useRef();
   const averageHeight = useRef();
+  const userOwner = useRef();
   const vmContract = useVmContract();
+
+  const [owner,setOwner]=useState()
 
   const [error, setError] = useState(null);
 
@@ -34,114 +67,142 @@ export default function home() {
     }
   }, [shouldRedirect, router]);
 
- 
 
-  const handleSave = async(e) => {
+
+  const handleSave = async (e) => {
     e.preventDefault();
-    console.log(Number( 
-      sliderRef.current.innerText)
-    );
-    let a = await vmContract.methods.createCollectible(latitude.current.value,longitude.current.value).send({ from: address })
     const parcela = {
+      address: owner,
       latitud: Number(latitude.current.value),
       longitud: Number(longitude.current.value),
-      m2:Number(area.current.value),
-      m2used:Number(sliderRef.current.innerText),
-      m3:Number(averageHeight.current.value),
+      m2: Number(area.current.value),
+      m2used: Number(sliderRef.current.innerText),
+      m3: Number(averageHeight.current.value),
     };
-   
+    const result = await axios.post("/api/parcelacreate", parcela);
 
-    await axios.post("/api/parcelacreate", parcela);
+    if (result.data == -2) {
+      alert('parcela already exist')
+    
+     
+    }else{ 
+      console.log(Number(sliderRef.current.innerText));
+      let a = await vmContract.methods.createCollectible(longitude.current.value, latitude.current.value).send({ from: address })
+
+
 
     router.push("/home")
-    
-
+    }
   };
 
+   const handleChange = (event) => {
+        // SelectChangeEvent
+        setOwner(event.target.value.address);
+
+    };
+
+  
   return (
-    <div>
-      {shouldRedirect ? (
-        <RedirectPage />
-      ) : (
-        <>
-          <Typography component="h1" variant="h4">
-            Crear parcela
-          </Typography>
-          <Grid container component="form" onSubmit={handleSave} spacing={2}>
-            <Grid item xs={4}>
-              <TextField
-                inputRef={latitude}
-                margin="normal"
-                required
-                fullWidth
-                id="latitude"
-                label="Latitud"
-                name="latitude"
-              />
-            </Grid>
-            <Grid item xs={4}>
-              <TextField
-                inputRef={longitude}
-                margin="normal"
-                required
-                fullWidth
-                id="longitude"
-                label="Longitud"
-                name="longitude"
-              />
-            </Grid>
-            <Grid item xs={4}>
-              <TextField
-                inputRef={area}
-                margin="normal"
-                required
-                fullWidth
-                id="area"
-                label="Área"
-                name="area"
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <Typography component="h3" variant="h4">
-                Porcentaje de área usada
-              </Typography>
-              <Slider
-                id="areaPercent"
-                defaultValue={50}
-                aria-label="Default"
-                valueLabelDisplay="auto"
-                ref={sliderRef}
-              />
-            </Grid>
-            <Grid item xs={4}>
-              <TextField
-                inputRef={averageHeight}
-                margin="normal"
-                required
-                fullWidth
-                id="averageHeight"
-                label="Altura promedio"
-                name="averageHeight"
-                autoComplete="averageHeight"
-              />
-            </Grid>
-            <Grid item xs={3}>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{
-                  mt: 3,
-                  mb: 2,
-                }}
-              >
-                Guardar
-              </Button>
-              {error && <Typography variant="body2">{error}</Typography>}
-            </Grid>
-          </Grid>
-        </>
-      )}
-    </div>
+    <Box sx={{ flexGrow: 1 }}>
+      {
+        shouldRedirect ? (<RedirectPage />) :
+          <><Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+            <Typography component="h1" variant="h4">
+              Crear parcela
+            </Typography>
+            <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
+              Refresh
+            </Button>
+          </Stack>
+            <Item sx={{ height: "50vH" }} >
+              <Grid container component="form" onSubmit={handleSave} spacing={1}>
+                <Grid item xs={12}>
+                  <InputLabel id="userOwner-label">Dueño</InputLabel>
+                  <Select
+                    margin="normal"
+                    value={owner}
+                    fullWidth
+                    id="userOwner"
+                    label="Dueño"
+                    name="userOwner"
+                    autoComplete="userOwner"
+                    onChange={handleChange}
+                  >
+                    {users.map((user) => (
+                      <MenuItem key={user.id} value={user}>{user.name}</MenuItem>
+                    ))}
+                  </Select>
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    inputRef={latitude}
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="latitude"
+                    label="Latitud"
+                    name="latitude" />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    inputRef={longitude}
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="longitude"
+                    label="Longitud"
+                    name="longitude" />
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography component="h3" variant="h4">
+                    Porcentaje de área usada
+                  </Typography>
+                  <Slider
+                    id="areaPercent"
+                    defaultValue={0}
+                    aria-label="Default"
+                    valueLabelDisplay="auto"
+                    ref={sliderRef} />
+                </Grid>
+                <Grid item xs={3}>
+                  <TextField
+                    inputRef={area}
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="area"
+                    label="Área"
+                    name="area" />
+                </Grid>
+                <Grid item xs={3}>
+                  <TextField
+                    inputRef={averageHeight}
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="averageHeight"
+                    label="Altura promedio"
+                    name="averageHeight"
+                    autoComplete="averageHeight" />
+                </Grid>
+                <Grid item xs={3}>
+                  <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    sx={{
+                      mt: 3,
+                      mb: 2,
+                    }}
+                  >
+                    Guardar
+                  </Button>
+                  {error && <Typography variant="body2">{error}</Typography>}
+                </Grid>
+              </Grid>
+            </Item>
+          </>
+      }
+    </Box >
   );
 }
