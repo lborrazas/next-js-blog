@@ -9,7 +9,6 @@ import {
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import style from "./update.module.css";
-import axios from "axios";
 import RedirectPage from "../../components/redirect/RedirectPage";
 import Slider from "@mui/material/Slider";
 import Grid from "@mui/material/Grid";
@@ -33,7 +32,7 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-export default function home({ users }) {
+export default function Update({ users }) {
   const router = useRouter();
   const address = useAddress();
   const web3 = useWeb3();
@@ -46,15 +45,14 @@ export default function home({ users }) {
   const userOwner = useRef();
   const vmContract = useVmContract();
 
+  // ? esto no se usa
   const [errora, setError] = useState(null);
 
   const shouldRedirect = !user;
-  let id = "clef5scf80004f9fcn8gwd3vt";
+  const id = "clef5scf80004f9fcn8gwd3vt";
   const fetcher = (url) => fetch(url).then((res) => res.json());
   const { data, error } = useSWR(id ? `/api/parcela/${id}` : null, fetcher);
   // body: {"latitude":1,"longitud":1}
-
-  console.log("dsadasddasd");
 
   useEffect(() => {
     if (shouldRedirect) {

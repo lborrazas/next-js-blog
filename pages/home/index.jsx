@@ -1,25 +1,13 @@
-import { useEffect, useState } from "react";
-import { useAddress, useWeb3 } from "../../blockchain/BlockchainContext";
+import { useEffect } from "react";
 import { useUser } from "../../contexts/AppContext";
-import { redirect } from "next/navigation";
 import { useRouter } from "next/router";
-import { navItems } from "../../components/navbar/navbarLists";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
 import * as React from "react";
 
 import RedirectPage from "../../components/redirect/RedirectPage";
-import { CircularProgress } from "@mui/material";
 
-export default function home() {
+export default function Home() {
   const router = useRouter();
-  const address = useAddress();
-  const web3 = useWeb3();
   const user = useUser();
-
-  const [error, setError] = useState(null);
 
   const shouldRedirect = !user;
 
@@ -29,6 +17,7 @@ export default function home() {
     }
   }, [shouldRedirect, router]);
 
+  // TODO: rehacer completamente esto
   return (
     <div>
       {shouldRedirect ? (

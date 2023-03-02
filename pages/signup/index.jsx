@@ -59,16 +59,15 @@ export default function SignUp() {
   }, [username, email]);
 
   const cosasParaSignup = async (username, email) => {
-    let user = {
+    const user = {
       name: username,
       email: email,
       address: address,
       isAdmin: true,
     };
-    console.log(address);
 
     await axios.post("/api/usercreate", user);
-    let body = { address: address };
+    const body = { address: address };
     const is_registered = await axios.post("/api/getuser", body);
     setUser(
       new User(

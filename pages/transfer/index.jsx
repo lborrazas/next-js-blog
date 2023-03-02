@@ -1,12 +1,7 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import style from "./transfer.module.css";
 import axios from "axios";
-import { User, useSetUser } from "../../contexts/AppContext";
-import {
-  useAddress,
-  useVmContract,
-  useWeb3,
-} from "../../blockchain/BlockchainContext";
+import { useAddress, useVmContract } from "../../blockchain/BlockchainContext";
 import Button from "@mui/material/Button";
 import InputLabel from "@mui/material/InputLabel";
 import Typography from "@mui/material/Typography";
@@ -14,15 +9,13 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import { useRouter } from "next/router";
 import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Select from "@mui/material/Select";
 import useSWR from "swr";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
 import RedirectPage from "../../components/redirect/RedirectPage";
-import { func } from "prop-types";
 
-export default function transfer() {
+export default function Transfer() {
   const [errorb, setError] = useState("");
   const username = useRef();
   const [forwardAddress, setForwardAddress] = useState("");
@@ -67,47 +60,46 @@ export default function transfer() {
     let parcela_id = [];
     for (let i = 0; i < max; i++) {
       let parse = await vmContract.methods.tokenIdToParcelasIndex(i).call();
-      console.log("===================");
-      console.log(Number(parse.latitud));
-      console.log(parcela.latitud);
-
-      console.log(parcela.longitud);
-      console.log(Number(parse.longitud));
-      console.log("===================");
       if (
         Number(parse.latitud) === parcela.latitud &&
         Number(parse.longitud) === parcela.longitud
       ) {
         tokens_temp.push(parse);
         parcela_id.push(i);
-        console.log("entro");
       }
     }
     console.log("_________________________");
-    console.log(parcela);
-    // axios.post('/api/transfer',{body:{toAdd:forwardAddress,fromAdd:address,id:parcela_id}})
-    //await vmContract.methods.safeTransferFrom(address, forwardAddress, id[0]).send({ from: address })
-    console.log(parcela_id);
-    console.log(
-      `NFT ${parcela_id[0]} transferred from ${address} to ${forwardAddress}`
-    );
+    // axios.post('/api/transfer',{body:{toAdd:forwardAddress,fromAdd:address,id:parcela_id[0]}})
+    //await vmContract.methods.safeTransferFrom(address, forwardAddress, parcela_id[0]).send({ from: address })
     alert(
       `NFT ${parcela_id[0]} transferred from ${address} to ${forwardAddress}`
     );
   }
 
   async function handleCLick() {
-    const germen_address = "0x5CBf6A1Ce51917A25F14164d5396AdDEAc73D26f";
-    let body = { address: forwardAddress };
-    const is_registered = await axios.post("/api/getuser", body);
-
-    if (is_registered.data[0]) {
-      setMess(`address is nor register on our database`);
-      popUP();
-    } else {
-      setMess(``);
-      popUP();
-    }
+    const body = { address: forwardAddress };
+    await axios
+      .post("/api/getuser", body)
+      .then((res) => {
+        // para el linter? eslint y prettier
+        // porque los agregue como dependencias, y se tenian que instalar jajaja
+        // si miras en .prettierrc.json y .eslintrc.json tenes las config
+        // vs code por defecto no te las toma no, tenes que instalarle los plugins
+        // para que sepa que hacer con eso
+        //oice
+        console.log(res);
+        console.log("nanashe??");
+        if (!res.data[0]) {
+          setMess(`address is nor register on our database`);
+          popUP();
+        } else {
+          setMess(``);
+          popUP();
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }
 
   const handleSignup = (e) => {
@@ -120,7 +112,6 @@ export default function transfer() {
       handleCLick();
     }
   };
-  console.log(parcela);
 
   if (error) {
     return <div>failed to load</div>;
@@ -128,7 +119,6 @@ export default function transfer() {
   if (!data) {
     return <RedirectPage />;
   } else {
-    console.log(parcela);
     return (
       <div className={style.signupPage}>
         <div className={style.signupContainer}>
@@ -185,7 +175,7 @@ export default function transfer() {
           <Dialog open={open}>
             <DialogTitle>Popup Modal Title</DialogTitle>
 
-            <Typography>This is the content of the popup modal.</Typography>
+            <Typography>Continuar con la transaccion.</Typography>
             <Typography>{mess}</Typography>
 
             <Button onClick={() => setOpen(false)} color="primary">

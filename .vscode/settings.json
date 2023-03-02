@@ -13,5 +13,8 @@
   },
   "[jsonc]": {
     "editor.defaultFormatter": "ms-vsliveshare.vsliveshare"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "ms-vsliveshare.vsliveshare"
   } // optional but recommended
 }
