@@ -41,6 +41,7 @@ export default function Parcelas({ users }) {
   const vmContract = useVmContract();
   const [errora, setError] = useState(null);
   const [rows, setRows] = useState();
+  const [inputValue, setInputValue] = useState("");
 
   const shouldRedirect = !user;
   const fetcher = (url) => fetch(url).then((res) => res.json());
@@ -57,17 +58,28 @@ export default function Parcelas({ users }) {
 
   const filterItems = (query) => {
     return data.filter(
-      (el) => el.id.toLowerCase().indexOf(query.toLowerCase()) > -1
+      (el) =>
+        el.id.toLowerCase().indexOf(query.toLowerCase()) > -1 ||
+        el.latitud
+          .toString()
+          .toLowerCase()
+          .indexOf(query.toString().toLowerCase()) > -1 ||
+        el.longitud
+          .toString()
+          .toLowerCase()
+          .indexOf(query.toString().toLowerCase()) > -1
     );
   };
 
-  function filterTable(params) {
-    let newData = filterItems(params);
+  function filterTable(event) {
+    setInputValue(event.target.value);
+    let newData = filterItems(event.target.value);
     setRows(newData);
   }
 
-  function tenete(params) {
-    console.log("rae");
+  function redirectUrl(params, p) {
+    console.log(params);
+    router.push(params + "/" + p.id);
   }
 
   useEffect(() => {
@@ -95,7 +107,7 @@ export default function Parcelas({ users }) {
       renderCell: (params) => (
         <button
           className={`${style.buttonTable} ${style.greenBack}`}
-          onClick={() => tenete(params)}
+          onClick={() => redirectUrl("update", params)}
         >
           Actualizar
         </button>
@@ -108,7 +120,7 @@ export default function Parcelas({ users }) {
       renderCell: (params) => (
         <button
           className={`${style.buttonTable} ${style.blueBack}`}
-          onClick={() => tenete(params)}
+          onClick={() => redirectUrl("assign", params)}
         >
           Asignar
         </button>
@@ -121,7 +133,7 @@ export default function Parcelas({ users }) {
       renderCell: (params) => (
         <button
           className={`${style.buttonTable} ${style.redBack}`}
-          onClick={() => tenete(params)}
+          onClick={() => redirectUrl("info", params)}
         >
           Ver info.
         </button>
@@ -153,10 +165,11 @@ export default function Parcelas({ users }) {
               <input
                 className={`${style.filterInput}`}
                 margin="normal"
+                value={inputValue}
                 id="filter"
                 label="Buscar"
                 placeholder="Buscar"
-                onChange={() => filterTable("clef5s")}
+                onChange={filterTable}
                 name="filter"
               />
             </Stack>

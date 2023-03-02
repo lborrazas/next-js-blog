@@ -14,12 +14,36 @@
   background-color: #be9ccb;
 }
 
+.greenBack:hover {
+  background-color: #d1b5dc;
+}
+
+.greenBack:hover {
+  background-color: #d1b5dc;
+}
+
 .redBack {
   background-color: #87afcb;
 }
 
+.redBack:hover {
+  background-color: #a4c5dc;
+}
+
+.redBack:hover {
+  background-color: #a4c5dc;
+}
+
 .blueBack {
   background-color: #89b98f;
+}
+
+.blueBack:hover {
+  background-color: #abd2b0;
+}
+
+.blueBack:hover {
+  background-color: #abd2b0;
 }
 
 .odd {
