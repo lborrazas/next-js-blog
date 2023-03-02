@@ -67,7 +67,7 @@ export async function getServerSideProps(context) {
   };
 }
 
-export default function plot({ parcela, lastLog, owner }) {
+export default function Plot({ parcela, lastLog, owner }) {
   const user = useUser();
   const vmContract = useVmContract();
   const address = useAddress();
@@ -125,7 +125,7 @@ export default function plot({ parcela, lastLog, owner }) {
               </Grid>
             </Item>
           </Grid>
-          //aca abajo van las fotos
+          {/* //aca abajo van las fotos */}
           <Grid item xs={12} sm={6} md={3}>
             <ParcelasWidgetViewer
               title="Total de Parcelas"

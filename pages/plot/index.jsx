@@ -1,7 +1,7 @@
-import { useUser, setTokens, useTokens } from "../../contexts/AppContext";
+import { useUser, useTokens } from "../../contexts/AppContext";
 import { useAddress, useVmContract } from "../../blockchain/BlockchainContext";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -13,8 +13,6 @@ import ParcelasGridViewer, {
   Parcela,
 } from "../../components/pagesComponents/parcelasGridViewer";
 import ParcelasWidgetViewer from "../../components/pagesComponents/parcelasWidgetViewer";
-import axios from "axios";
-import { Token } from "@mui/icons-material";
 import useSWR from "swr";
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -25,7 +23,7 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-export default function plot() {
+export default function Plot() {
   const user = useUser();
   const vmContract = useVmContract();
   const address = useAddress();

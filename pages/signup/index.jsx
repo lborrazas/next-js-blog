@@ -1,14 +1,51 @@
 import { useRef, useState, useEffect } from "react";
-import style from "./signup.module.css";
 import axios from "axios";
 import { User, useSetUser } from "../../contexts/AppContext";
-import { useAddress, useWeb3 } from "../../blockchain/BlockchainContext";
+import { useAddress } from "../../blockchain/BlockchainContext";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import { useRouter } from "next/router";
-import styled from "styled-components";
+import { keyframes } from "@mui/material";
+import styled from "@emotion/styled";
+
+const gradient = keyframes`
+  0% {
+    background-position: 0% 50%
+  }
+  50% {
+    background-position: 100% 50%
+  }
+  100% {
+    background-position: 0% 50%
+  }
+`;
+
+const PageSignup = styled("div")({
+  display: "grid",
+  minHeight: "100vh",
+  backgroundColor: "rgb(240, 255, 227)",
+  backgroundRepeat: "no-repeat",
+  backgroundSize: "cover",
+  backgroundPosition: "center",
+  backgroundImage: 'url("public/hexagons.svg")',
+});
+
+const SignupContainer = styled("div")({
+  margin: "auto",
+  width: "500px",
+  alignSelf: "center",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  padding: "4rem 6rem",
+  border: "1px solid #2c6030",
+  borderRadius: "8px",
+  background: "linear-gradient(-45deg, #ffddf9, #e6bcff, #d4f8ff, #ffddf9)",
+  backgroundSize: "400% 400%",
+  animation: `${gradient} 10s ease infinite`,
+});
 
 export default function SignUp() {
   const [error, setError] = useState("");
@@ -98,39 +135,3 @@ export default function SignUp() {
     </PageSignup>
   );
 }
-
-const PageSignup = styled.div`
-  display: grid;
-  min-height: 100vh;
-  background-color: rgb(240, 255, 227);
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  background-image: url("../../public/hexagons.svg");
-`;
-
-const SignupContainer = styled.div`
-  margin: auto;
-  width: 500px;
-  align-self: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 4rem 6rem;
-  border: 1px solid #2c6030;
-  border-radius: 8px;
-  background: linear-gradient(-45deg, #ffddf9, #e6bcff, #d4f8ff, #ffddf9);
-  background-size: 400% 400%;
-  animation: gradient 10s ease infinite;
-  @keyframes gradient {
-    0% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-    100% {
-      background-position: 0% 50%;
-    }
-  }
-`;

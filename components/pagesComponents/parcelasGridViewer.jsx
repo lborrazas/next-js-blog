@@ -98,7 +98,7 @@ export default function ParcelasGridViewer({ tokens }) {
             { color: "yellowgreen", text: "31 - 80%" },
             { color: "green", text: "81 - 100%" },
           ].map(({ color, text }) => (
-            <Stack direction="row">
+            <Stack key={`${color}${text}`} direction="row">
               <Box bgcolor={color} width={"50px"} height={"50px"} />
               <Box
                 paddingX="20px"
@@ -119,6 +119,7 @@ export default function ParcelasGridViewer({ tokens }) {
           {
             tokens.map((parcela) => (
               <TokenIcon
+                key={parcela.id}
                 sx={{ fontSize: 50, color: colorGrading(parcela.m2used) }}
               />
               // <Box>{parcela.id}</Box>

@@ -5,8 +5,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format:check": "prettier --check .",
-    "format:fix": "prettier --write ."
+    "prettier:check": "prettier --check .",
+    "prettier:fix": "prettier --write ."
   },
   "dependencies": {
     "@emotion/react": "^11.10.6",
@@ -19,7 +19,7 @@
     "axios": "^1.3.3",
     "date-fns": "^2.29.3",
     "gray-matter": "^4.0.3",
-    "next": "latest",
+    "next": "^13.2.3",
     "numeral": "^2.0.6",
     "prop-types": "^15.8.1",
     "react": "18.2.0",
@@ -27,14 +27,10 @@
     "recharts": "^2.4.3",
     "remark": "^14.0.2",
     "remark-html": "^15.0.1",
-    "styled-components": "^5.3.7",
     "swr": "^2.0.3",
     "web3": "^1.8.2"
   },
   "devDependencies": {
-    "eslint": "8.35.0",
-    "babel-plugin-styled-components": "^2.0.7",
-    "eslint-config-airbnb": "^19.0.4",
     "eslint-config-next": "13.2.3",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-prettier": "^4.2.1",
