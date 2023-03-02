@@ -4,7 +4,7 @@ import { useUser } from "../../contexts/AppContext";
 import { useAddress, useVmContract, useWeb3 } from "../../blockchain/BlockchainContext";
 import { useRouter } from "next/router";
 import useSWR from "swr";
-import style from "./parcelas.module.css";
+import style from "./users.module.css";
 import axios from "axios";
 import RedirectPage from "../../components/redirect/RedirectPage";
 import Slider from "@mui/material/Slider";
@@ -51,16 +51,16 @@ export default function home({ users }) {
   const shouldRedirect = !user;
   const fetcher = (url) => fetch(url).then((res) => res.json())
   let addressSend = address;
-  let titleListView = "Lista de mis parcelas";
+  let titleListView = "";
   if (user.isAdmin) {
     addressSend = "admin"
-    titleListView = "Lista de todas las parcelas";
+    titleListView = "Lista de usuarios";
   }
-  const { data, error, isLoading } = useSWR(address ? `/api/enhance/mytokens/${addressSend}` : null, fetcher)
+  const { data, error, isLoading } = useSWR(address ? `/api/allusers` : null, fetcher)
 
   const filterItems = query => {
     return data.filter((el) =>
-      (el.id.toLowerCase().indexOf(query.toLowerCase()) > -1 || el.latitud.toString().toLowerCase().indexOf(query.toString().toLowerCase()) > -1 || el.longitud.toString().toLowerCase().indexOf(query.toString().toLowerCase()) > -1)
+      (el.id.toLowerCase().indexOf(query.toLowerCase()) > -1 || el.name.toString().toLowerCase().indexOf(query.toString().toLowerCase()) > -1 || el.email.toString().toLowerCase().indexOf(query.toString().toLowerCase()) > -1 || el.address.toString().toLowerCase().indexOf(query.toString().toLowerCase()) > -1)
     );
   }
 
@@ -85,25 +85,11 @@ export default function home({ users }) {
   // let rows = data;
 
   const columns = [
-    { field: 'id', headerName: 'Id', width: 100 },
-    { field: 'latitud', headerName: 'Latitud', width: 90 },
-    { field: 'longitud', headerName: 'Longitud', width: 100 },
-    { field: 'm2', headerName: 'Metros cuadrados', width: 150 },
-    { field: 'userName', headerName: 'Usuario', width: 180 },
-    // { field: 'pid', headerName: 'Column 2', width: 150 },
-    { field: 'm2used', headerName: 'Area ocupada', width: 110 },
-    { field: 'm3', headerName: 'Altura promedio', width: 120 },
-    { field: 'date', headerName: 'Fecha', width: 120 },
-    {
-      field: 'update', headerName: 'Actualizar', width: 125, renderCell: (params) => (
-        <button className={`${style.buttonTable} ${style.greenBack}`} onClick={() => redirectUrl('update', params)}>Actualizar</button>
-      )
-    },
-    {
-      field: 'assign', headerName: 'Asignar', width: 125, renderCell: (params) => (
-        <button className={`${style.buttonTable} ${style.blueBack}`} onClick={() => redirectUrl('assign', params)}>Asignar</button>
-      )
-    },
+    { field: 'id', headerName: 'Id', width: 300 },
+    { field: 'name', headerName: 'Nombre', width: 150 },
+    { field: 'email', headerName: 'Email', width: 250 },
+    { field: 'address', headerName: 'Address', width: 400 },
+    { field: 'isAdmin', headerName: 'Admin?', width: 90 },
     {
       field: 'viewinfo', headerName: 'Ver info.', width: 125, renderCell: (params) => (
         <button className={`${style.buttonTable} ${style.redBack}`} onClick={() => redirectUrl('info', params)}>Ver info.</button>
@@ -114,7 +100,7 @@ export default function home({ users }) {
   if (errora) {
     return <div> failed to load</div>;
   }
-  if (!data || rows == undefined) {
+  if (!data || rows == undefined || titleListView == "") {
     return (<div className="App">Loading...</div>)
   }
   else {
