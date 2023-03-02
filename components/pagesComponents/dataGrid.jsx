@@ -1,36 +1,58 @@
 import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
-import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import { styled } from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
 
+import { fShortenNumber } from "../../utils/formatNumber";
 
 const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: "center",
-    color: theme.palette.text.secondary,
+  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: "center",
+  color: theme.palette.text.secondary,
+  height: "16vH",
 }));
 
-
-
 export default function DataGrid({ datos }) {
-    return (
-        <Grid paddingY="2vh" container rowSpacing={1} columnSpacing={2}>
-            <Grid item xs={6}  >
-                <Item sx={{ height: "16vH" }}>1</Item>
-            </Grid>
-            <Grid item xs={6}>
-                <Item sx={{ height: "16vH" }}>2</Item>
-            </Grid>
-            <Grid item xs={6}>
-                <Item sx={{ height: "16vH" }}>3</Item>
-            </Grid>
-            <Grid item xs={6}>
-                <Item sx={{ height: "16vH" }}>4</Item>
-            </Grid>
-        </Grid>
-    );
-}     
+  const total = 20;
+  const title = "hola";
+  return (
+    <Grid paddingY="2vh" container rowSpacing={1} columnSpacing={2}>
+      <Grid item xs={6}>
+        <Item sx={{ height: "16vH" }}>
+          <Typography variant="h3">{fShortenNumber(total)}</Typography>
+          <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
+            {title}
+          </Typography>
+        </Item>
+      </Grid>
+      <Grid item xs={6}>
+        <Item sx={{ height: "16vH" }}>
+          {" "}
+          <Typography variant="h3">{fShortenNumber(total)}</Typography>
+          <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
+            {title}
+          </Typography>
+        </Item>
+      </Grid>
+      <Grid item xs={6}>
+        <Item sx={{ height: "16vH" }}>
+          {" "}
+          <Typography variant="h3">{fShortenNumber(total)}</Typography>
+          <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
+            {title}
+          </Typography>
+        </Item>
+      </Grid>
+      <Grid item xs={6}>
+        <Item sx={{ height: "16vH" }}>
+          <Typography variant="h3">{fShortenNumber(total)}</Typography>
+          <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
+            {title}
+          </Typography>
+        </Item>
+      </Grid>
+    </Grid>
+  );
+}

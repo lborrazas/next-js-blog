@@ -8,6 +8,7 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import { useRouter } from "next/router";
+import styled from "styled-components";
 
 export default function SignUp() {
   const [error, setError] = useState("");
@@ -55,8 +56,8 @@ export default function SignUp() {
   };
 
   return (
-    <div className={style.signupPage}>
-      <div className={style.signupContainer}>
+    <PageSignup>
+      <SignupContainer>
         <Typography component="h1" variant="h4">
           IxaTesis
         </Typography>
@@ -93,7 +94,43 @@ export default function SignUp() {
           </Button>
         </Box>
         {error && <Typography variant="body2">{error}</Typography>}
-      </div>
-    </div>
+      </SignupContainer>
+    </PageSignup>
   );
 }
+
+const PageSignup = styled.div`
+  display: grid;
+  min-height: 100vh;
+  background-color: rgb(240, 255, 227);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-image: url("../../public/hexagons.svg");
+`;
+
+const SignupContainer = styled.div`
+  margin: auto;
+  width: 500px;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4rem 6rem;
+  border: 1px solid #2c6030;
+  border-radius: 8px;
+  background: linear-gradient(-45deg, #ffddf9, #e6bcff, #d4f8ff, #ffddf9);
+  background-size: 400% 400%;
+  animation: gradient 10s ease infinite;
+  @keyframes gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+`;

@@ -1,9 +1,12 @@
-  {
+{
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "lint": "next lint",
+    "format:check": "prettier --check .",
+    "format:fix": "prettier --write ."
   },
   "dependencies": {
     "@emotion/react": "^11.10.6",
@@ -24,10 +27,17 @@
     "recharts": "^2.4.3",
     "remark": "^14.0.2",
     "remark-html": "^15.0.1",
+    "styled-components": "^5.3.7",
     "swr": "^2.0.3",
     "web3": "^1.8.2"
   },
   "devDependencies": {
+    "eslint": "8.35.0",
+    "eslint-config-next": "13.2.3",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-react": "^7.32.2",
+    "prettier": "2.8.4",
     "prisma": "^4.10.1"
   }
 }

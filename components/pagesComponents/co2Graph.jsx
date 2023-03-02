@@ -2,9 +2,17 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
-import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import {
+  ResponsiveContainer,
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+} from "recharts";
 import { styled } from "@mui/material/styles";
-
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
@@ -18,7 +26,6 @@ const CustomTooltip = ({ active, payload, label }) => {
   return null;
 };
 
-
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
@@ -27,49 +34,46 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-
 const Chart = () => {
-
-
   const data = [
     {
-      name: 'Page A',
+      name: "Page A",
       uv: 4000,
       pv: 2400,
       amt: 2400,
     },
     {
-      name: 'Page B',
+      name: "Page B",
       uv: 3000,
       pv: 1398,
       amt: 2210,
     },
     {
-      name: 'Page C',
+      name: "Page C",
       uv: 2000,
       pv: 9800,
       amt: 2290,
     },
     {
-      name: 'Page D',
+      name: "Page D",
       uv: 2780,
       pv: 3908,
       amt: 2000,
     },
     {
-      name: 'Page E',
+      name: "Page E",
       uv: 1890,
       pv: 4800,
       amt: 2181,
     },
     {
-      name: 'Page F',
+      name: "Page F",
       uv: 2390,
       pv: 3800,
       amt: 2500,
     },
     {
-      name: 'Page G',
+      name: "Page G",
       uv: 3490,
       pv: 4300,
       amt: 2100,
@@ -99,12 +103,10 @@ const Chart = () => {
   );
 };
 
-export default function Co2Graph({datos}) {
+export default function Co2Graph({ datos }) {
   return (
-   
-        <Box height="85%" >
-          <Chart datos={datos} />
-        </Box>
-      
+    <Box height="85%">
+      <Chart datos={datos} />
+    </Box>
   );
-}     
+}
