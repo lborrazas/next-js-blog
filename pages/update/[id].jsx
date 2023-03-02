@@ -9,7 +9,6 @@ import {
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import style from "./update.module.css";
-import axios from "axios";
 import RedirectPage from "../../components/redirect/RedirectPage";
 import Slider from "@mui/material/Slider";
 import Grid from "@mui/material/Grid";
@@ -33,7 +32,7 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-export default function home({ users }) {
+export default function Update({ users }) {
   const router = useRouter();
   const address = useAddress();
   const web3 = useWeb3();
