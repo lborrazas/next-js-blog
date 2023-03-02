@@ -10,6 +10,7 @@ import { Button, Stack } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import ParcelasWidgetViewer from "../../components/pagesComponents/parcelasWidgetViewer";
 import Co2Graph from "../../components/pagesComponents/co2Graph";
+import DataGrid from "../../components/pagesComponents/dataGrid";
 import { Parcela } from "../../components/pagesComponents/parcelasGridViewer";
 import { useSWR } from "swr";
 
@@ -37,7 +38,7 @@ export async function getServerSideProps(context) {
         }
     )
 
-    
+
     const owner = await prisma.user.findMany({
         where: {
             address: parcela[0].address
@@ -54,12 +55,12 @@ export async function getServerSideProps(context) {
         take: 1
     });
 
-    const lastLog  = JSON.parse(JSON.stringify(aux[0]))
+    const lastLog = JSON.parse(JSON.stringify(aux[0]))
 
-    
-  
 
-    
+
+
+
 
 
 
@@ -79,13 +80,13 @@ export async function getServerSideProps(context) {
 
 export default function plot({ parcela, lastLog, owner }) {
 
-        const user = useUser();
-        const vmContract = useVmContract()
-        const address = useAddress()
+    const user = useUser();
+    const vmContract = useVmContract()
+    const address = useAddress()
     const router = useRouter();
     parcela = parcela[0]
     owner = owner[0]
-    
+    const datos = [] // todo  casos
 
     //const fetcher = (url) => fetch(url).then((res) => res.json())
     //const { data, error } = useSWR(`/api/getparcela`, fetcher({longitud:parcela.longitud,latitud:parcela.latitud}))      
@@ -120,7 +121,17 @@ export default function plot({ parcela, lastLog, owner }) {
                 <Grid container spacing={2} >
                     <Grid item xs={12} md={12}>
                         <Item sx={{ height: "42vH" }} >
-                            <Co2Graph />
+                            <Grid container spacing={2}>
+                                <Grid item xs={12} md={7}>
+                                    <Typography variant="h5" gutterBottom>
+                                        CO2 Combatido
+                                    </Typography>
+                                    <Co2Graph datos={datos}/>
+                                </Grid>
+                                <Grid item xs={12} md={5}>
+                                  <DataGrid/>
+                                </Grid>
+                            </Grid>
                         </Item>
                     </Grid>
 

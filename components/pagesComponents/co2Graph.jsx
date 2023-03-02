@@ -99,33 +99,12 @@ const Chart = () => {
   );
 };
 
-export default function Co2Graph() {
+export default function Co2Graph({datos}) {
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12} md={7}>
-        <Typography variant="h5" gutterBottom>
-          CO2 Combatido
-        </Typography>
+   
         <Box height="85%" >
-          <Chart />
+          <Chart datos={datos} />
         </Box>
-      </Grid>
-      <Grid item xs={12} md={5}>
-        <Grid paddingY="2vh" container rowSpacing={1} columnSpacing={2}>
-          <Grid item xs={6}  >
-            <Item sx={{height:"16vH"}}>1</Item>
-          </Grid>
-          <Grid item xs={6}>
-            <Item sx={{height:"16vH"}}>2</Item>
-          </Grid>
-          <Grid item xs={6}>
-            <Item sx={{height:"16vH"}}>3</Item>  
-          </Grid>
-          <Grid item xs={6}>
-            <Item sx={{height:"16vH"}}>4</Item>
-          </Grid>
-        </Grid>
-      </Grid>
-    </Grid>
+      
   );
 }     
