@@ -26,28 +26,28 @@ const gradient = keyframes`
   }
 `;
 
-const PageLogin = styled('div')({
-  display: 'grid',
-  minHeight: '100vh',
-  backgroundColor: 'rgb(240, 255, 227)',
-  backgroundRepeat: 'no-repeat',
-  backgroundSize: 'cover',
-  backgroundPosition: 'center',
+const PageLogin = styled("div")({
+  display: "grid",
+  minHeight: "100vh",
+  backgroundColor: "rgb(240, 255, 227)",
+  backgroundRepeat: "no-repeat",
+  backgroundSize: "cover",
+  backgroundPosition: "center",
   backgroundImage: 'url("public/hexagons.svg")',
 });
 
-const LoginContainer = styled('div')({
-  margin: 'auto',
-  width: '500px',
-  alignSelf: 'center',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  padding: '4rem 6rem',
-  border: '1px solid #2c6030',
-  borderRadius: '8px',
-  background: 'linear-gradient(-45deg, #ffddf9, #e6bcff, #d4f8ff, #ffddf9)',
-  backgroundSize: '400% 400%',
+const LoginContainer = styled("div")({
+  margin: "auto",
+  width: "500px",
+  alignSelf: "center",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  padding: "4rem 6rem",
+  border: "1px solid #2c6030",
+  borderRadius: "8px",
+  background: "linear-gradient(-45deg, #ffddf9, #e6bcff, #d4f8ff, #ffddf9)",
+  backgroundSize: "400% 400%",
   animation: `${gradient} 10s ease infinite`,
 });
 
@@ -63,11 +63,12 @@ export default function Login() {
   const [error, setError] = useState(null);
 
   const allTokens = async (vmContract) => {
-    let max = await vmContract.methods.tokenCounter().call();
-    let plots = [];
+    const max = await vmContract.methods.tokenCounter().call();
+    const plots = [];
     for (let i = 0; i < max; i++) {
-      let address_temp = await vmContract.methods.ownerOf(i).call();
-      let parse = await vmContract.methods.tokenIdToParcelasIndex(i).call();
+      // TODO: hacer algo con esta variable
+      const address_temp = await vmContract.methods.ownerOf(i).call();
+      const parse = await vmContract.methods.tokenIdToParcelasIndex(i).call();
       plots.push(parse);
     }
     return plots;
@@ -81,7 +82,7 @@ export default function Login() {
       try {
         setIsLoading(true);
         await window.ethereum.request({ method: "eth_requestAccounts" });
-        let web3 = new Web3(window.ethereum);
+        const web3 = new Web3(window.ethereum);
         /*set web3 instance*/
         setWeb3(web3);
         console.log(web3);
@@ -93,7 +94,7 @@ export default function Login() {
         const vmContract_ = contractCollector(web3);
         setVmContract(vmContract_);
         console.log(account[0]);
-        let body = { address: account[0] };
+        const body = { address: account[0] };
         const is_registered = await axios.post("/api/getuser", body);
         const tokens = await allTokens(vmContract_);
         setTokens(tokens);

@@ -6,7 +6,7 @@ import { ThemeProvider } from "@mui/material";
 import palette from "../theme/palette.js";
 import { createTheme } from "@mui/material/styles";
 
-let theme = createTheme({
+const theme = createTheme({
   palette: palette,
 });
 

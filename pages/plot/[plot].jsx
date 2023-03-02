@@ -1,7 +1,6 @@
-import { useUser } from "../../contexts/AppContext";
-import { useAddress, useVmContract } from "../../blockchain/BlockchainContext";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+// import { useUser } from "../../contexts/AppContext";
+// import { useAddress, useVmContract } from "../../blockchain/BlockchainContext";
+// import { useRouter } from "next/router";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -11,8 +10,6 @@ import Typography from "@mui/material/Typography";
 import ParcelasWidgetViewer from "../../components/pagesComponents/parcelasWidgetViewer";
 import Co2Graph from "../../components/pagesComponents/co2Graph";
 import DataGrid from "../../components/pagesComponents/dataGrid";
-import { Parcela } from "../../components/pagesComponents/parcelasGridViewer";
-import { useSWR } from "swr";
 
 const { PrismaClient } = require("./../../node_modules/.prisma/client");
 const prisma = new PrismaClient();
@@ -42,7 +39,7 @@ export async function getServerSideProps(context) {
     },
   });
 
-  let aux = await prisma.history.findMany({
+  const aux = await prisma.history.findMany({
     where: {
       pid: parcela.id,
     },
@@ -68,10 +65,10 @@ export async function getServerSideProps(context) {
 }
 
 export default function Plot({ parcela, lastLog, owner }) {
-  const user = useUser();
-  const vmContract = useVmContract();
-  const address = useAddress();
-  const router = useRouter();
+  // const user = useUser();
+  // const vmContract = useVmContract();
+  // const address = useAddress();
+  // const router = useRouter();
   parcela = parcela[0];
   owner = owner[0];
   const datos = []; // todo  casos
@@ -130,7 +127,7 @@ export default function Plot({ parcela, lastLog, owner }) {
             <ParcelasWidgetViewer
               title="Total de Parcelas"
               total={31}
-              icon={"material-symbols:token"}
+              icon="material-symbols:token"
             />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
@@ -138,7 +135,7 @@ export default function Plot({ parcela, lastLog, owner }) {
               title="Co2"
               total={492}
               color="info"
-              icon={"mdi:molecule-co2"}
+              icon="mdi:molecule-co2"
             />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
@@ -146,7 +143,7 @@ export default function Plot({ parcela, lastLog, owner }) {
               title="Plantas Nuevas"
               total={43}
               color="warning"
-              icon={"game-icons:plant-seed"}
+              icon="game-icons:plant-seed"
             />
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
@@ -154,7 +151,7 @@ export default function Plot({ parcela, lastLog, owner }) {
               title="Ver Todos"
               total={100}
               color="error"
-              icon={"ic:baseline-remove-red-eye"}
+              icon="ic:baseline-remove-red-eye"
             />
           </Grid>
         </Grid>

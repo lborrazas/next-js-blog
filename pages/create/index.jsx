@@ -9,7 +9,6 @@ import {
   useWeb3,
 } from "../../blockchain/BlockchainContext";
 import { useRouter } from "next/router";
-import useSWR from "swr";
 import style from "./create.module.css";
 import axios from "axios";
 import RedirectPage from "../../components/redirect/RedirectPage";
@@ -35,6 +34,7 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
+// ? Para que se esta mandando el context?
 export async function getServerSideProps(context) {
   const users = await prisma.user.findMany();
 
@@ -45,7 +45,7 @@ export async function getServerSideProps(context) {
   };
 }
 
-export default function home({ users }) {
+export default function Create({ users }) {
   const router = useRouter();
   const address = useAddress();
   const web3 = useWeb3();
@@ -60,6 +60,7 @@ export default function home({ users }) {
 
   const [owner, setOwner] = useState();
 
+  // TODO: no se esta cambiando el estado del error
   const [error, setError] = useState(null);
 
   const shouldRedirect = !user;
@@ -86,7 +87,8 @@ export default function home({ users }) {
       alert("parcela already exist");
     } else {
       console.log(Number(sliderRef.current.innerText));
-      let a = await vmContract.methods
+      // TODO: esto se deberia usar en algun lado?
+      const a = await vmContract.methods
         .createCollectible(longitude.current.value, latitude.current.value)
         .send({ from: address });
 
