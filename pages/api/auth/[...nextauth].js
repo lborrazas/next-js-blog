@@ -1,7 +1,9 @@
 import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
-import { getCsrfToken } from "next-auth/react"
-import { SiweMessage } from "siwe"
+import {getCsrfToken} from "next-auth/react"
+import {SiweMessage} from "siwe"
+const { PrismaClient } = require("./../../../node_modules/.prisma/client");
+const prisma = new PrismaClient();
 
 // For more information on each option (and a full list of options) go to
 // https://next-auth.js.org/configuration/options
@@ -29,12 +31,20 @@ export default async function auth(req, res) {
                     const result = await siwe.verify({
                         signature: credentials?.signature || "",
                         domain: nextAuthUrl.host,
-                        nonce: await getCsrfToken({ req }),
+                        nonce: await getCsrfToken({req}),
                     })
 
                     if (result.success) {
-                        return {
-                            id: siwe.address,
+                        const user_exist = await prisma.user.findMany({
+                            where: {
+                                address: siwe.address,
+                            },
+                        });
+
+                        if (!user_exist) {
+                            return {
+                                id: siwe.address,
+                            }
                         }
                     }
                     return null
@@ -61,7 +71,7 @@ export default async function auth(req, res) {
         },
         secret: process.env.NEXTAUTH_SECRET,
         callbacks: {
-            async session({ session, token }) {
+            async session({session, token}) {
                 session.address = token.sub
                 session.user.name = token.sub
                 session.user.image = "https://www.fillmurray.com/128/128"
