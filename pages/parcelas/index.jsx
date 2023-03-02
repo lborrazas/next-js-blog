@@ -9,19 +9,10 @@ import {
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import style from "./parcelas.module.css";
-import axios from "axios";
 import RedirectPage from "../../components/redirect/RedirectPage";
-import Slider from "@mui/material/Slider";
-import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
-import TextField from "@mui/material/TextField";
-import MenuItem from "@mui/material/MenuItem";
-import InputLabel from "@mui/material/InputLabel";
 import Typography from "@mui/material/Typography";
-import Select from "@mui/material/Select";
-import Button from "@mui/material/Button";
-import Iconify from "../../components/iconify";
 
 import { DataGrid } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
@@ -35,7 +26,8 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-export default function home({ users }) {
+export default function Parcelas({ users }) {
+  // TODO: es necesario definir todo esto? no se usa en ningun lado
   const router = useRouter();
   const address = useAddress();
   const web3 = useWeb3();
@@ -103,7 +95,7 @@ export default function home({ users }) {
     { field: "latitud", headerName: "Latitud", width: 90 },
     { field: "longitud", headerName: "Longitud", width: 100 },
     { field: "m2", headerName: "Metros cuadrados", width: 150 },
-    { field: "userName", headerName: "Usuario", width: 180 },
+    { field: "address", headerName: "Usuario", width: 180 },
     // { field: 'pid', headerName: 'Column 2', width: 150 },
     { field: "m2used", headerName: "Area ocupada", width: 110 },
     { field: "m3", headerName: "Altura promedio", width: 120 },
