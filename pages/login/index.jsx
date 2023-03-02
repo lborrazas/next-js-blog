@@ -2,44 +2,76 @@ import {
   useSetAddress,
   useSetVmContract,
   useSetWeb3,
-  useVmContract,
 } from "../../blockchain/BlockchainContext";
 import { useState } from "react";
 import contractCollector from "../../blockchain/ContractCollector";
 import Web3 from "web3";
 import { useRouter } from "next/router";
-import { User, useSetUser, useSetTokens, useTokens} from "../../contexts/AppContext";
-import useSWR from "swr";
+import { User, useSetUser, useSetTokens } from "../../contexts/AppContext";
 import axios from "axios";
-import style from "./login.module.css";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, keyframes } from "@mui/material";
+import styled from "@emotion/styled";
+
+const gradient = keyframes`
+  0% {
+    background-position: 0% 50%
+  }
+  50% {
+    background-position: 100% 50%
+  }
+  100% {
+    background-position: 0% 50%
+  }
+`;
+
+const PageLogin = styled('div')({
+  display: 'grid',
+  minHeight: '100vh',
+  backgroundColor: 'rgb(240, 255, 227)',
+  backgroundRepeat: 'no-repeat',
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  backgroundImage: 'url("public/hexagons.svg")',
+});
+
+const LoginContainer = styled('div')({
+  margin: 'auto',
+  width: '500px',
+  alignSelf: 'center',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  padding: '4rem 6rem',
+  border: '1px solid #2c6030',
+  borderRadius: '8px',
+  background: 'linear-gradient(-45deg, #ffddf9, #e6bcff, #d4f8ff, #ffddf9)',
+  backgroundSize: '400% 400%',
+  animation: `${gradient} 10s ease infinite`,
+});
 
 export default function Login() {
   const setWeb3 = useSetWeb3();
   const setAddress = useSetAddress();
-  
+
   const setUser = useSetUser();
   const setTokens = useSetTokens();
   const router = useRouter();
-  const setVmContract = useSetVmContract()
+  const setVmContract = useSetVmContract();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-
-  
-const allTokens = async (vmContract) => {
-  let max = await vmContract.methods.tokenCounter().call();
-  let plots = [];
-  for (let i = 0; i < max; i++) {
-      let address_temp = await vmContract.methods.ownerOf(i).call()
+  const allTokens = async (vmContract) => {
+    let max = await vmContract.methods.tokenCounter().call();
+    let plots = [];
+    for (let i = 0; i < max; i++) {
+      let address_temp = await vmContract.methods.ownerOf(i).call();
       let parse = await vmContract.methods.tokenIdToParcelasIndex(i).call();
-          plots.push(parse);    
-  }
-  return plots
-}
-
+      plots.push(parse);
+    }
+    return plots;
+  };
 
   const connectWalletHandler = async () => {
     if (
@@ -60,20 +92,20 @@ const allTokens = async (vmContract) => {
         /*Create a contract copy*/
         const vmContract_ = contractCollector(web3);
         setVmContract(vmContract_);
-        console.log(account[0])
+        console.log(account[0]);
         let body = { address: account[0] };
         const is_registered = await axios.post("/api/getuser", body);
-        const tokens = await allTokens(vmContract_)
-        setTokens(tokens)
+        const tokens = await allTokens(vmContract_);
+        setTokens(tokens);
         if (is_registered.data[0]) {
           setUser(
-              new User(
-                  is_registered.data[0].id,
-                  is_registered.data[0].name,
-                  is_registered.data[0].email,
-                  account[0],
-                  is_registered.data[0].isAdmin
-              )
+            new User(
+              is_registered.data[0].id,
+              is_registered.data[0].name,
+              is_registered.data[0].email,
+              account[0],
+              is_registered.data[0].isAdmin
+            )
           );
           router.push("/home");
         } else {
@@ -90,8 +122,8 @@ const allTokens = async (vmContract) => {
   };
 
   return (
-    <div className={style.loginPage}>
-      <div className={style.loginContainer}>
+    <PageLogin>
+      <LoginContainer>
         <Typography component="h1" variant="h4">
           IxaTesis
         </Typography>
@@ -102,16 +134,13 @@ const allTokens = async (vmContract) => {
             onClick={connectWalletHandler}
             fullWidth
             variant="contained"
-            sx={{
-              mt: 3,
-              mb: 2,
-            }}
+            sx={{ mt: 3, mb: 2 }}
           >
             Iniciar Sesión
           </Button>
         )}
         {error && <Typography variant="body2">{error}</Typography>}
-      </div>
-    </div>
+      </LoginContainer>
+    </PageLogin>
   );
 }

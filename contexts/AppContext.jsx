@@ -27,7 +27,7 @@ export function AppProvider({ children }) {
           <SetTokensContext.Provider value={setTokens}>
             {children}
           </SetTokensContext.Provider>
-        </TokensContext.Provider>      
+        </TokensContext.Provider>
       </SetUserContext.Provider>
     </UserContext.Provider>
   );
