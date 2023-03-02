@@ -97,10 +97,7 @@ export default function Login() {
             onClick={connectWalletHandler}
             fullWidth
             variant="contained"
-            sx={{
-              mt: 3,
-              mb: 2,
-            }}
+            sx={{ mt: 3, mb: 2 }}
           >
             Iniciar Sesión
           </Button>
@@ -118,7 +115,7 @@ const PageLogin = styled.div`
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  background-image: url("../../public/hexagons.svg");
+  background-image: url("../public/hexagons.svg");
 `;
 
 const LoginContainer = styled.div`
