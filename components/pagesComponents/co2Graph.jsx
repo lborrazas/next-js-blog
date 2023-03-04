@@ -31,44 +31,13 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-const Chart = () => {
-  const data = [
-    {
-      month: "Page A",
-      value: 4000,
-    },
-    {
-      month: "Page B",
-      value: 3000,
-    },
-    {
-      month: "Page C",
-      value: 2000,
-    },
-    {
-      month: "Page D",
-      value: 2780,
-    },
-    {
-      month: "Page E",
-      value: 1890,
-    },
-    {
-      month: "Page F",
-      value: 2390,
-    },
-    {
-      month: "Page G",
-      value: 3490,
-    },
-  ];
-
+const Chart = ({ datos }) => {
   return (
     <ResponsiveContainer width="100%">
       <AreaChart
         width={500}
         height={400}
-        data={data}
+        data={datos}
         margin={{
           top: 10,
           right: 30,

@@ -3,8 +3,6 @@ import { useState, useEffect, useRef } from "react";
 import { useUser } from "../../contexts/AppContext";
 import {
   useAddress,
-  useVmContract,
-  useWeb3,
 } from "../../blockchain/BlockchainContext";
 import { useRouter } from "next/router";
 import useSWR from "swr";
@@ -13,10 +11,11 @@ import RedirectPage from "../../components/redirect/RedirectPage";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-
+import Button from "@mui/material/Button";
 import { DataGrid } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
+import { UpdatePlotSkeleton } from "../../components/skeletons/PlotSkeleton";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -26,20 +25,13 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
+// TODO: para que queres users? no se usa
 export default function Parcelas({ users }) {
-  // TODO: es necesario definir todo esto? no se usa en ningun lado
   const router = useRouter();
   const address = useAddress();
-  const web3 = useWeb3();
   const user = useUser();
-  const latitude = useRef();
-  const longitude = useRef();
-  const area = useRef();
-  const sliderRef = useRef();
-  const averageHeight = useRef();
-  const userOwner = useRef();
-  const vmContract = useVmContract();
-  const [errora, setError] = useState(null);
+  // TODO: setear el error para que no?
+  const [error, setError] = useState(null);
   const [rows, setRows] = useState();
   const [inputValue, setInputValue] = useState("");
 
@@ -51,7 +43,7 @@ export default function Parcelas({ users }) {
     addressSend = "admin";
     titleListView = "Lista de todas las parcelas";
   }
-  const { data, error, isLoading } = useSWR(
+  const { data, isLoading } = useSWR(
     address ? `/api/enhance/mytokens/${addressSend}` : null,
     fetcher
   );
@@ -73,12 +65,11 @@ export default function Parcelas({ users }) {
 
   function filterTable(event) {
     setInputValue(event.target.value);
-    let newData = filterItems(event.target.value);
+    const newData = filterItems(event.target.value);
     setRows(newData);
   }
 
   function redirectUrl(params, p) {
-    console.log(params);
     router.push(params + "/" + p.id);
   }
 
@@ -91,39 +82,26 @@ export default function Parcelas({ users }) {
   // let rows = data;
 
   const columns = [
-    { field: "id", headerName: "Id", width: 100 },
-    { field: "latitud", headerName: "Latitud", width: 90 },
-    { field: "longitud", headerName: "Longitud", width: 100 },
-    { field: "m2", headerName: "Metros cuadrados", width: 150 },
-    { field: "address", headerName: "Usuario", width: 180 },
+    { field: "id", headerName: "Id" },
+    { field: "latitud", headerName: "Latitud" },
+    { field: "longitud", headerName: "Longitud" },
+    { field: "m2", headerName: "Metros cuadrados" },
+    { field: "address", headerName: "Usuario" },
     // { field: 'pid', headerName: 'Column 2', width: 150 },
-    { field: "m2used", headerName: "Area ocupada", width: 110 },
-    { field: "m3", headerName: "Altura promedio", width: 120 },
-    { field: "date", headerName: "Fecha", width: 120 },
+    { field: "m2used", headerName: "Area ocupada" },
+    { field: "m3", headerName: "Altura promedio" },
+    { field: "date", headerName: "Fecha" },
     {
       field: "update",
       headerName: "Actualizar",
-      width: 125,
+      //width: 125,
       renderCell: (params) => (
-        <button
+        <Button
           className={`${style.buttonTable} ${style.greenBack}`}
           onClick={() => redirectUrl("update", params)}
         >
           Actualizar
-        </button>
-      ),
-    },
-    {
-      field: "assign",
-      headerName: "Asignar",
-      width: 125,
-      renderCell: (params) => (
-        <button
-          className={`${style.buttonTable} ${style.blueBack}`}
-          onClick={() => redirectUrl("assign", params)}
-        >
-          Asignar
-        </button>
+        </Button>
       ),
     },
     {
@@ -131,21 +109,29 @@ export default function Parcelas({ users }) {
       headerName: "Ver info.",
       width: 125,
       renderCell: (params) => (
-        <button
+        <Button
           className={`${style.buttonTable} ${style.redBack}`}
-          onClick={() => redirectUrl("info", params)}
+          onClick={() => redirectUrl("plot", params)}
         >
           Ver info.
-        </button>
+        </Button>
+      ),
+    },
+    {
+      field: "borrar",
+      headerName: "Borrar.",
+      width: 125,
+      renderCell: (params) => (
+        <Button onClick={() => console.log(`TODO${params}`)}>Borrar</Button>
       ),
     },
   ];
 
-  if (errora) {
+  if (error) {
     return <div> failed to load</div>;
   }
-  if (!data || rows == undefined) {
-    return <div className="App">Loading...</div>;
+  if (!data || !rows) {
+    return <UpdatePlotSkeleton />;
   } else {
     return (
       <Box sx={{ flexGrow: 1 }}>

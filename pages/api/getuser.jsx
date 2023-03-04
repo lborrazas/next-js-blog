@@ -9,6 +9,5 @@ export default async function handle(req, res) {
       address: address,
     },
   });
-  console.log(user_exist);
   res.status(200).json(user_exist);
 }

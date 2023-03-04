@@ -3,7 +3,6 @@ const prisma = new PrismaClient();
 
 export default async function handle(req, res) {
   const data = req.body;
-  console.log(req.body);
   const parcela = {
     data: {
       address: data.address,
@@ -24,7 +23,6 @@ export default async function handle(req, res) {
       res.status(201).json(-1);
     } else {
       const result = await prisma.parcela.create(parcela);
-      console.log(result);
       const hist = {
         data: {
           pid: result.id,
@@ -37,7 +35,6 @@ export default async function handle(req, res) {
       res.status(200).json(result);
     }
   } catch (err) {
-    console.log(err);
     res.status(403).json({ err: "Error occured while adding a new food." });
   }
 }

@@ -83,8 +83,6 @@ export const parcelas = [
 ];
 
 export default function ParcelasGridViewer({ tokens }) {
-  console.log(tokens);
-
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} md={4}>

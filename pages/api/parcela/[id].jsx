@@ -9,8 +9,6 @@ export default async function handle(req, res) {
     INNER JOIN "History" ON "Parcela".id = "History".pid
     WHERE "Parcela".id = ${id};`;
 
-    console.log("CNSJDHFDSHSDL");
-    console.log(posts[0].address);
 
     const users = await prisma.user.findMany({
       where: {
@@ -20,7 +18,6 @@ export default async function handle(req, res) {
     posts[0].userName = users[0].name;
     res.status(200).json(posts);
   } catch (err) {
-    console.log(err);
     res.status(500).json({ err: "Error occured." });
   }
 }
