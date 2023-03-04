@@ -3,7 +3,7 @@ import {
   useSetVmContract,
   useSetWeb3,
 } from "../../blockchain/BlockchainContext";
-import { useState } from "react";
+import { forwardRef, useState } from "react";
 import contractCollector from "../../blockchain/ContractCollector";
 import Web3 from "web3";
 import { useRouter } from "next/router";
@@ -11,20 +11,32 @@ import { User, useSetUser, useSetTokens } from "../../contexts/AppContext";
 import axios from "axios";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { CircularProgress, keyframes } from "@mui/material";
+import {
+  CircularProgress,
+  DialogContent,
+  keyframes,
+  Slide,
+} from "@mui/material";
 import styled from "@emotion/styled";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import MetaMaskIcon from "../../components/icons/MetaMaskIcon";
+import { renderToStaticMarkup } from "react-dom/server";
+import { Hexagons } from "../../assets/svg";
 
 const gradient = keyframes`
   0% {
-    background-position: 0% 50%
+    background-position: 0 50%
   }
   50% {
     background-position: 100% 50%
   }
   100% {
-    background-position: 0% 50%
+    background-position: 0 50%
   }
 `;
+
+const svgString = encodeURIComponent(renderToStaticMarkup(<Hexagons />));
 
 const PageLogin = styled("div")({
   display: "grid",
@@ -33,7 +45,7 @@ const PageLogin = styled("div")({
   backgroundRepeat: "no-repeat",
   backgroundSize: "cover",
   backgroundPosition: "center",
-  backgroundImage: 'url("public/hexagons.svg")',
+  backgroundImage: `url("data:image/svg+xml,${svgString} ")`,
 });
 
 const LoginContainer = styled("div")({
@@ -51,6 +63,10 @@ const LoginContainer = styled("div")({
   animation: `${gradient} 10s ease infinite`,
 });
 
+const Transition = forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
+
 export default function Login() {
   const setWeb3 = useSetWeb3();
   const setAddress = useSetAddress();
@@ -61,6 +77,7 @@ export default function Login() {
   const setVmContract = useSetVmContract();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [openDialog, setOpenDialog] = useState(false);
 
   const allTokens = async (vmContract) => {
     const max = await vmContract.methods.tokenCounter().call();
@@ -72,6 +89,10 @@ export default function Login() {
       plots.push(parse);
     }
     return plots;
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
   };
 
   const connectWalletHandler = async () => {
@@ -118,7 +139,8 @@ export default function Login() {
       }
     } else {
       setIsLoading(false);
-      alert("please install Metamask");
+      setOpenDialog(true);
+      // alert("please install Metamask");
     }
   };
 
@@ -142,6 +164,26 @@ export default function Login() {
         )}
         {error && <Typography variant="body2">{error}</Typography>}
       </LoginContainer>
+      <Dialog
+        open={openDialog}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={handleCloseDialog}
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle>Por favor instale Metamask</DialogTitle>
+        <DialogContent sx={{ display: "grid" }}>
+          <Button
+            sx={{ alignSelf: "center" }}
+            variant="outlined"
+            startIcon={<MetaMaskIcon />}
+            target="_blank"
+            href="https://metamask.io/download/"
+          >
+            Descargar Metamask
+          </Button>
+        </DialogContent>
+      </Dialog>
     </PageLogin>
   );
 }

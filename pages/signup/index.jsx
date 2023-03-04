@@ -9,18 +9,22 @@ import Box from "@mui/material/Box";
 import { useRouter } from "next/router";
 import { keyframes } from "@mui/material";
 import styled from "@emotion/styled";
+import { renderToStaticMarkup } from "react-dom/server";
+import { Hexagons } from "../../assets/svg";
 
 const gradient = keyframes`
   0% {
-    background-position: 0% 50%
+    background-position: 0 50%
   }
   50% {
     background-position: 100% 50%
   }
   100% {
-    background-position: 0% 50%
+    background-position: 0 50%
   }
 `;
+
+const svgString = encodeURIComponent(renderToStaticMarkup(<Hexagons />));
 
 const PageSignup = styled("div")({
   display: "grid",
@@ -29,7 +33,7 @@ const PageSignup = styled("div")({
   backgroundRepeat: "no-repeat",
   backgroundSize: "cover",
   backgroundPosition: "center",
-  backgroundImage: 'url("public/hexagons.svg")',
+  backgroundImage: `url("data:image/svg+xml,${svgString} ")`,
 });
 
 const SignupContainer = styled("div")({
