@@ -11,7 +11,10 @@ import ParcelasWidgetViewer from "../../components/pagesComponents/parcelasWidge
 import Co2Graph from "../../components/pagesComponents/co2Graph";
 import DataGrid from "../../components/pagesComponents/dataGrid";
 import useSWR from "swr";
+
 const { PrismaClient } = require("./../../node_modules/.prisma/client");
+import { DashboardSkeleton } from "../../components/skeletons/DashboardSkeleton";
+
 const prisma = new PrismaClient();
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -23,35 +26,31 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export async function getServerSideProps(context) {
-  const data = context.query;
- 
   // Realiza una llamada a la API o base de datos para obtener los datos de la publicación con el ID correspondiente
   const parcela = await prisma.parcela.findMany({
     where: {
-      id: context.query.plot.plot,
+      id: context.query.plot,
     },
   });
+
   const owner = await prisma.user.findMany({
     where: {
       address: parcela[0].address,
     },
   });
-
+  console.log(parcela);
   const aux = await prisma.history.findMany({
     where: {
-      pid: parcela.id,
+      pid: parcela[0].id,
     },
     orderBy: {
       date: "desc",
     },
     take: 1,
   });
+  console.log(aux);
 
   const lastLog = JSON.parse(JSON.stringify(aux[0]));
-
-  // fetch(`https://mi-api.com/posts/${id}`).then(res => res.json());
-  //const parcela =JSON.parse(JSON.stringify(laparce))
-  // Devuelve los datos como propiedades para renderizar la página
 
   return {
     props: {
@@ -64,23 +63,27 @@ export async function getServerSideProps(context) {
 
 export default function Plot({ parcela, lastLog, owner }) {
   const fetcher = (url) => fetch(url).then((res) => res.json());
-  const { data, error } = useSWR(
+  const { data: data, error: error1 } = useSWR(
     `/api/co2Data/Parcela/Anual/${parcela[0].id}`,
+    fetcher
+  );
+
+  const { data: total, error: error2 } = useSWR(
+    `/api/co2Data/Parcela/Total/${parcela[0].id}`,
     fetcher
   );
   parcela = parcela[0];
   owner = owner[0];
-  //const fetcher = (url) => fetch(url).then((res) => res.json())
-  //const { data, error } = useSWR(`/api/getparcela`, fetcher({longitud:parcela.longitud,latitud:parcela.latitud}))
-  //console.log(error)
-
-  //if (error) {
-
-  //  return <div>failed to load</div>;}
-
-  if (!parcela) {
+  console.log(lastLog);
+  const actualData = {
+    percentage: `${lastLog.m2used}`,
+    m2: (`${lastLog.m2used}` / 100) * `${parcela.m2}`,
+    height: `${lastLog.m3}`,
+    total: `${total}`,
+  };
+  if (!data) {
     //if (false){
-    return <div className="App">Loading...</div>;
+    return <DashboardSkeleton />;
   } else {
     return (
       <Box sx={{ flexGrow: 1 }}>
@@ -113,7 +116,7 @@ export default function Plot({ parcela, lastLog, owner }) {
                   <Co2Graph datos={data} />
                 </Grid>
                 <Grid item xs={12} md={5}>
-                  <DataGrid />
+                  <DataGrid datos={actualData} />
                 </Grid>
               </Grid>
             </Item>

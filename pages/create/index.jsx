@@ -1,15 +1,11 @@
 import { useState, useEffect, useRef } from "react";
+
 const { PrismaClient } = require("./../../node_modules/.prisma/client");
 const prisma = new PrismaClient();
 
 import { useUser } from "../../contexts/AppContext";
-import {
-  useAddress,
-  useVmContract,
-  useWeb3,
-} from "../../blockchain/BlockchainContext";
+import { useAddress, useVmContract } from "../../blockchain/BlockchainContext";
 import { useRouter } from "next/router";
-import style from "./create.module.css";
 import axios from "axios";
 import RedirectPage from "../../components/redirect/RedirectPage";
 import Slider from "@mui/material/Slider";
@@ -24,17 +20,8 @@ import Select from "@mui/material/Select";
 import Iconify from "../../components/iconify";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
-import { styled } from "@mui/material/styles";
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(5),
-  textAlign: "left",
-  color: theme.palette.text.secondary,
-}));
-
-// ? Para que se esta mandando el context?
+// TODO: Para que se esta mandando el context?
 export async function getServerSideProps(context) {
   const users = await prisma.user.findMany();
 
@@ -48,14 +35,12 @@ export async function getServerSideProps(context) {
 export default function Create({ users }) {
   const router = useRouter();
   const address = useAddress();
-  const web3 = useWeb3();
   const user = useUser();
   const latitude = useRef();
   const longitude = useRef();
   const area = useRef();
   const sliderRef = useRef();
   const averageHeight = useRef();
-  const userOwner = useRef();
   const vmContract = useVmContract();
 
   const [owner, setOwner] = useState();
@@ -83,7 +68,7 @@ export default function Create({ users }) {
     };
     const result = await axios.post("/api/parcelacreate", parcela);
 
-    if (result.data == -2) {
+    if (result.data === -2) {
       alert("parcela already exist");
     } else {
       // TODO: esto se deberia usar en algun lado?
@@ -95,9 +80,8 @@ export default function Create({ users }) {
     }
   };
 
-  const handleChange = (event) => {
-    // SelectChangeEvent
-    setOwner(event.target.value.address);
+  const handleChangeOwner = (event) => {
+    setOwner(event.target.value);
   };
 
   return (
@@ -122,19 +106,17 @@ export default function Create({ users }) {
               Refresh
             </Button>
           </Stack>
-          <Item sx={{ height: "50vH" }}>
+          <Paper elevation={3} sx={{ padding: "30px" }}>
             <Grid container component="form" onSubmit={handleSave} spacing={1}>
               <Grid item xs={12}>
-                <InputLabel id="userOwner-label">Dueño</InputLabel>
+                <InputLabel id="owner-label">Dueño</InputLabel>
                 <Select
-                  margin="normal"
                   value={owner}
                   fullWidth
-                  id="userOwner"
+                  id="owner-label"
                   label="Dueño"
-                  name="userOwner"
-                  autoComplete="userOwner"
-                  onChange={handleChange}
+                  onChange={handleChangeOwner}
+                  required
                 >
                   {users.map((user) => (
                     <MenuItem key={user.id} value={user}>
@@ -165,8 +147,8 @@ export default function Create({ users }) {
                   name="longitude"
                 />
               </Grid>
-              <Grid item xs={6}>
-                <Typography component="h3" variant="h4">
+              <Grid item xs={12} md={6}>
+                <Typography component="h3" variant="h6">
                   Porcentaje de área usada
                 </Typography>
                 <Slider
@@ -177,7 +159,7 @@ export default function Create({ users }) {
                   ref={sliderRef}
                 />
               </Grid>
-              <Grid item xs={3}>
+              <Grid item xs={6} md={3}>
                 <TextField
                   inputRef={area}
                   margin="normal"
@@ -188,7 +170,7 @@ export default function Create({ users }) {
                   name="area"
                 />
               </Grid>
-              <Grid item xs={3}>
+              <Grid item xs={6} md={3}>
                 <TextField
                   inputRef={averageHeight}
                   margin="normal"
@@ -200,7 +182,7 @@ export default function Create({ users }) {
                   autoComplete="averageHeight"
                 />
               </Grid>
-              <Grid item xs={3}>
+              <Grid item xs={12} md={3}>
                 <Button
                   type="submit"
                   fullWidth
@@ -215,7 +197,7 @@ export default function Create({ users }) {
                 {error && <Typography variant="body2">{error}</Typography>}
               </Grid>
             </Grid>
-          </Item>
+          </Paper>
         </>
       )}
     </Box>

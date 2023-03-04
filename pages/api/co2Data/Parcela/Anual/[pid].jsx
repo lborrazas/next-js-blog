@@ -31,9 +31,17 @@ function eventsToData(events) {
       lastEvent = event;
     }
     //caso cambio de mes
-    if (getMonthName(event.date.getMonth()) != month) {
+    if (getMonthName(event.date.getMonth()) !== month) {
       // eslint-disable-next-line prettier/prettier
-      primerDia = new Date(event.date.getFullYear(),event.date.getMonth(),1,0,0,0,0);
+      primerDia = new Date(
+        event.date.getFullYear(),
+        event.date.getMonth(),
+        1,
+        0,
+        0,
+        0,
+        0
+      );
       value = value + (primerDia - event.date) * event.m2used * event.m3;
       data.push({
         month: month,

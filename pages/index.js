@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useUser } from "../contexts/AppContext";
+import LoadingPage from "../components/loading/LoadingPage";
 
 export default function Index() {
   const user = useUser();
@@ -16,5 +17,5 @@ export default function Index() {
     }
   }, [shouldRedirectToLogin, router]);
 
-  return <p>Redirecting...</p>;
+  return <LoadingPage />;
 }

@@ -3,8 +3,6 @@ import { useState, useEffect, useRef } from "react";
 import { useUser } from "../../contexts/AppContext";
 import {
   useAddress,
-  useVmContract,
-  useWeb3,
 } from "../../blockchain/BlockchainContext";
 import { useRouter } from "next/router";
 import useSWR from "swr";
@@ -17,6 +15,7 @@ import Button from "@mui/material/Button";
 import { DataGrid } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
+import { UpdatePlotSkeleton } from "../../components/skeletons/PlotSkeleton";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -26,20 +25,13 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
+// TODO: para que queres users? no se usa
 export default function Parcelas({ users }) {
-  // TODO: es necesario definir todo esto? no se usa en ningun lado
   const router = useRouter();
   const address = useAddress();
-  const web3 = useWeb3();
   const user = useUser();
-  const latitude = useRef();
-  const longitude = useRef();
-  const area = useRef();
-  const sliderRef = useRef();
-  const averageHeight = useRef();
-  const userOwner = useRef();
-  const vmContract = useVmContract();
-  const [errora, setError] = useState(null);
+  // TODO: setear el error para que no?
+  const [error, setError] = useState(null);
   const [rows, setRows] = useState();
   const [inputValue, setInputValue] = useState("");
 
@@ -51,7 +43,7 @@ export default function Parcelas({ users }) {
     addressSend = "admin";
     titleListView = "Lista de todas las parcelas";
   }
-  const { data, error, isLoading } = useSWR(
+  const { data, isLoading } = useSWR(
     address ? `/api/enhance/mytokens/${addressSend}` : null,
     fetcher
   );
@@ -73,7 +65,7 @@ export default function Parcelas({ users }) {
 
   function filterTable(event) {
     setInputValue(event.target.value);
-    let newData = filterItems(event.target.value);
+    const newData = filterItems(event.target.value);
     setRows(newData);
   }
 
@@ -135,11 +127,11 @@ export default function Parcelas({ users }) {
     },
   ];
 
-  if (errora) {
+  if (error) {
     return <div> failed to load</div>;
   }
-  if (!data || rows == undefined) {
-    return <div className="App">Loading...</div>;
+  if (!data || !rows) {
+    return <UpdatePlotSkeleton />;
   } else {
     return (
       <Box sx={{ flexGrow: 1 }}>

@@ -50,8 +50,7 @@ export default async function handle(req, res) {
   //         console.log(token)
   //         return token
   //     })
-  //     console.log('_____________________')
-  //     console.log(post)
+  //
   //     res.status(200).json(post);
   // }
   // catch (err) {
