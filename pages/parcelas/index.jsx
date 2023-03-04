@@ -79,7 +79,7 @@ export default function Parcelas({ users }) {
 
   function redirectUrl(params, p) {
     console.log(params);
-    router.push(params + "/" + p.id);
+    router.push(params + "/" + p.row.pid);
   }
 
   useEffect(() => {
@@ -91,7 +91,7 @@ export default function Parcelas({ users }) {
   // let rows = data;
 
   const columns = [
-    { field: "id", headerName: "Id", width: 100 },
+    { field: "pid", headerName: "Id", width: 100 },
     { field: "latitud", headerName: "Latitud", width: 90 },
     { field: "longitud", headerName: "Longitud", width: 100 },
     { field: "m2", headerName: "Metros cuadrados", width: 150 },

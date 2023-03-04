@@ -4,21 +4,39 @@ const prisma = new PrismaClient();
 export default async function handle(req, res) {
   const { id } = req.query;
   try {
-    const posts = await prisma.$queryRaw`SELECT *
-    FROM "Parcela"
-    INNER JOIN "History" ON "Parcela".id = "History".pid
-    WHERE "Parcela".id = ${id};`;
+    // const posts = 
+    // await prisma.$queryRaw`SELECT *
+    // FROM "Parcela"
+    // INNER JOIN "History" ON "Parcela".id = "History".pid
+    // WHERE "Parcela".id = ${id};`;
 
-    console.log("CNSJDHFDSHSDL");
-    console.log(posts[0].address);
+    console.log(id);
+    let parcela = await prisma.parcela.findMany({
+      where: {
+        id: id,
+      },
+    });
+
+    let history = await prisma.history.findMany({
+      where: {
+        pid: id,
+      },
+      orderBy: {
+        date: 'desc',
+      },
+    });
 
     const users = await prisma.user.findMany({
       where: {
-        address: posts[0].address,
+        address: parcela[0].address,
       },
     });
-    posts[0].userName = users[0].name;
-    res.status(200).json(posts);
+
+    parcela[0].userName = users[0].name;
+    parcela[0].m2used = history[0].m2used;
+    parcela[0].m3 = history[0].m3;
+
+    res.status(200).json(parcela);
   } catch (err) {
     console.log(err);
     res.status(500).json({ err: "Error occured." });

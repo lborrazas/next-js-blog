@@ -48,12 +48,10 @@ export default function Update({ users }) {
   const [errora, setError] = useState(null);
 
   const shouldRedirect = !user;
-  let id = "clef5scf80004f9fcn8gwd3vt";
+  let id = router.query.id;
   const fetcher = (url) => fetch(url).then((res) => res.json());
   const { data, error } = useSWR(id ? `/api/parcela/${id}` : null, fetcher);
   // body: {"latitude":1,"longitud":1}
-
-  console.log("dsadasddasd");
 
   useEffect(() => {
     if (shouldRedirect) {
@@ -61,9 +59,19 @@ export default function Update({ users }) {
     }
   }, [shouldRedirect, router]);
 
+  function updateHistory(){
+    let history = {
+      "id": data[0].id,
+      "m2used": data[0].m2used,
+      "m3": data[0].m3,
+      "address": data[0].address,
+    }
+    console.log(history);
+    // const { data, error } = useSWR(id ? `/api/parcelaupdate` : history, fetcher);
+  }
+
   const handleSave = async (e) => {
     e.preventDefault();
-    console.log(Number(sliderRef.current.innerText));
     let a = await vmContract.methods
       .createCollectible(latitude.current.value, longitude.current.value)
       .send({ from: address });
@@ -77,7 +85,6 @@ export default function Update({ users }) {
       address: Number(userOwner.current.value),
     };
 
-    console.log(result);
     if (result.data == -1) {
       alert("parcela already exist");
     } else {
@@ -202,6 +209,7 @@ export default function Update({ users }) {
                   <Button
                     type="submit"
                     fullWidth
+                    onClick={() => updateHistory()}
                     variant="contained"
                     sx={{
                       mt: 3,
