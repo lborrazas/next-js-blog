@@ -13,7 +13,7 @@ import RedirectPage from "../../components/redirect/RedirectPage";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-
+import Button from "@mui/material/Button";
 import { DataGrid } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
@@ -78,7 +78,6 @@ export default function Parcelas({ users }) {
   }
 
   function redirectUrl(params, p) {
-    console.log(params);
     router.push(params + "/" + p.id);
   }
 
@@ -91,39 +90,26 @@ export default function Parcelas({ users }) {
   // let rows = data;
 
   const columns = [
-    { field: "id", headerName: "Id", width: 100 },
-    { field: "latitud", headerName: "Latitud", width: 90 },
-    { field: "longitud", headerName: "Longitud", width: 100 },
-    { field: "m2", headerName: "Metros cuadrados", width: 150 },
-    { field: "address", headerName: "Usuario", width: 180 },
+    { field: "id", headerName: "Id" },
+    { field: "latitud", headerName: "Latitud" },
+    { field: "longitud", headerName: "Longitud" },
+    { field: "m2", headerName: "Metros cuadrados" },
+    { field: "address", headerName: "Usuario" },
     // { field: 'pid', headerName: 'Column 2', width: 150 },
-    { field: "m2used", headerName: "Area ocupada", width: 110 },
-    { field: "m3", headerName: "Altura promedio", width: 120 },
-    { field: "date", headerName: "Fecha", width: 120 },
+    { field: "m2used", headerName: "Area ocupada" },
+    { field: "m3", headerName: "Altura promedio" },
+    { field: "date", headerName: "Fecha" },
     {
       field: "update",
       headerName: "Actualizar",
-      width: 125,
+      //width: 125,
       renderCell: (params) => (
-        <button
+        <Button
           className={`${style.buttonTable} ${style.greenBack}`}
           onClick={() => redirectUrl("update", params)}
         >
           Actualizar
-        </button>
-      ),
-    },
-    {
-      field: "assign",
-      headerName: "Asignar",
-      width: 125,
-      renderCell: (params) => (
-        <button
-          className={`${style.buttonTable} ${style.blueBack}`}
-          onClick={() => redirectUrl("assign", params)}
-        >
-          Asignar
-        </button>
+        </Button>
       ),
     },
     {
@@ -131,12 +117,20 @@ export default function Parcelas({ users }) {
       headerName: "Ver info.",
       width: 125,
       renderCell: (params) => (
-        <button
+        <Button
           className={`${style.buttonTable} ${style.redBack}`}
-          onClick={() => redirectUrl("info", params)}
+          onClick={() => redirectUrl("plot", params)}
         >
           Ver info.
-        </button>
+        </Button>
+      ),
+    },
+    {
+      field: "borrar",
+      headerName: "Borrar.",
+      width: 125,
+      renderCell: (params) => (
+        <Button onClick={() => console.log(`TODO${params}`)}>Borrar</Button>
       ),
     },
   ];

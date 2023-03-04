@@ -10,7 +10,7 @@ import Typography from "@mui/material/Typography";
 import ParcelasWidgetViewer from "../../components/pagesComponents/parcelasWidgetViewer";
 import Co2Graph from "../../components/pagesComponents/co2Graph";
 import DataGrid from "../../components/pagesComponents/dataGrid";
-
+import useSWR from "swr";
 const { PrismaClient } = require("./../../node_modules/.prisma/client");
 const prisma = new PrismaClient();
 
@@ -24,15 +24,13 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export async function getServerSideProps(context) {
   const data = context.query;
-  console.log(data);
+ 
   // Realiza una llamada a la API o base de datos para obtener los datos de la publicación con el ID correspondiente
   const parcela = await prisma.parcela.findMany({
     where: {
-      latitud: 1,
-      longitud: 1,
+      id: context.query.plot.plot,
     },
   });
-
   const owner = await prisma.user.findMany({
     where: {
       address: parcela[0].address,
@@ -65,14 +63,13 @@ export async function getServerSideProps(context) {
 }
 
 export default function Plot({ parcela, lastLog, owner }) {
-  // const user = useUser();
-  // const vmContract = useVmContract();
-  // const address = useAddress();
-  // const router = useRouter();
+  const fetcher = (url) => fetch(url).then((res) => res.json());
+  const { data, error } = useSWR(
+    `/api/co2Data/Parcela/Anual/${parcela[0].id}`,
+    fetcher
+  );
   parcela = parcela[0];
   owner = owner[0];
-  const datos = []; // todo  casos
-
   //const fetcher = (url) => fetch(url).then((res) => res.json())
   //const { data, error } = useSWR(`/api/getparcela`, fetcher({longitud:parcela.longitud,latitud:parcela.latitud}))
   //console.log(error)
@@ -85,7 +82,6 @@ export default function Plot({ parcela, lastLog, owner }) {
     //if (false){
     return <div className="App">Loading...</div>;
   } else {
-    console.log(parcela);
     return (
       <Box sx={{ flexGrow: 1 }}>
         <Stack
@@ -114,7 +110,7 @@ export default function Plot({ parcela, lastLog, owner }) {
                   <Typography variant="h5" gutterBottom>
                     CO2 Combatido
                   </Typography>
-                  <Co2Graph datos={datos} />
+                  <Co2Graph datos={data} />
                 </Grid>
                 <Grid item xs={12} md={5}>
                   <DataGrid />

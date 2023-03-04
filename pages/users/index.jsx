@@ -71,7 +71,6 @@ export default function home({ users }) {
   }
 
   function redirectUrl(params,p){
-    console.log(params);
     router.push(params + "/" + p.id);
   }
 

@@ -85,7 +85,6 @@ export default function Login() {
         const web3 = new Web3(window.ethereum);
         /*set web3 instance*/
         setWeb3(web3);
-        console.log(web3);
         /*get list of accounts*/
         const account = await web3.eth.getAccounts();
         setAddress(account[0]);
@@ -93,7 +92,6 @@ export default function Login() {
         /*Create a contract copy*/
         const vmContract_ = contractCollector(web3);
         setVmContract(vmContract_);
-        console.log(account[0]);
         const body = { address: account[0] };
         const is_registered = await axios.post("/api/getuser", body);
         const tokens = await allTokens(vmContract_);

@@ -30,7 +30,7 @@ export default function Plot() {
   const router = useRouter();
 
   function handleCLick() {
-    const parcela = new Parcela(1, 10, 20, 100, 40, 200);
+    const parcela = new Parcela("clerbc8f70002l5nkrtzfwaw4", 10, 20, 100, 40, 200);
     router.push({
       pathname: `/plot/${parcela.id}`,
     });
@@ -44,8 +44,6 @@ export default function Plot() {
     address ? `/api/enhance/mytokens/${address}` : null,
     fetcher
   );
-  console.log(error);
-
   if (error) {
     return <div>failed to load</div>;
   }

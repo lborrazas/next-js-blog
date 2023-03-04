@@ -68,7 +68,6 @@ export default function Transfer() {
         parcela_id.push(i);
       }
     }
-    console.log("_________________________");
     // axios.post('/api/transfer',{body:{toAdd:forwardAddress,fromAdd:address,id:parcela_id[0]}})
     //await vmContract.methods.safeTransferFrom(address, forwardAddress, parcela_id[0]).send({ from: address })
     alert(
@@ -87,8 +86,6 @@ export default function Transfer() {
         // vs code por defecto no te las toma no, tenes que instalarle los plugins
         // para que sepa que hacer con eso
         //oice
-        console.log(res);
-        console.log("nanashe??");
         if (!res.data[0]) {
           setMess(`address is nor register on our database`);
           popUP();

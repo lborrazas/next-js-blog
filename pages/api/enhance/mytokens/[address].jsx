@@ -15,7 +15,6 @@ export default async function handle(req, res) {
             LEFT JOIN "History" h ON latest.pid = h.pid AND latest.max_date = h.date`;
       res.status(200).json(result);
     } catch (err) {
-      console.log(err);
       res.status(508).json({ err: "Error occured while adding a new food." });
     }
   } else {
@@ -32,7 +31,6 @@ export default async function handle(req, res) {
             WHERE p.address = ${address}`;
       res.status(200).json(result);
     } catch (err) {
-      console.log(err);
       res.status(508).json({ err: "Error occured while adding a new food." });
     }
   }

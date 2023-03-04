@@ -86,7 +86,6 @@ export default function Create({ users }) {
     if (result.data == -2) {
       alert("parcela already exist");
     } else {
-      console.log(Number(sliderRef.current.innerText));
       // TODO: esto se deberia usar en algun lado?
       const a = await vmContract.methods
         .createCollectible(longitude.current.value, latitude.current.value)

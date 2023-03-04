@@ -53,7 +53,7 @@ export default function Update({ users }) {
   const { data, error } = useSWR(id ? `/api/parcela/${id}` : null, fetcher);
   // body: {"latitude":1,"longitud":1}
 
-  console.log("dsadasddasd");
+
 
   useEffect(() => {
     if (shouldRedirect) {
@@ -63,7 +63,6 @@ export default function Update({ users }) {
 
   const handleSave = async (e) => {
     e.preventDefault();
-    console.log(Number(sliderRef.current.innerText));
     let a = await vmContract.methods
       .createCollectible(latitude.current.value, longitude.current.value)
       .send({ from: address });
@@ -77,7 +76,6 @@ export default function Update({ users }) {
       address: Number(userOwner.current.value),
     };
 
-    console.log(result);
     if (result.data == -1) {
       alert("parcela already exist");
     } else {
