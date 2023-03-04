@@ -95,7 +95,7 @@ export default function Parcelas({ users }) {
     { field: "latitud", headerName: "Latitud", width: 90 },
     { field: "longitud", headerName: "Longitud", width: 100 },
     { field: "m2", headerName: "Metros cuadrados", width: 150 },
-    { field: "address", headerName: "Usuario", width: 180 },
+    { field: "userName", headerName: "Usuario", width: 180 },
     // { field: 'pid', headerName: 'Column 2', width: 150 },
     { field: "m2used", headerName: "Area ocupada", width: 110 },
     { field: "m3", headerName: "Altura promedio", width: 120 },
