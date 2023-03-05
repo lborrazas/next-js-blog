@@ -1,5 +1,5 @@
 import Dialog from "@mui/material/Dialog";
-import { PlotForm } from "../plot/PlotForm";
+import { PlotForm } from "../plot/PlotFormUpdate";
 import Box from "@mui/material/Box";
 
 export const EditPlotDialog = ({ open, handleClose, users, selectedPlot }) => {

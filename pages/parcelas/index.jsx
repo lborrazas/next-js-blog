@@ -31,6 +31,8 @@ export default function Parcelas() {
   const [selectedPlot, setSelectedPlot] = useState(undefined);
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [openViewDialog, setOpenViewDialog] = useState(false);
+  const router = useRouter();
+
 
   const fetcher = (url) => fetch(url).then((res) => res.json());
   let addressSend = address;
@@ -65,7 +67,11 @@ export default function Parcelas() {
     setRows(newData);
   }
 
-  // TODO: wtf?
+  function redirectUrl(params, p) {
+    console.log(params);
+    router.push(params + "/" + p.row.pid);
+  }
+
   useEffect(() => {
     if (!isLoading) {
       setRows(data);
@@ -98,14 +104,15 @@ export default function Parcelas() {
   };
 
   const columns = [
-    { field: "pid", headerName: "Id" },
-    { field: "latitud", headerName: "Latitud" },
-    { field: "longitud", headerName: "Longitud" },
-    { field: "m2", headerName: "Metros cuadrados" },
-    { field: "address", headerName: "Usuario" },
-    { field: "m2used", headerName: "Area ocupada" },
-    { field: "m3", headerName: "Altura promedio" },
-    { field: "date", headerName: "Fecha" },
+    { field: "pid", headerName: "Id", width: 100 },
+    { field: "latitud", headerName: "Latitud", width: 90 },
+    { field: "longitud", headerName: "Longitud", width: 100 },
+    { field: "m2", headerName: "Metros cuadrados", width: 150 },
+    { field: "userName", headerName: "Usuario", width: 180 },
+    // { field: 'pid', headerName: 'Column 2', width: 150 },
+    { field: "m2used", headerName: "Area ocupada", width: 110 },
+    { field: "m3", headerName: "Altura promedio", width: 120 },
+    { field: "date", headerName: "Fecha", width: 120 },
     {
       field: "update",
       headerName: "Actualizar",
