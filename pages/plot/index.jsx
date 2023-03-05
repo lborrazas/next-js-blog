@@ -2,11 +2,9 @@ import { useUser, useTokens } from "../../contexts/AppContext";
 import { useAddress, useVmContract } from "../../blockchain/BlockchainContext";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { styled } from "@mui/material/styles";
-import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
-import { Button, Stack } from "@mui/material";
+import { Button } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Iconify from "../../components/iconify";
 import ParcelasGridViewer, {
@@ -16,14 +14,6 @@ import ParcelasWidgetViewer from "../../components/pagesComponents/parcelasWidge
 import useSWR from "swr";
 import { DashboardSkeleton } from "../../components/skeletons/DashboardSkeleton";
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-}));
-
 export default function Dashboard() {
   const user = useUser();
   const vmContract = useVmContract();
@@ -31,6 +21,7 @@ export default function Dashboard() {
   const router = useRouter();
 
   function handleCLick() {
+    // TODO: harcodeado no
     const parcela = new Parcela(
       "clerbc7s50000l5nkm288v8u5",
       10,
@@ -59,16 +50,13 @@ export default function Dashboard() {
     return <DashboardSkeleton />;
   } else {
     return (
-      <Box sx={{ flexGrow: 1 }}>
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-          mb={5}
-        >
+      <Grid container spacing={2}>
+        <Grid item xs={8}>
           <Typography variant="h4" gutterBottom>
             Dashboard
           </Typography>
+        </Grid>
+        <Grid item xs={4} sx={{ display: "flex", justifyContent: "end" }}>
           <Button
             onClick={() => handleCLick()}
             variant="contained"
@@ -76,49 +64,44 @@ export default function Dashboard() {
           >
             Refresh
           </Button>
-        </Stack>
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={12}>
-            <Item sx={{ height: "42vH" }}>
-              <ParcelasGridViewer tokens={data}></ParcelasGridViewer>
-            </Item>
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <ParcelasWidgetViewer
-              title="Total de Parcelas"
-              total={31}
-              icon="material-symbols:token"
-            />
-          </Grid>
-
-          <Grid item xs={12} sm={6} md={3}>
-            <ParcelasWidgetViewer
-              title="Co2"
-              total={492}
-              color="info"
-              icon="mdi:molecule-co2"
-            />
-          </Grid>
-
-          <Grid item xs={12} sm={6} md={3}>
-            <ParcelasWidgetViewer
-              title="Plantas Nuevas"
-              total={43}
-              color="warning"
-              icon="game-icons:plant-seed"
-            />
-          </Grid>
-
-          <Grid item xs={12} sm={6} md={3}>
-            <ParcelasWidgetViewer
-              title="Ver Todos"
-              total={100}
-              color="error"
-              icon="ic:baseline-remove-red-eye"
-            />
-          </Grid>
         </Grid>
-      </Box>
+        <Grid item xs={12}>
+          <Paper elevation={3} sx={{ padding: "30px" }}>
+            <ParcelasGridViewer tokens={data}></ParcelasGridViewer>
+          </Paper>
+        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <ParcelasWidgetViewer
+            title="Total de Parcelas"
+            total={31}
+            icon="material-symbols:token"
+          />
+        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <ParcelasWidgetViewer
+            title="Co2"
+            total={492}
+            color="info"
+            icon="mdi:molecule-co2"
+          />
+        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <ParcelasWidgetViewer
+            title="Plantas Nuevas"
+            total={43}
+            color="warning"
+            icon="game-icons:plant-seed"
+          />
+        </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <ParcelasWidgetViewer
+            title="Ver Todos"
+            total={100}
+            color="error"
+            icon="ic:baseline-remove-red-eye"
+          />
+        </Grid>
+      </Grid>
     );
   }
 }

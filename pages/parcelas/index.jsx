@@ -20,6 +20,7 @@ import { ViewPlotDialog } from "../../components/dialog";
 export default function Parcelas() {
   const address = useAddress();
   const user = useUser();
+  const router = useRouter();
   // TODO: get de los users
   const users = [];
 
@@ -31,7 +32,7 @@ export default function Parcelas() {
   const [selectedPlot, setSelectedPlot] = useState(undefined);
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [openViewDialog, setOpenViewDialog] = useState(false);
-  const router = useRouter();
+
 
 
   const fetcher = (url) => fetch(url).then((res) => res.json());
@@ -61,7 +62,7 @@ export default function Parcelas() {
     );
   };
 
-  function  filterTable(event) {
+  function filterTable(event) {
     setInputValue(event.target.value);
     const newData = filterItems(event.target.value);
     setRows(newData);
@@ -128,14 +129,15 @@ export default function Parcelas() {
       headerName: "Información",
       width: 90,
       renderCell: (params) => (
-        <IconButton color="info"        
+        <IconButton
+          color="info"
           onClick={() => {
             router.push({
               pathname: `/plot/${params.row.pid}`,
             });
           }}
         >
-        <InfoIcon />
+          <InfoIcon />
         </IconButton>
       ),
     },
