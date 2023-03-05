@@ -23,14 +23,6 @@ const CustomTooltip = ({ active, payload, label }) => {
   return null;
 };
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-}));
-
 const Chart = ({ datos }) => {
   return (
     <ResponsiveContainer width="100%">
@@ -41,7 +33,7 @@ const Chart = ({ datos }) => {
         margin={{
           top: 10,
           right: 30,
-          left: 0,
+          left: 90,
           bottom: 0,
         }}
       >

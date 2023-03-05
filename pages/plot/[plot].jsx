@@ -1,29 +1,20 @@
 // import { useUser } from "../../contexts/AppContext";
 // import { useAddress, useVmContract } from "../../blockchain/BlockchainContext";
 // import { useRouter } from "next/router";
-import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
-import { Button, Stack } from "@mui/material";
+import { Button } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import ParcelasWidgetViewer from "../../components/pagesComponents/parcelasWidgetViewer";
 import Co2Graph from "../../components/pagesComponents/co2Graph";
 import DataGrid from "../../components/pagesComponents/dataGrid";
 import useSWR from "swr";
-
-const { PrismaClient } = require("./../../node_modules/.prisma/client");
 import { DashboardSkeleton } from "../../components/skeletons/DashboardSkeleton";
 
-const prisma = new PrismaClient();
+const { PrismaClient } = require("./../../node_modules/.prisma/client");
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-}));
+const prisma = new PrismaClient();
 
 export async function getServerSideProps(context) {
   // Realiza una llamada a la API o base de datos para obtener los datos de la publicación con el ID correspondiente
@@ -84,42 +75,38 @@ export default function Plot({ parcela, lastLog, owner }) {
     return <DashboardSkeleton />;
   } else {
     return (
-      <Box sx={{ flexGrow: 1 }}>
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-          mb={5}
-        >
+      <Grid container spacing={2}>
+        <Grid item xs={8}>
           <Box>
             <Typography variant="h4" gutterBottom>
-              {"Parcela " + parcela.latitud + " : " + parcela.longitud}
+              {`Parcela ${parcela.latitud} : ${parcela.longitud}`}
             </Typography>
             <Typography variant="h5" gutterBottom>
-              {"Dueño " + owner.name}
+              {`Dueño ${owner.name}`}
             </Typography>
           </Box>
+        </Grid>
+        <Grid item xs={4} sx={{ display: "flex", justifyContent: "end" }}>
           <Button id="actualizar" variant="contained">
             Actualizar
           </Button>
-        </Stack>
+        </Grid>
         <Grid container spacing={2}>
-          <Grid item xs={12} md={12}>
-            <Item sx={{ height: "42vH" }}>
+          <Grid item xs={12}>
+            <Paper elevation={3} sx={{ padding: "30px" }}>
               <Grid container spacing={2}>
-                <Grid item xs={12} md={7}>
+                <Grid item sm={12} md={7}>
                   <Typography variant="h5" gutterBottom>
                     CO2 Combatido
                   </Typography>
                   <Co2Graph datos={data} />
                 </Grid>
-                <Grid item xs={12} md={5}>
+                <Grid item sm={12} md={5}>
                   <DataGrid datos={actualData} />
                 </Grid>
               </Grid>
-            </Item>
+            </Paper>
           </Grid>
-          {/* //aca abajo van las fotos */}
           <Grid item xs={12} sm={6} md={3}>
             <ParcelasWidgetViewer
               title="Total de Parcelas"
@@ -152,7 +139,7 @@ export default function Plot({ parcela, lastLog, owner }) {
             />
           </Grid>
         </Grid>
-      </Box>
+      </Grid>
     );
   }
 }
