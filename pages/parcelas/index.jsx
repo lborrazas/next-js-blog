@@ -1,9 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 
 import { useUser } from "../../contexts/AppContext";
-import {
-  useAddress,
-} from "../../blockchain/BlockchainContext";
+import { useAddress } from "../../blockchain/BlockchainContext";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import style from "./parcelas.module.css";
@@ -44,7 +42,7 @@ export default function Parcelas({ users }) {
     titleListView = "Lista de todas las parcelas";
   }
   const { data, isLoading } = useSWR(
-    address ? `/api/enhance/mytokens/${addressSend}` : null,
+    address ? `/api/enhance/mytokens/${addressSend}` : null, //todo arreglar (no tiene que ser 'admin'
     fetcher
   );
 
@@ -82,12 +80,11 @@ export default function Parcelas({ users }) {
   // let rows = data;
 
   const columns = [
-    { field: "id", headerName: "Id" },
+    { field: "pid", headerName: "Id" },
     { field: "latitud", headerName: "Latitud" },
     { field: "longitud", headerName: "Longitud" },
     { field: "m2", headerName: "Metros cuadrados" },
     { field: "address", headerName: "Usuario" },
-    // { field: 'pid', headerName: 'Column 2', width: 150 },
     { field: "m2used", headerName: "Area ocupada" },
     { field: "m3", headerName: "Altura promedio" },
     { field: "date", headerName: "Fecha" },
@@ -111,7 +108,12 @@ export default function Parcelas({ users }) {
       renderCell: (params) => (
         <Button
           className={`${style.buttonTable} ${style.redBack}`}
-          onClick={() => redirectUrl("plot", params)}
+          onClick={() => {
+            console.log(params);
+            router.push({
+              pathname: `/plot/${params.row.pid}`,
+            });
+          }}
         >
           Ver info.
         </Button>
@@ -126,7 +128,6 @@ export default function Parcelas({ users }) {
       ),
     },
   ];
-
   if (error) {
     return <div> failed to load</div>;
   }
