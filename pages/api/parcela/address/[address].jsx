@@ -9,7 +9,6 @@ export default async function handle(req, res) {
     });
     res.status(200).json(result);
   } catch (err) {
-    console.log(err);
     res.status(508).json({ err: "Error occured while adding a new food." });
   }
 }

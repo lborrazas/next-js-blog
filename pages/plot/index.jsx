@@ -14,6 +14,7 @@ import ParcelasGridViewer, {
 } from "../../components/pagesComponents/parcelasGridViewer";
 import ParcelasWidgetViewer from "../../components/pagesComponents/parcelasWidgetViewer";
 import useSWR from "swr";
+import { DashboardSkeleton } from "../../components/skeletons/DashboardSkeleton";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -23,14 +24,21 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-export default function Plot() {
+export default function Dashboard() {
   const user = useUser();
   const vmContract = useVmContract();
   const address = useAddress();
   const router = useRouter();
 
   function handleCLick() {
-    const parcela = new Parcela(1, 10, 20, 100, 40, 200);
+    const parcela = new Parcela(
+      "clerbc7s50000l5nkm288v8u5",
+      10,
+      20,
+      100,
+      40,
+      200
+    );
     router.push({
       pathname: `/plot/${parcela.id}`,
     });
@@ -44,13 +52,11 @@ export default function Plot() {
     address ? `/api/enhance/mytokens/${address}` : null,
     fetcher
   );
-  console.log(error);
-
   if (error) {
     return <div>failed to load</div>;
   }
   if (!data) {
-    return <div className="App">Loading...</div>;
+    return <DashboardSkeleton />;
   } else {
     return (
       <Box sx={{ flexGrow: 1 }}>

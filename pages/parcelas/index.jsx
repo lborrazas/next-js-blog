@@ -1,49 +1,37 @@
-import { useState, useEffect, useRef } from "react";
-
+import { useState, useEffect } from "react";
 import { useUser } from "../../contexts/AppContext";
-import {
-  useAddress,
-  useVmContract,
-  useWeb3,
-} from "../../blockchain/BlockchainContext";
+import { useAddress } from "../../blockchain/BlockchainContext";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import style from "./parcelas.module.css";
-import RedirectPage from "../../components/redirect/RedirectPage";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-
 import { DataGrid } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
-import { styled } from "@mui/material/styles";
+import { UpdatePlotSkeleton } from "../../components/skeletons/PlotSkeleton";
+import InfoIcon from "@mui/icons-material/Info";
+import IconButton from "@mui/material/IconButton";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { EditPlotDialog } from "../../components/dialog/EditPlotDialog";
+import { ViewPlotDialog } from "../../components/dialog";
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(3),
-  textAlign: "left",
-  color: theme.palette.text.secondary,
-}));
-
-export default function Parcelas({ users }) {
-  // TODO: es necesario definir todo esto? no se usa en ningun lado
-  const router = useRouter();
+export default function Parcelas() {
   const address = useAddress();
-  const web3 = useWeb3();
   const user = useUser();
-  const latitude = useRef();
-  const longitude = useRef();
-  const area = useRef();
-  const sliderRef = useRef();
-  const averageHeight = useRef();
-  const userOwner = useRef();
-  const vmContract = useVmContract();
-  const [errora, setError] = useState(null);
+  // TODO: get de los users
+  const users = [];
+
+  // TODO: setear el error para que no?
+  const [error, setError] = useState(null);
+  // TODO: esto no deberia existir
   const [rows, setRows] = useState();
   const [inputValue, setInputValue] = useState("");
+  const [selectedPlot, setSelectedPlot] = useState(undefined);
+  const [openEditDialog, setOpenEditDialog] = useState(false);
+  const [openViewDialog, setOpenViewDialog] = useState(false);
 
-  const shouldRedirect = !user;
   const fetcher = (url) => fetch(url).then((res) => res.json());
   let addressSend = address;
   let titleListView = "Lista de mis parcelas";
@@ -51,8 +39,8 @@ export default function Parcelas({ users }) {
     addressSend = "admin";
     titleListView = "Lista de todas las parcelas";
   }
-  const { data, error, isLoading } = useSWR(
-    address ? `/api/enhance/mytokens/${addressSend}` : null,
+  const { data, isLoading } = useSWR(
+    address ? `/api/enhance/mytokens/${addressSend}` : null, //todo arreglar (no tiene que ser 'admin'
     fetcher
   );
 
@@ -71,9 +59,9 @@ export default function Parcelas({ users }) {
     );
   };
 
-  function filterTable(event) {
+  function  filterTable(event) {
     setInputValue(event.target.value);
-    let newData = filterItems(event.target.value);
+    const newData = filterItems(event.target.value);
     setRows(newData);
   }
 
@@ -88,7 +76,30 @@ export default function Parcelas({ users }) {
     }
   }, [isLoading, data]);
 
-  // let rows = data;
+  const handleEditPlot = (plot) => {
+    setSelectedPlot(plot);
+    setOpenEditDialog(true);
+  };
+
+  const handleCloseEditDialog = () => {
+    setOpenEditDialog(false);
+    setSelectedPlot(undefined);
+  };
+
+  const handleViewPlotInfo = (plot) => {
+    setSelectedPlot(plot);
+    setOpenViewDialog(true);
+  };
+
+  const handleCloseViewDialog = () => {
+    setOpenViewDialog(false);
+    setSelectedPlot(undefined);
+  };
+
+  const handleDeletePlot = (params) => {
+    // TODO: delete plot
+    console.log(`TODO${params}`);
+  };
 
   const columns = [
     { field: "pid", headerName: "Id", width: 100 },
@@ -103,100 +114,94 @@ export default function Parcelas({ users }) {
     {
       field: "update",
       headerName: "Actualizar",
-      width: 125,
+      width: 80,
       renderCell: (params) => (
-        <button
-          className={`${style.buttonTable} ${style.greenBack}`}
-          onClick={() => redirectUrl("update", params)}
-        >
-          Actualizar
-        </button>
-      ),
-    },
-    {
-      field: "assign",
-      headerName: "Asignar",
-      width: 125,
-      renderCell: (params) => (
-        <button
-          className={`${style.buttonTable} ${style.blueBack}`}
-          onClick={() => redirectUrl("assign", params)}
-        >
-          Asignar
-        </button>
+        <IconButton color="primary" onClick={() => handleEditPlot(params.row)}>
+          <EditIcon />
+        </IconButton>
       ),
     },
     {
       field: "viewinfo",
-      headerName: "Ver info.",
-      width: 125,
+      headerName: "Información",
+      width: 90,
       renderCell: (params) => (
-        <button
-          className={`${style.buttonTable} ${style.redBack}`}
-          onClick={() => redirectUrl("info", params)}
+        <IconButton color="info"        
+          onClick={() => {
+            router.push({
+              pathname: `/plot/${params.row.pid}`,
+            });
+          }}
         >
-          Ver info.
-        </button>
+        <InfoIcon />
+        </IconButton>
+      ),
+    },
+    {
+      field: "borrar",
+      headerName: "Borrar",
+      width: 70,
+      renderCell: (params) => (
+        <IconButton color="error" onClick={() => handleDeletePlot(params)}>
+          <DeleteIcon />
+        </IconButton>
       ),
     },
   ];
-
-  if (errora) {
+  if (error) {
     return <div> failed to load</div>;
   }
-  if (!data || rows == undefined) {
-    return <div className="App">Loading...</div>;
-  } else {
-    return (
-      <Box sx={{ flexGrow: 1 }}>
-        {shouldRedirect ? (
-          <RedirectPage />
-        ) : (
-          <>
-            <Stack
-              direction="row"
-              alignItems="center"
-              justifyContent="space-between"
-              mb={5}
-            >
-              <Typography component="h1" variant="h4">
-                {titleListView}
-              </Typography>
-              <input
-                className={`${style.filterInput}`}
-                margin="normal"
-                value={inputValue}
-                id="filter"
-                label="Buscar"
-                placeholder="Buscar"
-                onChange={filterTable}
-                name="filter"
-              />
-            </Stack>
-            <Item
-              sx={{
-                height: "75vH",
-                borderColor: "primary.light",
-                "& .MuiDataGrid-cell:hover": {
-                  color: "primary.main",
-                },
-              }}
-            >
-              <DataGrid
-                rows={rows}
-                columns={columns}
-                pageSize={5}
-                rowsPerPageOptions={[5]}
-                getRowClassName={(params) =>
-                  params.indexRelativeToCurrentPage % 2 === 0
-                    ? `${style.odd}`
-                    : ""
-                }
-              />
-            </Item>
-          </>
-        )}
-      </Box>
-    );
+
+  if (!data || !rows) {
+    return <UpdatePlotSkeleton />;
   }
+
+  return (
+    <Box sx={{ height: "100%" }}>
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between"
+        mb={5}
+      >
+        <Typography component="h1" variant="h4">
+          {titleListView}
+        </Typography>
+        <input
+          className={`${style.filterInput}`}
+          value={inputValue}
+          id="filter"
+          placeholder="Buscar"
+          onChange={filterTable}
+          name="filter"
+        />
+      </Stack>
+      <Paper elevation={3} sx={{ padding: "30px", height: "100%" }}>
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          pageSize={20}
+          rowsPerPageOptions={[20]}
+          getRowClassName={(params) =>
+            params.indexRelativeToCurrentPage % 2 === 0 ? `${style.odd}` : ""
+          }
+        />
+      </Paper>
+      {selectedPlot && (
+        <>
+          <EditPlotDialog
+            open={openEditDialog}
+            handleClose={handleCloseEditDialog}
+            selectedPlot={selectedPlot}
+            users={users}
+          />
+          <ViewPlotDialog
+            open={openViewDialog}
+            handleClose={handleCloseViewDialog}
+            selectedPlot={selectedPlot}
+          />
+        </>
+      )}
+    </Box>
+  );
 }

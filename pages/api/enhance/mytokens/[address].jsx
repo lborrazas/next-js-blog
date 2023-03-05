@@ -2,10 +2,10 @@ const { PrismaClient } =  require("./../../../../node_modules/.prisma/client");
 const prisma = new PrismaClient();
 
 export default async function handle(req, res) {
-    const { address } = req.query;
-    if(address == 'admin'){
-        try{
-            const result = await prisma.$queryRaw`SELECT p.*, h.*
+  const { address } = req.query;
+  if (address === "admin") {
+    try {
+      const result = await prisma.$queryRaw`SELECT p.*, h.*
             FROM "Parcela" p
             LEFT JOIN (
               SELECT pid, MAX(date) AS max_date
@@ -51,27 +51,26 @@ export default async function handle(req, res) {
 
 
 
-    // try {
-    //     const parcelas = await prisma.parcela.findMany({where:
-    //         {address:address}
-    //         }
-    //     )
-    //     const post = await parcelas.map(async(parcela)=>{
-    //         const hist = await prisma.history.findMany({
-    //             orderBy:{date:'desc'},
-    //             take: 1,
-    //             where:{pid:parcela.id}
-    //         })
-    //         const token=Object.assign({}, parcela, hist[0]);
-    //         console.log(token)
-    //         return token
-    //     })
-    //     console.log('_____________________')
-    //     console.log(post)
-    //     res.status(200).json(post);
-    // }
-    // catch (err) {
-    //     console.log(err);
-    //     res.status(508).json({ err: "Error occured while adding a new food." });
-    // }
+  // try {
+  //     const parcelas = await prisma.parcela.findMany({where:
+  //         {address:address}
+  //         }
+  //     )
+  //     const post = await parcelas.map(async(parcela)=>{
+  //         const hist = await prisma.history.findMany({
+  //             orderBy:{date:'desc'},
+  //             take: 1,
+  //             where:{pid:parcela.id}
+  //         })
+  //         const token=Object.assign({}, parcela, hist[0]);
+  //         console.log(token)
+  //         return token
+  //     })
+  //
+  //     res.status(200).json(post);
+  // }
+  // catch (err) {
+  //     console.log(err);
+  //     res.status(508).json({ err: "Error occured while adding a new food." });
+  // }
 }

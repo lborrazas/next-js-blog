@@ -15,13 +15,14 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export default function DataGrid({ datos }) {
-  const total = 20;
   const title = "hola";
   return (
     <Grid paddingY="2vh" container rowSpacing={1} columnSpacing={2}>
       <Grid item xs={6}>
         <Item sx={{ height: "16vH" }}>
-          <Typography variant="h3">{fShortenNumber(total)}</Typography>
+          <Typography variant="h3">
+            {fShortenNumber(datos.percentage)}%
+          </Typography>
           <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
             {title}
           </Typography>
@@ -30,7 +31,7 @@ export default function DataGrid({ datos }) {
       <Grid item xs={6}>
         <Item sx={{ height: "16vH" }}>
           {" "}
-          <Typography variant="h3">{fShortenNumber(total)}</Typography>
+          <Typography variant="h3">{fShortenNumber(datos.m2)}</Typography>
           <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
             {title}
           </Typography>
@@ -39,7 +40,7 @@ export default function DataGrid({ datos }) {
       <Grid item xs={6}>
         <Item sx={{ height: "16vH" }}>
           {" "}
-          <Typography variant="h3">{fShortenNumber(total)}</Typography>
+          <Typography variant="h3">{fShortenNumber(datos.height)}</Typography>
           <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
             {title}
           </Typography>
@@ -47,7 +48,7 @@ export default function DataGrid({ datos }) {
       </Grid>
       <Grid item xs={6}>
         <Item sx={{ height: "16vH" }}>
-          <Typography variant="h3">{fShortenNumber(total)}</Typography>
+          <Typography variant="h3">{fShortenNumber(datos.total)}</Typography>
           <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
             {title}
           </Typography>

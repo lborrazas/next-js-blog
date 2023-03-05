@@ -3,16 +3,25 @@ import React from "react";
 import { useUser } from "../contexts/AppContext";
 import CssBaseline from "@mui/material/CssBaseline";
 
-export const siteTitle = "Next.js Sample Website";
+export const siteTitle = "IxaLab";
 import "./layout.module.css";
 
 export default function Layout({ children }) {
   const user = useUser();
 
+  if (!user) {
+    return (
+      <main>
+        <CssBaseline />
+        {children}
+      </main>
+    );
+  }
+
   return (
-    <main>
+    <>
       <CssBaseline />
-      {user ? <Sidebar> {children} </Sidebar> : <div>{children}</div>}
-    </main>
+      <Sidebar>{children}</Sidebar>
+    </>
   );
 }

@@ -14,6 +14,7 @@ import useSWR from "swr";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
 import RedirectPage from "../../components/redirect/RedirectPage";
+import { TransferSkeleton } from "../../components/skeletons/TransferSkeleton";
 
 export default function Transfer() {
   const [errorb, setError] = useState("");
@@ -55,11 +56,11 @@ export default function Transfer() {
   };
 
   async function transaccion() {
-    let max = await vmContract.methods.tokenCounter().call();
-    let tokens_temp = [];
-    let parcela_id = [];
+    const max = await vmContract.methods.tokenCounter().call();
+    const tokens_temp = [];
+    const parcela_id = [];
     for (let i = 0; i < max; i++) {
-      let parse = await vmContract.methods.tokenIdToParcelasIndex(i).call();
+      const parse = await vmContract.methods.tokenIdToParcelasIndex(i).call();
       if (
         Number(parse.latitud) === parcela.latitud &&
         Number(parse.longitud) === parcela.longitud
@@ -68,7 +69,6 @@ export default function Transfer() {
         parcela_id.push(i);
       }
     }
-    console.log("_________________________");
     // axios.post('/api/transfer',{body:{toAdd:forwardAddress,fromAdd:address,id:parcela_id[0]}})
     //await vmContract.methods.safeTransferFrom(address, forwardAddress, parcela_id[0]).send({ from: address })
     alert(
@@ -87,8 +87,6 @@ export default function Transfer() {
         // vs code por defecto no te las toma no, tenes que instalarle los plugins
         // para que sepa que hacer con eso
         //oice
-        console.log(res);
-        console.log("nanashe??");
         if (!res.data[0]) {
           setMess(`address is nor register on our database`);
           popUP();
@@ -117,13 +115,13 @@ export default function Transfer() {
     return <div>failed to load</div>;
   }
   if (!data) {
-    return <RedirectPage />;
+    return <TransferSkeleton />;
   } else {
     return (
       <div className={style.signupPage}>
         <div className={style.signupContainer}>
           <Typography component="h1" variant="h4">
-            IxaTesis
+            Transferir parcela
           </Typography>
           <Box
             component="form"

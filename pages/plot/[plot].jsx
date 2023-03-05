@@ -10,8 +10,11 @@ import Typography from "@mui/material/Typography";
 import ParcelasWidgetViewer from "../../components/pagesComponents/parcelasWidgetViewer";
 import Co2Graph from "../../components/pagesComponents/co2Graph";
 import DataGrid from "../../components/pagesComponents/dataGrid";
+import useSWR from "swr";
 
 const { PrismaClient } = require("./../../node_modules/.prisma/client");
+import { DashboardSkeleton } from "../../components/skeletons/DashboardSkeleton";
+
 const prisma = new PrismaClient();
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -23,13 +26,10 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export async function getServerSideProps(context) {
-  const data = context.query;
-  console.log(data);
   // Realiza una llamada a la API o base de datos para obtener los datos de la publicación con el ID correspondiente
   const parcela = await prisma.parcela.findMany({
     where: {
-      latitud: 1,
-      longitud: 1,
+      id: context.query.plot,
     },
   });
 
@@ -41,7 +41,7 @@ export async function getServerSideProps(context) {
 
   const aux = await prisma.history.findMany({
     where: {
-      pid: parcela.id,
+      pid: parcela[0].id,
     },
     orderBy: {
       date: "desc",
@@ -50,10 +50,6 @@ export async function getServerSideProps(context) {
   });
 
   const lastLog = JSON.parse(JSON.stringify(aux[0]));
-
-  // fetch(`https://mi-api.com/posts/${id}`).then(res => res.json());
-  //const parcela =JSON.parse(JSON.stringify(laparce))
-  // Devuelve los datos como propiedades para renderizar la página
 
   return {
     props: {
@@ -65,27 +61,28 @@ export async function getServerSideProps(context) {
 }
 
 export default function Plot({ parcela, lastLog, owner }) {
-  // const user = useUser();
-  // const vmContract = useVmContract();
-  // const address = useAddress();
-  // const router = useRouter();
+  const fetcher = (url) => fetch(url).then((res) => res.json());
+  const { data: data, error: error1 } = useSWR(
+    `/api/co2Data/Parcela/Anual/${parcela[0].id}`,
+    fetcher
+  );
+
+  const { data: total, error: error2 } = useSWR(
+    `/api/co2Data/Parcela/Total/${parcela[0].id}`,
+    fetcher
+  );
   parcela = parcela[0];
   owner = owner[0];
-  const datos = []; // todo  casos
-
-  //const fetcher = (url) => fetch(url).then((res) => res.json())
-  //const { data, error } = useSWR(`/api/getparcela`, fetcher({longitud:parcela.longitud,latitud:parcela.latitud}))
-  //console.log(error)
-
-  //if (error) {
-
-  //  return <div>failed to load</div>;}
-
-  if (!parcela) {
+  const actualData = {
+    percentage: `${lastLog.m2used}`,
+    m2: (`${lastLog.m2used}` / 100) * `${parcela.m2}`,
+    height: `${lastLog.m3}`,
+    total: `${total}`,
+  };
+  if (!data) {
     //if (false){
-    return <div className="App">Loading...</div>;
+    return <DashboardSkeleton />;
   } else {
-    console.log(parcela);
     return (
       <Box sx={{ flexGrow: 1 }}>
         <Stack
@@ -114,10 +111,10 @@ export default function Plot({ parcela, lastLog, owner }) {
                   <Typography variant="h5" gutterBottom>
                     CO2 Combatido
                   </Typography>
-                  <Co2Graph datos={datos} />
+                  <Co2Graph datos={data} />
                 </Grid>
                 <Grid item xs={12} md={5}>
-                  <DataGrid />
+                  <DataGrid datos={actualData} />
                 </Grid>
               </Grid>
             </Item>

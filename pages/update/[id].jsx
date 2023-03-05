@@ -1,11 +1,7 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 
 import { useUser } from "../../contexts/AppContext";
-import {
-  useAddress,
-  useVmContract,
-  useWeb3,
-} from "../../blockchain/BlockchainContext";
+import { useAddress, useVmContract } from "../../blockchain/BlockchainContext";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import style from "./update.module.css";
@@ -23,6 +19,7 @@ import Iconify from "../../components/iconify";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
+import { UpdatePlotSkeleton } from "../../components/skeletons/UpdatePlotSkeleton";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -32,10 +29,10 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-export default function Update({ users }) {
+// TODO: que son estos usuarios? no se usan
+export default function UpdatePlot({ users }) {
   const router = useRouter();
   const address = useAddress();
-  const web3 = useWeb3();
   const user = useUser();
   const latitude = useRef();
   const longitude = useRef();
@@ -45,13 +42,14 @@ export default function Update({ users }) {
   const userOwner = useRef();
   const vmContract = useVmContract();
 
-  const [errora, setError] = useState(null);
-
   const shouldRedirect = !user;
-  let id = router.query.id;
+  // TODO: este id se va
+  const id = "clef5scf80004f9fcn8gwd3vt";
   const fetcher = (url) => fetch(url).then((res) => res.json());
   const { data, error } = useSWR(id ? `/api/parcela/${id}` : null, fetcher);
   // body: {"latitude":1,"longitud":1}
+
+
 
   useEffect(() => {
     if (shouldRedirect) {
@@ -72,7 +70,7 @@ export default function Update({ users }) {
 
   const handleSave = async (e) => {
     e.preventDefault();
-    let a = await vmContract.methods
+    const a = await vmContract.methods
       .createCollectible(latitude.current.value, longitude.current.value)
       .send({ from: address });
     const parcela = {
@@ -85,7 +83,7 @@ export default function Update({ users }) {
       address: Number(userOwner.current.value),
     };
 
-    if (result.data == -1) {
+    if (result.data === -1) {
       alert("parcela already exist");
     } else {
       router.push("/home");
@@ -95,10 +93,11 @@ export default function Update({ users }) {
     return <div> failed to load</div>;
   }
   if (!data) {
-    return <div className="App">Loading...</div>;
+    return <UpdatePlotSkeleton />;
   } else {
     return (
       <Box sx={{ flexGrow: 1 }}>
+        {/* TODO: esta condicion tiene que irse */}
         {shouldRedirect ? (
           <RedirectPage />
         ) : (
@@ -110,7 +109,7 @@ export default function Update({ users }) {
               mb={5}
             >
               <Typography component="h1" variant="h4">
-                Actualizar informacón de la parcela
+                Actualizar información de la parcela
               </Typography>
               <Button
                 variant="contained"
