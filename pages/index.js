@@ -13,7 +13,7 @@ export default function Index() {
     if (shouldRedirectToLogin) {
       router.push("/login");
     } else {
-      router.push("home");
+      router.push("/home");
     }
   }, [shouldRedirectToLogin, router]);
 
