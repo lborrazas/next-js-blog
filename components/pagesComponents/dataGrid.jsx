@@ -15,7 +15,6 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export default function DataGrid({ datos }) {
-  console.log(datos);
   const title = "hola";
   return (
     <Grid paddingY="2vh" container rowSpacing={1} columnSpacing={2}>

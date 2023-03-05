@@ -38,7 +38,7 @@ export async function getServerSideProps(context) {
       address: parcela[0].address,
     },
   });
-  console.log(parcela);
+
   const aux = await prisma.history.findMany({
     where: {
       pid: parcela[0].id,
@@ -48,7 +48,6 @@ export async function getServerSideProps(context) {
     },
     take: 1,
   });
-  console.log(aux);
 
   const lastLog = JSON.parse(JSON.stringify(aux[0]));
 
@@ -74,7 +73,6 @@ export default function Plot({ parcela, lastLog, owner }) {
   );
   parcela = parcela[0];
   owner = owner[0];
-  console.log(lastLog);
   const actualData = {
     percentage: `${lastLog.m2used}`,
     m2: (`${lastLog.m2used}` / 100) * `${parcela.m2}`,
