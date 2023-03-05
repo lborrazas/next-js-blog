@@ -31,6 +31,8 @@ export default function Parcelas() {
   const [selectedPlot, setSelectedPlot] = useState(undefined);
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [openViewDialog, setOpenViewDialog] = useState(false);
+  const router = useRouter();
+
 
   const fetcher = (url) => fetch(url).then((res) => res.json());
   let addressSend = address;
