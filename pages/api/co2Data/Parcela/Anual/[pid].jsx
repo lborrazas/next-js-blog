@@ -32,7 +32,6 @@ function eventsToData(events) {
     }
     //caso cambio de mes
     if (event.date.getMonth() !== month) {
-      console.log(getMonthName(event.date.getMonth() - month));
       while (Math.abs(event.date.getMonth() - month) > 1) {
         month = month + 1;
         if (month === 12) month = 0;

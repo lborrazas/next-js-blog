@@ -1,41 +1,37 @@
-import { useState, useEffect, useRef } from "react";
-
+import { useState, useEffect } from "react";
 import { useUser } from "../../contexts/AppContext";
-import {
-  useAddress,
-} from "../../blockchain/BlockchainContext";
+import { useAddress } from "../../blockchain/BlockchainContext";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import style from "./parcelas.module.css";
-import RedirectPage from "../../components/redirect/RedirectPage";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import { DataGrid } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
-import { styled } from "@mui/material/styles";
 import { UpdatePlotSkeleton } from "../../components/skeletons/PlotSkeleton";
+import InfoIcon from "@mui/icons-material/Info";
+import IconButton from "@mui/material/IconButton";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { EditPlotDialog } from "../../components/dialog/EditPlotDialog";
+import { ViewPlotDialog } from "../../components/dialog";
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(3),
-  textAlign: "left",
-  color: theme.palette.text.secondary,
-}));
-
-// TODO: para que queres users? no se usa
-export default function Parcelas({ users }) {
-  const router = useRouter();
+export default function Parcelas() {
   const address = useAddress();
   const user = useUser();
+  // TODO: get de los users
+  const users = [];
+
   // TODO: setear el error para que no?
   const [error, setError] = useState(null);
+  // TODO: esto no deberia existir
   const [rows, setRows] = useState();
   const [inputValue, setInputValue] = useState("");
+  const [selectedPlot, setSelectedPlot] = useState(undefined);
+  const [openEditDialog, setOpenEditDialog] = useState(false);
+  const [openViewDialog, setOpenViewDialog] = useState(false);
 
-  const shouldRedirect = !user;
   const fetcher = (url) => fetch(url).then((res) => res.json());
   let addressSend = address;
   let titleListView = "Lista de mis parcelas";
@@ -44,7 +40,7 @@ export default function Parcelas({ users }) {
     titleListView = "Lista de todas las parcelas";
   }
   const { data, isLoading } = useSWR(
-    address ? `/api/enhance/mytokens/${addressSend}` : null,
+    address ? `/api/enhance/mytokens/${addressSend}` : null, //todo arreglar (no tiene que ser 'admin'
     fetcher
   );
 
@@ -63,126 +59,144 @@ export default function Parcelas({ users }) {
     );
   };
 
-  function filterTable(event) {
+  function  filterTable(event) {
     setInputValue(event.target.value);
     const newData = filterItems(event.target.value);
     setRows(newData);
   }
 
-  function redirectUrl(params, p) {
-    router.push(params + "/" + p.id);
-  }
-
+  // TODO: wtf?
   useEffect(() => {
     if (!isLoading) {
       setRows(data);
     }
   }, [isLoading, data]);
 
-  // let rows = data;
+  const handleEditPlot = (plot) => {
+    setSelectedPlot(plot);
+    setOpenEditDialog(true);
+  };
+
+  const handleCloseEditDialog = () => {
+    setOpenEditDialog(false);
+    setSelectedPlot(undefined);
+  };
+
+  const handleViewPlotInfo = (plot) => {
+    setSelectedPlot(plot);
+    setOpenViewDialog(true);
+  };
+
+  const handleCloseViewDialog = () => {
+    setOpenViewDialog(false);
+    setSelectedPlot(undefined);
+  };
+
+  const handleDeletePlot = (params) => {
+    // TODO: delete plot
+    console.log(`TODO${params}`);
+  };
 
   const columns = [
-    { field: "id", headerName: "Id" },
+    { field: "pid", headerName: "Id" },
     { field: "latitud", headerName: "Latitud" },
     { field: "longitud", headerName: "Longitud" },
     { field: "m2", headerName: "Metros cuadrados" },
     { field: "address", headerName: "Usuario" },
-    // { field: 'pid', headerName: 'Column 2', width: 150 },
     { field: "m2used", headerName: "Area ocupada" },
     { field: "m3", headerName: "Altura promedio" },
     { field: "date", headerName: "Fecha" },
     {
       field: "update",
       headerName: "Actualizar",
-      //width: 125,
+      width: 80,
       renderCell: (params) => (
-        <Button
-          className={`${style.buttonTable} ${style.greenBack}`}
-          onClick={() => redirectUrl("update", params)}
-        >
-          Actualizar
-        </Button>
+        <IconButton color="primary" onClick={() => handleEditPlot(params.row)}>
+          <EditIcon />
+        </IconButton>
       ),
     },
     {
       field: "viewinfo",
-      headerName: "Ver info.",
-      width: 125,
+      headerName: "Información",
+      width: 90,
       renderCell: (params) => (
-        <Button
-          className={`${style.buttonTable} ${style.redBack}`}
-          onClick={() => redirectUrl("plot", params)}
+        <IconButton color="info"        
+          onClick={() => {
+            router.push({
+              pathname: `/plot/${params.row.pid}`,
+            });
+          }}
         >
-          Ver info.
-        </Button>
+        <InfoIcon />
+        </IconButton>
       ),
     },
     {
       field: "borrar",
-      headerName: "Borrar.",
-      width: 125,
+      headerName: "Borrar",
+      width: 70,
       renderCell: (params) => (
-        <Button onClick={() => console.log(`TODO${params}`)}>Borrar</Button>
+        <IconButton color="error" onClick={() => handleDeletePlot(params)}>
+          <DeleteIcon />
+        </IconButton>
       ),
     },
   ];
-
   if (error) {
     return <div> failed to load</div>;
   }
+
   if (!data || !rows) {
     return <UpdatePlotSkeleton />;
-  } else {
-    return (
-      <Box sx={{ flexGrow: 1 }}>
-        {shouldRedirect ? (
-          <RedirectPage />
-        ) : (
-          <>
-            <Stack
-              direction="row"
-              alignItems="center"
-              justifyContent="space-between"
-              mb={5}
-            >
-              <Typography component="h1" variant="h4">
-                {titleListView}
-              </Typography>
-              <input
-                className={`${style.filterInput}`}
-                margin="normal"
-                value={inputValue}
-                id="filter"
-                label="Buscar"
-                placeholder="Buscar"
-                onChange={filterTable}
-                name="filter"
-              />
-            </Stack>
-            <Item
-              sx={{
-                height: "75vH",
-                borderColor: "primary.light",
-                "& .MuiDataGrid-cell:hover": {
-                  color: "primary.main",
-                },
-              }}
-            >
-              <DataGrid
-                rows={rows}
-                columns={columns}
-                pageSize={5}
-                rowsPerPageOptions={[5]}
-                getRowClassName={(params) =>
-                  params.indexRelativeToCurrentPage % 2 === 0
-                    ? `${style.odd}`
-                    : ""
-                }
-              />
-            </Item>
-          </>
-        )}
-      </Box>
-    );
   }
+
+  return (
+    <Box sx={{ height: "100%" }}>
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between"
+        mb={5}
+      >
+        <Typography component="h1" variant="h4">
+          {titleListView}
+        </Typography>
+        <input
+          className={`${style.filterInput}`}
+          value={inputValue}
+          id="filter"
+          placeholder="Buscar"
+          onChange={filterTable}
+          name="filter"
+        />
+      </Stack>
+      <Paper elevation={3} sx={{ padding: "30px", height: "100%" }}>
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          pageSize={20}
+          rowsPerPageOptions={[20]}
+          getRowClassName={(params) =>
+            params.indexRelativeToCurrentPage % 2 === 0 ? `${style.odd}` : ""
+          }
+        />
+      </Paper>
+      {selectedPlot && (
+        <>
+          <EditPlotDialog
+            open={openEditDialog}
+            handleClose={handleCloseEditDialog}
+            selectedPlot={selectedPlot}
+            users={users}
+          />
+          <ViewPlotDialog
+            open={openViewDialog}
+            handleClose={handleCloseViewDialog}
+            selectedPlot={selectedPlot}
+          />
+        </>
+      )}
+    </Box>
+  );
 }

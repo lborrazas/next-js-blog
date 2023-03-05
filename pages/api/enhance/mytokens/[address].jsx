@@ -3,7 +3,7 @@ const prisma = new PrismaClient();
 
 export default async function handle(req, res) {
   const { address } = req.query;
-  if (address == "admin") {
+  if (address === "admin") {
     try {
       const result = await prisma.$queryRaw`SELECT p.*, h.*
             FROM "Parcela" p
