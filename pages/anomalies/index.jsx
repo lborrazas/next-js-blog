@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useAddress, useVmContract } from "../../blockchain/BlockchainContext";
-
+import { BlockAnomalies } from "../../components/anomalies/BlockAnomalies";
 import { AnomalieSkeleton } from "../../components/skeletons/Anomalies";
 
 export default function HomePage() {
@@ -16,7 +16,7 @@ export default function HomePage() {
     for (let i = 0; i < max; i++) {
       const parse = await vmContract.methods.tokenIdToParcelasIndex(i).call();
       const owner = await vmContract.methods.ownerOf(i).call();
-      let parcela = { data: parse, owner: owner };
+      const parcela = { data: parse, owner: owner, id: i };
       plots.push(parcela);
     }
     return plots;
@@ -25,12 +25,12 @@ export default function HomePage() {
   async function fetchData() {
     // Fetch NFT data from your web3 contract
     const nftData = await allTokens();
-    console.log(nftData)  
-  
+    console.log(nftData);
+
     // Send NFT data to your Prisma database via an API
-    const anomalies = await axios.post("/api/anomalies",  nftData );
-    console.log(anomalies)
-    if (anomalies.data.inner[0] || anomalies.data.block[0] ) {
+    const anomalies = await axios.post("/api/anomalies", nftData);
+    console.log(anomalies);
+    if (anomalies.data.inner[0] || anomalies.data.block[0]) {
       setAnomalies(anomalies);
     } else {
       setAnomalies(anomalies);
@@ -39,7 +39,6 @@ export default function HomePage() {
     // Update state with the retrieved data
     setNfts(nftData);
     setLoading(false);
-    
   }
 
   useEffect(() => {
@@ -56,16 +55,7 @@ export default function HomePage() {
   return (
     <div>
       {/* Display your NFT data here */}
-      <ul>
-        {anomalies.data.inner.map((nft) => (
-          <li key={nft.id}>{nft.name}</li>
-        ))}
-      </ul>
-      <ul>
-        {anomalies.data.block.map((nft) => (
-          <li key={nft.owner}>Latitud:{nft.data.latitud}  Longitud:{nft.data.longitud} Address:{nft.owner}</li>
-        ))}
-      </ul>
+      <BlockAnomalies data={anomalies.data}></BlockAnomalies>
     </div>
   );
 }
