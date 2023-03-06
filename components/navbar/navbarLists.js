@@ -5,6 +5,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import GrassIcon from "@mui/icons-material/Grass";
 import SyncAltIcon from "@mui/icons-material/SyncAlt";
 import AppsIcon from "@mui/icons-material/Apps";
+import BugReportRoundedIcon from '@mui/icons-material/BugReportRounded';
 
 export const navItems = [
   { Name: "Inicio", Icon: HomeIcon, Url: "/home" },
@@ -15,4 +16,5 @@ export const navItems = [
   { Name: "Lista de parcelas", Icon: AppsIcon, Url: "/parcelas" },
   { Name: "Metricas", Icon: AutoGraphIcon, Url: "" },
   { Name: "Transfer", Icon: SyncAltIcon, Url: "/transfer" },
+  { Name: "Anomalies", Icon: BugReportRoundedIcon, Url: "/anomalies" },
 ];
