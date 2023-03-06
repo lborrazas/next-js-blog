@@ -17,7 +17,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
-export const PlotForm = ({ selectedPlot, handleClose ,users }) => {
+export const PlotForm = ({ selectedPlot, handleClose, users }) => {
   const router = useRouter();
   const vmContract = useVmContract();
 
@@ -29,7 +29,7 @@ export const PlotForm = ({ selectedPlot, handleClose ,users }) => {
     setOpen(true);
   };
 
-  const handleClose = () => {
+  const handleClosein = () => {
     setOpen(false);
   };
 
@@ -39,13 +39,12 @@ export const PlotForm = ({ selectedPlot, handleClose ,users }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = new FormData(e.currentTarget);
+    const data = new FormData(document.getElementById("submitid"));
     let plot;
     let url;
     if (!selectedPlot) {
       url = "/api/parcelacreate";
       plot = {
-       
         latitud: data.get("latitude"),
         longitud: data.get("longitude"),
         m2: data.get("area"),
@@ -54,6 +53,34 @@ export const PlotForm = ({ selectedPlot, handleClose ,users }) => {
         m3: +data.get("average-height"),
         address: owner.address,
       };
+      if (
+        data.get("average-height") &&
+        data.get("latitude") &&
+        data.get("longitude") &&
+        data.get("area") &&
+        data.get("area-used") &&
+        owner.address
+      ) {
+        console.log(plot);
+        const result = await axios.post(url, plot);
+        // TODO: como que -2 ??????????????
+        if (result.data === -1) {
+          alert("parcela already exist"); //TODO ALERT POR ALGO MAS LINDO SI SACAN EL ALERT SAQUEN EL SET OPEN A MENOS QUE PONDAN EL MENSAJE FUERA DEL DIALOG
+          setOpen(false); // YO NO ME ENCARGO DEL MANEJOD E ERROES
+        } else {
+          if (!selectedPlot) {
+            // TODO: esto se deberia usar en algun lado?
+            const a = await vmContract.methods
+              .createCollectible(plot.longitud, plot.latitud)
+              .send({ from: plot.address });
+            await router.push("/home");
+          }
+          setOpen(false);
+        }
+      } else {
+        alert("campos vacios");
+        setOpen(false);
+      }
     } else {
       url = "/api/parcelaupdate";
       plot = {
@@ -62,26 +89,35 @@ export const PlotForm = ({ selectedPlot, handleClose ,users }) => {
         m3: +data.get("average-height"),
         address: selectedPlot.address,
       };
-    }
-    console.log(plot)
-    const result = await axios.post(url, plot);
-    // TODO: como que -2 ??????????????
-    if (result.data === -1) {
-      alert("parcela already exist");
-    } else {
-      if (!selectedPlot) {
-        // TODO: esto se deberia usar en algun lado?
-        const a = await vmContract.methods
-          .createCollectible(plot.longitud, plot.latitud)
-          .send({ from: plot.address });
-        await router.push("/home");
+      console.log(plot);
+      const result = await axios.post(url, plot);
+      // TODO: como que -2 ??????????????
+      if (result.data === -1) {
+        alert("parcela already exist");
+      } else {
+        if (!selectedPlot) {
+          // TODO: esto se deberia usar en algun lado?
+          const a = await vmContract.methods
+            .createCollectible(plot.longitud, plot.latitud)
+            .send({ from: plot.address });
+          await router.push("/home");
+        }
+      }
+
+      {
+        handleClose();
       }
     }
-    {handleClose()};
   };
 
   return (
-    <Grid container component="form" onSubmit={handleSubmit } spacing={1}>
+    <Grid
+      container
+      component="form"
+      onSubmit={handleSubmit}
+      spacing={1}
+      id="submitid"
+    >
       <Grid item xs={12}>
         <InputLabel id="owner-select">Dueño</InputLabel>
         <Select
@@ -206,7 +242,7 @@ export const PlotForm = ({ selectedPlot, handleClose ,users }) => {
               </DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleClose}>Disagree</Button>
+              <Button onClick={handleClosein}>Disagree</Button>
               <Button onClick={handleSubmit} variant="contained" autoFocus>
                 Agree
               </Button>
