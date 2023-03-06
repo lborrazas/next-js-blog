@@ -1,14 +1,15 @@
-const { PrismaClient } = require("./../../node_modules/.prisma/client");
+const { PrismaClient } = require(".prisma/client");
 const prisma = new PrismaClient();
 
 export default async function handle(req, res) {
   const data = req.body;
+  console.log(data)
   const parcela = {
     data: {
       address: data.address,
-      latitud: data.latitud,
-      longitud: data.longitud,
-      m2: data.m2,
+      latitud: Number(data.latitud),
+      longitud: Number(data.longitud),
+      m2: Number(data.m2),
     },
   };
 

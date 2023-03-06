@@ -3,6 +3,7 @@ import { PlotForm } from "../plot/PlotForm";
 import Box from "@mui/material/Box";
 
 export const EditPlotDialog = ({ open, handleClose, users, selectedPlot }) => {
+  console.log(selectedPlot)
   return (
     <Dialog
       open={open}
