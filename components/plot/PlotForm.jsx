@@ -17,7 +17,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
-export const PlotForm = ({ selectedPlot, users }) => {
+export const PlotForm = ({ selectedPlot, handleClose ,users }) => {
   const router = useRouter();
   const vmContract = useVmContract();
 
@@ -39,38 +39,54 @@ export const PlotForm = ({ selectedPlot, users }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("ENTRO");
-    console.log(e.currentTarget);
-    
-    const data = new FormData(document.getElementById('submitgrid'));
-    const plot = {
-      address: owner.address,
-      latitud: data.get("latitude"),
-      longitud: data.get("longitude"),
-      m2: data.get("area"),
-      m2used: data.get("area-used"),
-      // TODO: wtf esta propiedad, m3?
-      m3: data.get("average-height"),
-    };
-    const result = await axios.post("/api/parcelacreate", plot);
-    console.log(result)
+    const data = new FormData(e.currentTarget);
+    let plot;
+    let url;
+    if (!selectedPlot) {
+      url = "/api/parcelacreate";
+      plot = {
+       
+        latitud: data.get("latitude"),
+        longitud: data.get("longitude"),
+        m2: data.get("area"),
+        m2used: +data.get("area-used"),
+        // TODO: wtf esta propiedad, m3?
+        m3: +data.get("average-height"),
+        address: owner.address,
+      };
+    } else {
+      url = "/api/parcelaupdate";
+      plot = {
+        pid: selectedPlot.id,
+        m2used: +data.get("area-used"),
+        m3: +data.get("average-height"),
+        address: selectedPlot.address,
+      };
+    }
+    console.log(plot)
+    const result = await axios.post(url, plot);
     // TODO: como que -2 ??????????????
     if (result.data === -1) {
       alert("parcela already exist");
     } else {
-      // TODO: esto se deberia usar en algun lado?
-      //const a = await vmContract.methods
-       // .createCollectible(plot.longitud, plot.latitud)
-      //  .send({ from: plot.address });
-      //await router.push("/home");
+      if (!selectedPlot) {
+        // TODO: esto se deberia usar en algun lado?
+        const a = await vmContract.methods
+          .createCollectible(plot.longitud, plot.latitud)
+          .send({ from: plot.address });
+        await router.push("/home");
+      }
     }
+    {handleClose()};
   };
 
   return (
-    <Grid container component="form" onSubmit={handleSubmit} spacing={1} id='submitgrid'>
+    <Grid container component="form" onSubmit={handleSubmit } spacing={1}>
       <Grid item xs={12}>
         <InputLabel id="owner-select">Dueño</InputLabel>
         <Select
+          defaultValue={selectedPlot ? selectedPlot.userName : ""}
+          disabled={!!selectedPlot}
           labelId="owner-select"
           value={owner}
           fullWidth
@@ -79,6 +95,11 @@ export const PlotForm = ({ selectedPlot, users }) => {
           onChange={handleChangeOwner}
           required
         >
+          {selectedPlot && (
+            <MenuItem key={selectedPlot.userName} value={selectedPlot.userName}>
+              {selectedPlot.userName}
+            </MenuItem>
+          )}
           {users?.map((user) => (
             <MenuItem key={user.id} value={user}>
               {user.name}
@@ -88,6 +109,7 @@ export const PlotForm = ({ selectedPlot, users }) => {
       </Grid>
       <Grid item xs={6}>
         <TextField
+          disabled={!!selectedPlot}
           defaultValue={selectedPlot ? selectedPlot.latitud : ""}
           id="latitude"
           label="Latitud"
@@ -98,6 +120,7 @@ export const PlotForm = ({ selectedPlot, users }) => {
       </Grid>
       <Grid item xs={6}>
         <TextField
+          disabled={!!selectedPlot}
           defaultValue={selectedPlot ? selectedPlot.longitud : ""}
           required
           fullWidth
@@ -120,6 +143,7 @@ export const PlotForm = ({ selectedPlot, users }) => {
       </Grid>
       <Grid item xs={6} md={3}>
         <TextField
+          disabled={!!selectedPlot}
           defaultValue={selectedPlot ? selectedPlot.m2 : ""}
           required
           fullWidth

@@ -15,12 +15,10 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { EditPlotDialog } from "../../components/dialog/EditPlotDialog";
-import { ViewPlotDialog } from "../../components/dialog";
 
 export default function Parcelas() {
   const address = useAddress();
   const user = useUser();
-  const router = useRouter();
   // TODO: get de los users
   const users = [];
 
@@ -31,8 +29,7 @@ export default function Parcelas() {
   const [inputValue, setInputValue] = useState("");
   const [selectedPlot, setSelectedPlot] = useState(undefined);
   const [openEditDialog, setOpenEditDialog] = useState(false);
-  const [openViewDialog, setOpenViewDialog] = useState(false);
-
+  const router = useRouter();
 
 
   const fetcher = (url) => fetch(url).then((res) => res.json());
@@ -72,7 +69,6 @@ export default function Parcelas() {
     console.log(params);
     router.push(params + "/" + p.row.pid);
   }
-
   useEffect(() => {
     if (!isLoading) {
       setRows(data);
@@ -86,16 +82,6 @@ export default function Parcelas() {
 
   const handleCloseEditDialog = () => {
     setOpenEditDialog(false);
-    setSelectedPlot(undefined);
-  };
-
-  const handleViewPlotInfo = (plot) => {
-    setSelectedPlot(plot);
-    setOpenViewDialog(true);
-  };
-
-  const handleCloseViewDialog = () => {
-    setOpenViewDialog(false);
     setSelectedPlot(undefined);
   };
 
@@ -129,8 +115,7 @@ export default function Parcelas() {
       headerName: "Información",
       width: 90,
       renderCell: (params) => (
-        <IconButton
-          color="info"
+        <IconButton color="info"
           onClick={() => {
             router.push({
               pathname: `/plot/${params.row.pid}`,
@@ -192,19 +177,12 @@ export default function Parcelas() {
         />
       </Paper>
       {selectedPlot && (
-        <>
-          <EditPlotDialog
-            open={openEditDialog}
-            handleClose={handleCloseEditDialog}
-            selectedPlot={selectedPlot}
-            users={users}
-          />
-          <ViewPlotDialog
-            open={openViewDialog}
-            handleClose={handleCloseViewDialog}
-            selectedPlot={selectedPlot}
-          />
-        </>
+        <EditPlotDialog
+          open={openEditDialog}
+          handleClose={handleCloseEditDialog}
+          selectedPlot={selectedPlot}
+          users={users}
+        />
       )}
     </Box>
   );
