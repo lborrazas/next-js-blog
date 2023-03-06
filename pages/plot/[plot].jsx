@@ -1,6 +1,7 @@
 // import { useUser } from "../../contexts/AppContext";
 // import { useAddress, useVmContract } from "../../blockchain/BlockchainContext";
 // import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
@@ -11,6 +12,7 @@ import Co2Graph from "../../components/pagesComponents/co2Graph";
 import DataGrid from "../../components/pagesComponents/dataGrid";
 import useSWR from "swr";
 import { DashboardSkeleton } from "../../components/skeletons/DashboardSkeleton";
+import { EditPlotDialog } from "../../components/dialog/EditPlotDialog";
 
 const { PrismaClient } = require("./../../node_modules/.prisma/client");
 
@@ -52,11 +54,14 @@ export async function getServerSideProps(context) {
 }
 
 export default function Plot({ parcela, lastLog, owner }) {
+  const [openEditDialog, setOpenEditDialog] = useState(false);
   const fetcher = (url) => fetch(url).then((res) => res.json());
   const { data: data, error: error1 } = useSWR(
     `/api/co2Data/Parcela/Anual/${parcela[0].id}`,
     fetcher
   );
+  console.log(lastLog);
+  console.log(owner);
 
   const { data: total, error: error2 } = useSWR(
     `/api/co2Data/Parcela/Total/${parcela[0].id}`,
@@ -70,76 +75,107 @@ export default function Plot({ parcela, lastLog, owner }) {
     height: `${lastLog.m3}`,
     total: `${total}`,
   };
+  const actualPlot = {
+    latitud: parcela.latitud,
+    longitud: parcela.longitud,
+    m2: parcela.m2,
+    m2used: lastLog.m2used,
+    m3: lastLog.m3,
+    pid: lastLog.pid,
+    userName: owner.name  ,
+  };
+  const handleEditPlot = (plot) => {
+    setOpenEditDialog(true);
+  };
+
+  const handleCloseEditDialog = () => {
+    setOpenEditDialog(false);
+  };
+
   if (!data) {
     //if (false){
     return <DashboardSkeleton />;
   } else {
     return (
-      <Grid container spacing={2}>
-        <Grid item xs={8}>
-          <Box>
-            <Typography variant="h4" gutterBottom>
-              {`Parcela ${parcela.latitud} : ${parcela.longitud}`}
-            </Typography>
-            <Typography variant="h5" gutterBottom>
-              {`Dueño ${owner.name}`}
-            </Typography>
-          </Box>
-        </Grid>
-        <Grid item xs={4} sx={{ display: "flex", justifyContent: "end" }}>
-          <Button id="actualizar" variant="contained">
-            Actualizar
-          </Button>
-        </Grid>
+      <Box sx={{ height: "100%" }}>
         <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <Paper elevation={3} sx={{ padding: "30px" }}>
-              <Grid container spacing={2}>
-                <Grid item sm={12} md={7}>
-                  <Typography variant="h5" gutterBottom>
-                    CO2 Combatido
-                  </Typography>
-                  <Co2Graph datos={data} />
+          <Grid item xs={8}>
+            <Box>
+              <Typography variant="h4" gutterBottom>
+                {`Parcela ${parcela.latitud} : ${parcela.longitud}`}
+              </Typography>
+              <Typography variant="h5" gutterBottom>
+                {`Dueño ${owner.name}`}
+              </Typography>
+            </Box>
+          </Grid>
+          <Grid item xs={4} sx={{ display: "flex", justifyContent: "end" }}>
+            <Button
+              id="actualizar"
+              variant="contained"
+              onClick={() => handleEditPlot()}
+            >
+              Actualizar
+            </Button>
+          </Grid>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <Paper elevation={3} sx={{ padding: "30px" }}>
+                <Grid container spacing={2}>
+                  <Grid item sm={12} md={7}>
+                    <Typography variant="h5" gutterBottom>
+                      CO2 Combatido
+                    </Typography>
+                    <Co2Graph datos={data} />
+                  </Grid>
+                  <Grid item sm={12} md={5}>
+                    <DataGrid datos={actualData} />
+                  </Grid>
                 </Grid>
-                <Grid item sm={12} md={5}>
-                  <DataGrid datos={actualData} />
-                </Grid>
-              </Grid>
-            </Paper>
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <ParcelasWidgetViewer
-              title="Total de Parcelas"
-              total={31}
-              icon="material-symbols:token"
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <ParcelasWidgetViewer
-              title="Co2"
-              total={492}
-              color="info"
-              icon="mdi:molecule-co2"
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <ParcelasWidgetViewer
-              title="Plantas Nuevas"
-              total={43}
-              color="warning"
-              icon="game-icons:plant-seed"
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <ParcelasWidgetViewer
-              title="Ver Todos"
-              total={100}
-              color="error"
-              icon="ic:baseline-remove-red-eye"
-            />
+              </Paper>
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <ParcelasWidgetViewer
+                title="Total de Parcelas"
+                total={31}
+                icon="material-symbols:token"
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <ParcelasWidgetViewer
+                title="Co2"
+                total={492}
+                color="info"
+                icon="mdi:molecule-co2"
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <ParcelasWidgetViewer
+                title="Plantas Nuevas"
+                total={43}
+                color="warning"
+                icon="game-icons:plant-seed"
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <ParcelasWidgetViewer
+                title="Ver Todos"
+                total={100}
+                color="error"
+                icon="ic:baseline-remove-red-eye"
+              />
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
+        {parcela && (
+          <EditPlotDialog
+            open={openEditDialog}
+            handleClose={handleCloseEditDialog}
+            selectedPlot={actualPlot}
+            users={[]}
+          />
+        )}
+      </Box>
     );
   }
 }

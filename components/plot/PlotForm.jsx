@@ -21,7 +21,7 @@ export const PlotForm = ({ selectedPlot, handleClose, users }) => {
   const router = useRouter();
   const vmContract = useVmContract();
 
-  const [owner, setOwner] = useState("");
+  const [owner, setOwner] = useState(selectedPlot ? selectedPlot.userName : "");
 
   const [open, setOpen] = React.useState(false);
 
@@ -61,7 +61,6 @@ export const PlotForm = ({ selectedPlot, handleClose, users }) => {
         data.get("area-used") &&
         owner.address
       ) {
-        console.log(plot);
         const result = await axios.post(url, plot);
         // TODO: como que -2 ??????????????
         if (result.data === -1) {
@@ -89,7 +88,6 @@ export const PlotForm = ({ selectedPlot, handleClose, users }) => {
         m3: +data.get("average-height"),
         address: selectedPlot.address,
       };
-      console.log(plot);
       const result = await axios.post(url, plot);
       // TODO: como que -2 ??????????????
       if (result.data === -1) {
@@ -136,11 +134,12 @@ export const PlotForm = ({ selectedPlot, handleClose, users }) => {
               {selectedPlot.userName}
             </MenuItem>
           )}
-          {users?.map((user) => (
-            <MenuItem key={user.id} value={user}>
-              {user.name}
-            </MenuItem>
-          ))}
+          {!selectedPlot &&
+            users?.map((user) => (
+              <MenuItem key={user.id} value={user}>
+                {user.name}
+              </MenuItem>
+            ))}
         </Select>
       </Grid>
       <Grid item xs={6}>
@@ -233,9 +232,7 @@ export const PlotForm = ({ selectedPlot, handleClose, users }) => {
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
           >
-            <DialogTitle id="alert-dialog-title">
-              {"Create Parcela"}
-            </DialogTitle>
+            <DialogTitle id="alert-dialog-title">Create Parcela</DialogTitle>
             <DialogContent>
               <DialogContentText id="alert-dialog-description">
                 Continuar con la creación de la parcela?
