@@ -25,31 +25,34 @@ const InformationItem = ({ value, description }) => {
 };
 
 export default function DataGrid({ datos }) {
-  const title = "hola";
+  const areaOcupadaTitlte = "Area ocupada";
+  const m2ocuppedtitle = "Metros cuadrados ocupados";
+  const alturaTitle = "Metros de altura promedio";
+  const co2title = "CO2 Absorbido";
   return (
     <Grid paddingY="2vh" container rowSpacing={1} columnSpacing={2}>
       <Grid item xs={6}>
         <InformationItem
           value={`${fShortenNumber(datos.percentage)}%`}
-          description={title}
+          description={areaOcupadaTitlte}
         />
       </Grid>
       <Grid item xs={6}>
         <InformationItem
-          value={`${fShortenNumber(datos.m2)}%`}
-          description={title}
+          value={`${fShortenNumber(datos.m2)}`}
+          description={m2ocuppedtitle}
         />
       </Grid>
       <Grid item xs={6}>
         <InformationItem
-          value={`${fShortenNumber(datos.height)}%`}
-          description={title}
+          value={`${fShortenNumber(datos.height)}`}
+          description={alturaTitle}
         />
       </Grid>
       <Grid item xs={6}>
         <InformationItem
-          value={`${fShortenNumber(datos.total)}%`}
-          description={title}
+          value={`${fShortenNumber(datos.total)}`}
+          description={co2title}
         />
       </Grid>
     </Grid>

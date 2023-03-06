@@ -18,10 +18,13 @@ import Typography from "@mui/material/Typography";
 import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
 import Iconify from "../../components/iconify";
+import InfoIcon from "@mui/icons-material/Info";
+import IconButton from "@mui/material/IconButton";
 
 import { DataGrid } from '@mui/x-data-grid';
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
+import { da } from "date-fns/locale";
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -90,9 +93,21 @@ export default function home({ users }) {
     { field: 'address', headerName: 'Address', width: 400 },
     { field: 'isAdmin', headerName: 'Admin?', width: 90 },
     {
-      field: 'viewinfo', headerName: 'Ver info.', width: 125, renderCell: (params) => (
-        <button className={`${style.buttonTable} ${style.redBack}`} onClick={() => redirectUrl('info', params)}>Ver info.</button>
-      )
+      field: "viewinfo",
+      headerName: "Información",
+      width: 110,
+      renderCell: (params) => (
+        <IconButton
+          color="info"
+          onClick={() => {
+            router.push({
+              pathname: `/plot/${params.row.pid}`,
+            });
+          }}
+        >
+          <InfoIcon />
+        </IconButton>
+      ),
     },
   ];
 

@@ -14,7 +14,17 @@ import useSWR from "swr";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
 import RedirectPage from "../../components/redirect/RedirectPage";
+import Paper from "@mui/material/Paper";
+import { styled } from "@mui/material/styles";
 import { TransferSkeleton } from "../../components/skeletons/TransferSkeleton";
+
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+  ...theme.typography.body2,
+  padding: theme.spacing(5),
+  textAlign: "left",
+  color: theme.palette.text.secondary,
+}));
 
 export default function Transfer() {
   const [errorb, setError] = useState("");
@@ -118,7 +128,7 @@ export default function Transfer() {
     return <TransferSkeleton />;
   } else {
     return (
-      <div className={style.signupPage}>
+      <Item className={style.signupPage}>
         <div className={style.signupContainer}>
           <Typography component="h1" variant="h4">
             Transferir parcela
@@ -187,7 +197,7 @@ export default function Transfer() {
 
           {errorb && <Typography variant="body2">{errorb}</Typography>}
         </div>
-      </div>
+      </Item>
     );
   }
 }

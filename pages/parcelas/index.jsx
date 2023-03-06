@@ -58,6 +58,10 @@ export default function Parcelas() {
         el.longitud
           .toString()
           .toLowerCase()
+          .indexOf(query.toString().toLowerCase()) > -1 ||
+        el.userName
+          .toString()
+          .toLowerCase()
           .indexOf(query.toString().toLowerCase()) > -1
     );
   };
@@ -105,7 +109,7 @@ export default function Parcelas() {
   };
 
   const columns = [
-    { field: "pid", headerName: "Id", width: 100 },
+    { field: "pid", headerName: "Id", width: 200 },
     { field: "latitud", headerName: "Latitud", width: 90 },
     { field: "longitud", headerName: "Longitud", width: 100 },
     { field: "m2", headerName: "Metros cuadrados", width: 150 },
@@ -113,11 +117,11 @@ export default function Parcelas() {
     // { field: 'pid', headerName: 'Column 2', width: 150 },
     { field: "m2used", headerName: "Area ocupada", width: 110 },
     { field: "m3", headerName: "Altura promedio", width: 120 },
-    { field: "date", headerName: "Fecha", width: 120 },
+    { field: "date", headerName: "Fecha", width: 220 },
     {
       field: "update",
       headerName: "Actualizar",
-      width: 80,
+      width: 100,
       renderCell: (params) => (
         <IconButton color="primary" onClick={() => handleEditPlot(params.row)}>
           <EditIcon />
@@ -127,7 +131,7 @@ export default function Parcelas() {
     {
       field: "viewinfo",
       headerName: "Información",
-      width: 90,
+      width: 110,
       renderCell: (params) => (
         <IconButton
           color="info"
@@ -144,7 +148,7 @@ export default function Parcelas() {
     {
       field: "borrar",
       headerName: "Borrar",
-      width: 70,
+      width: 100,
       renderCell: (params) => (
         <IconButton color="error" onClick={() => handleDeletePlot(params)}>
           <DeleteIcon />

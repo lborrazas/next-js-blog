@@ -40,6 +40,7 @@
 
 .filterInput{
     height: 30px;
+    width: 250px;
     border-radius: 2px;
     border: 1px solid rgb(188, 188, 188);
     padding-inline: 7px;
