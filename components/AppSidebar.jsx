@@ -19,7 +19,6 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import { useState } from "react";
 import { navItems } from "./navbar/navbarLists";
-import { redirect } from "next/navigation";
 import { useRouter } from "next/router";
 import CssBaseline from "@mui/material/CssBaseline";
 

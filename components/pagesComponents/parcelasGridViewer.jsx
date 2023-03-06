@@ -4,6 +4,13 @@ import { Stack } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import TokenIcon from "@mui/icons-material/Token";
+import styled from "@emotion/styled";
+
+const GeographicAreaItem = styled("div")({
+  display: "flex",
+  flexDirection: "row",
+  alignItems: "center",
+});
 
 export class Parcela {
   constructor(id, latitud, longitud, m2, m2used, m3) {
@@ -83,36 +90,31 @@ export const parcelas = [
 ];
 
 export default function ParcelasGridViewer({ tokens }) {
+  const valuesHarcoded = [
+    { color: "red", text: "0-10%" },
+    { color: "orange", text: "11-30%" },
+    { color: "yellowgreen", text: "31-80%" },
+    { color: "green", text: "81-100%" },
+  ];
+
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12} md={4}>
+      <Grid item xs={12} sm={4} md={3}>
         <Typography variant="h5" gutterBottom>
           Area geográfica
         </Typography>
-        <Stack spacing={0} sx={{ paddingX: 10, pr: 0 }}>
-          {[
-            { color: "red", text: "0 - 10%" },
-            { color: "orange", text: "11 - 30%" },
-            { color: "yellowgreen", text: "31 - 80%" },
-            { color: "green", text: "81 - 100%" },
-          ].map(({ color, text }) => (
-            <Stack key={`${color}${text}`} direction="row">
-              <Box bgcolor={color} width={"50px"} height={"50px"} />
-              <Box
-                paddingX="20px"
-                paddingY="20px"
-                textAlign="left"
-                width={"100%"}
-                height={"60px"}
-              >
-                {" "}
-                {text}{" "}
+        <Stack spacing={2}>
+          {valuesHarcoded.map(({ color, text }) => (
+            <GeographicAreaItem key={`${color}${text}`}>
+              <Box bgcolor={color} width="50px" height="50px" />
+              <Box sx={{ paddingX: "10px" }}>
+                <Typography variant="description">{text} </Typography>
               </Box>
-            </Stack>
+            </GeographicAreaItem>
           ))}
         </Stack>
       </Grid>
-      <Grid item xs={12} md={8}>
+      <Grid item xs={12} sm={8} md={9}>
         <Box paddingX="90px" textAlign="left">
           {
             tokens.map((parcela) => (

@@ -57,6 +57,17 @@ export default function UpdatePlot({ users }) {
     }
   }, [shouldRedirect, router]);
 
+  function updateHistory(){
+    let history = {
+      "id": data[0].id,
+      "m2used": data[0].m2used,
+      "m3": data[0].m3,
+      "address": data[0].address,
+    }
+    console.log(history);
+    // const { data, error } = useSWR(id ? `/api/parcelaupdate` : history, fetcher);
+  }
+
   const handleSave = async (e) => {
     e.preventDefault();
     const a = await vmContract.methods
@@ -197,6 +208,7 @@ export default function UpdatePlot({ users }) {
                   <Button
                     type="submit"
                     fullWidth
+                    onClick={() => updateHistory()}
                     variant="contained"
                     sx={{
                       mt: 3,

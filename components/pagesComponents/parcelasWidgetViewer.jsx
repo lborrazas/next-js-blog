@@ -1,6 +1,6 @@
 // @mui
 import PropTypes from "prop-types";
-import { alpha, styled, useTheme } from "@mui/material/styles";
+import { alpha, styled } from "@mui/material/styles";
 import { Card, Typography } from "@mui/material";
 // utils
 import { fShortenNumber } from "../../utils/formatNumber";
@@ -62,9 +62,7 @@ export default function ParcelasWidgetViewer({
       >
         <Iconify icon={icon} width={36} height={36} />
       </StyledIcon>
-
       <Typography variant="h3">{fShortenNumber(total)}</Typography>
-
       <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
         {title}
       </Typography>

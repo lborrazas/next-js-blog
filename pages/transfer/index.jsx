@@ -129,7 +129,7 @@ export default function Transfer() {
             noValidate
             sx={{ mt: 1 }}
           >
-            <InputLabel id="">Parcela</InputLabel>
+            <InputLabel id="parcela">Parcela</InputLabel>
             <Select
               labelId="parcelas"
               id="parcela"
@@ -137,6 +137,7 @@ export default function Transfer() {
               value={parcela}
               label="parcela"
               onChange={handleChange}
+              fullWidth
             >
               {
                 data.map((parcela) => (
@@ -151,12 +152,12 @@ export default function Transfer() {
             </Select>
             <TextField
               margin="normal"
-              required
-              fullWidth
               id="address"
               label="Address"
               name="address"
               autoComplete="address"
+              required
+              fullWidth
             />
             <Button
               type="submit"
