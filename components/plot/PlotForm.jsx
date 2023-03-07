@@ -69,9 +69,8 @@ export const PlotForm = ({ selectedPlot, handleClose, users }) => {
         } else {
           if (!selectedPlot) {
             // TODO: esto se deberia usar en algun lado?
-            const a = await vmContract.methods
+            const a = await vmContract
               .createCollectible(plot.longitud, plot.latitud)
-              .send({ from: plot.address });
             await router.push("/home");
           }
           setOpen(false);
@@ -95,7 +94,7 @@ export const PlotForm = ({ selectedPlot, handleClose, users }) => {
       } else {
         if (!selectedPlot) {
           // TODO: esto se deberia usar en algun lado?
-          const a = await vmContract.methods
+          const a = await vmContract
             .createCollectible(plot.longitud, plot.latitud)
             .send({ from: plot.address });
           await router.push("/home");

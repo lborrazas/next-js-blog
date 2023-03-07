@@ -21,6 +21,7 @@ import { useState } from "react";
 import { navItems } from "./navbar/navbarLists";
 import { useRouter } from "next/router";
 import CssBaseline from "@mui/material/CssBaseline";
+import { signOut } from "next-auth/react"
 
 const drawerWidth = 240;
 
@@ -122,6 +123,7 @@ export default function Sidebar({ children }) {
           <Typography variant="h6" noWrap component="div">
             Ixalab Aplication
           </Typography>
+          <button onClick={() => signOut()}>Sign out</button>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
