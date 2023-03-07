@@ -7,6 +7,7 @@ import { ExterAnomalies } from "../../components/anomalies/ExterAnomalies";
 import { InnerAnomalies } from "../../components/anomalies/InnerAnomalies";
 import { AnomalieSkeleton } from "../../components/skeletons/Anomalies";
 import Paper from "@mui/material/Paper";
+import Stack from "@mui/material/Stack";
 
 export default function HomePage() {
   const [loading, setLoading] = useState(true);
@@ -57,7 +58,7 @@ export default function HomePage() {
   }
 
   return (
-    <div>
+    <Stack>
       <Paper elevation={3} sx={{ padding: "30px" }}>
         <Box>
           <BlockAnomalies data={anomalies.data}></BlockAnomalies>
@@ -65,7 +66,7 @@ export default function HomePage() {
       </Paper>
       <Paper elevation={3} sx={{ padding: "30px" }}>
         <Box>
-        <ExterAnomalies data={anomalies.data}></ExterAnomalies>
+          <ExterAnomalies data={anomalies.data}></ExterAnomalies>
         </Box>
       </Paper>
       <Paper elevation={3} sx={{ padding: "30px" }}>
@@ -73,6 +74,6 @@ export default function HomePage() {
           <InnerAnomalies data={anomalies.data}></InnerAnomalies>
         </Box>
       </Paper>
-    </div>
+    </Stack>
   );
 }
