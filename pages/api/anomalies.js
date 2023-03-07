@@ -6,7 +6,7 @@ export default async function handle(req, res) {
 
   try {
     const parcelas = await prisma.$queryRaw`
-    SELECT p.*, h.m2used, h.m3, h.address AS history_address, p.address AS parcela_address
+    SELECT p.*, h.m2used, h.m3,h.pid, h.id As history_id, h.address AS history_address, p.address AS parcela_address
     FROM "Parcela" p
     JOIN "History" h ON p."id" = h."pid"
     WHERE h."date" = (

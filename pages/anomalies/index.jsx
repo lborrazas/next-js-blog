@@ -59,6 +59,11 @@ export default function HomePage() {
 
   return (
     <Stack>
+        <Paper elevation={3} sx={{ padding: "30px" }}>
+        <Box>
+          <InnerAnomalies data={anomalies.data}></InnerAnomalies>
+        </Box>
+      </Paper>
       <Paper elevation={3} sx={{ padding: "30px" }}>
         <Box>
           <BlockAnomalies data={anomalies.data}></BlockAnomalies>
@@ -67,11 +72,6 @@ export default function HomePage() {
       <Paper elevation={3} sx={{ padding: "30px" }}>
         <Box>
           <ExterAnomalies data={anomalies.data}></ExterAnomalies>
-        </Box>
-      </Paper>
-      <Paper elevation={3} sx={{ padding: "30px" }}>
-        <Box>
-          <InnerAnomalies data={anomalies.data}></InnerAnomalies>
         </Box>
       </Paper>
     </Stack>
