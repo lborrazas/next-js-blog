@@ -86,8 +86,7 @@ export default async function auth(req, res) {
         session.user = token;
         session.address = token.sub;
         session.isAdmin = token.email;
-        console.log(token);
-        console.log(session);
+
         return session;
       },
     },

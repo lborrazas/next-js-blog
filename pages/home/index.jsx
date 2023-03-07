@@ -37,7 +37,7 @@ export async function getServerSideProps(context) {
 export default function Home() {
   const router = useRouter();
   const { data: session, status } = useSession();
-  console.log(session);
+
   const shouldRedirect = !session;
 
   useEffect(() => {

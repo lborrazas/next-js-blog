@@ -25,7 +25,6 @@ export default function Dashboard() {
   const router = useRouter();
   const { data: session, status } = useSession();
 
-  console.log(session);
   function handleCLick() {
     router.push({
       pathname: `/plot/user/${session.address}`,

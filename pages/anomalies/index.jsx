@@ -14,7 +14,7 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
   const [anomalies, setAnomalies] = useState(false);
   const [nfts, setNfts] = useState(null);
-  const vmContract = useContract();
+  const vmContract = useVmContract();
 
   const allTokens = async () => {
     const max = await vmContract.tokenCounter();
@@ -22,7 +22,11 @@ export default function HomePage() {
     for (let i = 0; i < max; i++) {
       const parse = await vmContract.tokenIdToParcelasIndex(i);
       const owner = await vmContract.ownerOf(i);
-      const parcela = { data: parse, owner: owner, id: i };
+      const pasar = {
+        latitud: parse.latitud,
+        longitud: parse.longitud,
+      };
+      const parcela = { data: pasar, owner: owner, id: i };
       plots.push(parcela);
     }
     return plots;
