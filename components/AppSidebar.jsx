@@ -6,6 +6,7 @@ import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
+import style from "./layout.module.css";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -22,8 +23,8 @@ import { navItems } from "./navbar/navbarLists";
 import { navAdminItems } from "./navbar/navbarAdminLists";
 import { useRouter } from "next/router";
 import CssBaseline from "@mui/material/CssBaseline";
-import {signOut, useSession} from "next-auth/react"
-
+import { ExportPDF } from "./pdf/exportPDF";
+import { signOut, useSession } from "next-auth/react";
 
 const drawerWidth = 240;
 
@@ -96,7 +97,7 @@ export default function Sidebar({ children }) {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const router = useRouter();
-  const { data: session, status } = useSession()
+  const { data: session, status } = useSession();
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -141,65 +142,77 @@ export default function Sidebar({ children }) {
         </DrawerHeader>
         <Divider />
         <List>
-          {session && session.isAdmin ? navAdminItems.map(({ Name, Icon, Url }) => (
-            <ListItem key={Name} disablePadding sx={{ display: "block" }}>
-              <ListItemButton
-                onClick={() => router.push(Url)}
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                  }}
-                >
-                  <span>
-                    {" "}
-                    {
-                      <Icon
-                        color={router.pathname == Url ? "primary" : "inherit"}
-                      />
-                    }{" "}
-                  </span>
-                </ListItemIcon>
-                <ListItemText primary={Name} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-          )) : navItems.map(({ Name, Icon, Url }) => (
-              <ListItem key={Name} disablePadding sx={{ display: "block" }}>
-                <ListItemButton
+          {session && session.isAdmin
+            ? navAdminItems.map(({ Name, Icon, Url }) => (
+                <ListItem key={Name} disablePadding sx={{ display: "block" }}>
+                  <ListItemButton
                     onClick={() => router.push(Url)}
                     sx={{
                       minHeight: 48,
                       justifyContent: open ? "initial" : "center",
                       px: 2.5,
                     }}
-                >
-                  <ListItemIcon
+                  >
+                    <ListItemIcon
                       sx={{
                         minWidth: 0,
                         mr: open ? 3 : "auto",
                         justifyContent: "center",
                       }}
+                    >
+                      <span>
+                        {" "}
+                        {
+                          <Icon
+                            color={
+                              router.pathname == Url ? "primary" : "inherit"
+                            }
+                          />
+                        }{" "}
+                      </span>
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={Name}
+                      sx={{ opacity: open ? 1 : 0 }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              ))
+            : navItems.map(({ Name, Icon, Url }) => (
+                <ListItem key={Name} disablePadding sx={{ display: "block" }}>
+                  <ListItemButton
+                    onClick={() => router.push(Url)}
+                    sx={{
+                      minHeight: 48,
+                      justifyContent: open ? "initial" : "center",
+                      px: 2.5,
+                    }}
                   >
-                  <span>
-                    {" "}
-                    {
-                      <Icon
-                          color={router.pathname == Url ? "primary" : "inherit"}
-                      />
-                    }{" "}
-                  </span>
-                  </ListItemIcon>
-                  <ListItemText primary={Name} sx={{ opacity: open ? 1 : 0 }} />
-                </ListItemButton>
-              </ListItem>
-          ))}
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 3 : "auto",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <span>
+                        {" "}
+                        {
+                          <Icon
+                            color={
+                              router.pathname == Url ? "primary" : "inherit"
+                            }
+                          />
+                        }{" "}
+                      </span>
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={Name}
+                      sx={{ opacity: open ? 1 : 0 }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              ))}
         </List>
         <Divider />
         <List>
@@ -212,15 +225,9 @@ export default function Sidebar({ children }) {
                   px: 2.5,
                 }}
               >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                  }}
-                >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
+                <div className={`${style.marginH}`}>
+                  <ExportPDF></ExportPDF>
+                </div>
                 <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>

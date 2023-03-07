@@ -14,8 +14,18 @@ import useSWR from "swr";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
 import RedirectPage from "../../components/redirect/RedirectPage";
+import Paper from "@mui/material/Paper";
+import { styled } from "@mui/material/styles";
 import { TransferSkeleton } from "../../components/skeletons/TransferSkeleton";
 import {useSession} from "next-auth/react";
+
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+  ...theme.typography.body2,
+  padding: theme.spacing(5),
+  textAlign: "left",
+  color: theme.palette.text.secondary,
+}));
 
 export default function Transfer() {
   const [errorb, setError] = useState("");
@@ -81,7 +91,7 @@ export default function Transfer() {
       .safeTransferFrom(address, forwardAddress, Number(parcela_id[0]))
       .send({ from: address });
     alert(
-      `NFT ${parcela_id[0]} transferred from ${address} to ${forwardAddress}`
+      `NFT ${parcela.id} transferred from ${address} to ${forwardAddress}`
     );
   }
 
@@ -96,11 +106,12 @@ export default function Transfer() {
         // vs code por defecto no te las toma no, tenes que instalarle los plugins
         // para que sepa que hacer con eso
         //oice
-        if (!res.data[0]) {
-          setMess(`address is nor register on our database`);
+        if (res.data[0]) {
+          setMess(res.data[0].name);
           popUP();
+          
         } else {
-          setMess(``);
+          setMess(`address is nor register on our database`);
           popUP();
         }
       })
@@ -127,7 +138,7 @@ export default function Transfer() {
     return <TransferSkeleton />;
   } else {
     return (
-      <div className={style.signupPage}>
+      <Item className={style.signupPage}>
         <div className={style.signupContainer}>
           <Typography component="h1" variant="h4">
             Transferir parcela
@@ -181,22 +192,23 @@ export default function Transfer() {
             </Button>
           </Box>
           <Dialog open={open}>
-            <DialogTitle>Popup Modal Title</DialogTitle>
+            <DialogTitle>TRANSACCION DE PARCELA</DialogTitle>
 
-            <Typography>Continuar con la transaccion.</Typography>
-            <Typography>{mess}</Typography>
+              <div className={style.padding}>
+                <Typography>Transaccion dirigida a: <a className={style.bold}>{mess}</a></Typography>
+              </div>
 
-            <Button onClick={() => setOpen(false)} color="primary">
+            <Button className={style.button} onClick={() => setOpen(false)} color="primary">
               Decline
             </Button>
-            <Button onClick={() => transaccion()} color="primary">
+            <Button className={style.button} onClick={() => transaccion()} color="primary">
               Accept
             </Button>
           </Dialog>
 
           {errorb && <Typography variant="body2">{errorb}</Typography>}
         </div>
-      </div>
+      </Item>
     );
   }
 }

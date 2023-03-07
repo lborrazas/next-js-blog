@@ -21,11 +21,17 @@ import Typography from "@mui/material/Typography";
 import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
 import Iconify from "../../components/iconify";
+import InfoIcon from "@mui/icons-material/Info";
+import IconButton from "@mui/material/IconButton";
 
 import { DataGrid } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
+
+import { da } from "date-fns/locale";
+
 import { getCsrfToken, useSession } from "next-auth/react";
+
 
 export async function getServerSideProps(context) {
   return {
@@ -118,15 +124,20 @@ export default function Home({ users }) {
     { field: "isAdmin", headerName: "Admin?", width: 90 },
     {
       field: "viewinfo",
-      headerName: "Ver info.",
-      width: 125,
+      headerName: "Información",
+      width: 110,
       renderCell: (params) => (
-        <button
-          className={`${style.buttonTable} ${style.redBack}`}
-          onClick={() => redirectUrl("info", params)}
+        <IconButton
+          color="info"
+          onClick={() => {
+            router.push({
+              pathname: `/plot/${params.row.pid}`,
+            });
+          }}
         >
-          Ver info.
-        </button>
+          <InfoIcon />
+        </IconButton>
+
       ),
     },
   ];

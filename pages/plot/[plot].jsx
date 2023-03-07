@@ -12,6 +12,7 @@ import Co2Graph from "../../components/pagesComponents/co2Graph";
 import DataGrid from "../../components/pagesComponents/dataGrid";
 import useSWR from "swr";
 import { DashboardSkeleton } from "../../components/skeletons/DashboardSkeleton";
+import style from "./plots.module.css";
 import { EditPlotDialog } from "../../components/dialog/EditPlotDialog";
 
 const { PrismaClient } = require("./../../node_modules/.prisma/client");
@@ -95,6 +96,7 @@ export default function Plot({ parcela, lastLog, owner }) {
     return <DashboardSkeleton />;
   } else {
     return (
+      
       <Box sx={{ height: "100%" }}>
         <Grid container spacing={2}>
           <Grid item xs={8}>
@@ -108,13 +110,9 @@ export default function Plot({ parcela, lastLog, owner }) {
             </Box>
           </Grid>
           <Grid item xs={4} sx={{ display: "flex", justifyContent: "end" }}>
-            <Button
-              id="actualizar"
-              variant="contained"
-              onClick={() => handleEditPlot()}
-            >
-              Actualizar
-            </Button>
+          <Button id="actualizar" variant="contained" className={`${style.maxHeigt}`}>
+            Actualizar
+          </Button>
           </Grid>
           <Grid container spacing={2}>
             <Grid item xs={12}>
