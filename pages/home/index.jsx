@@ -17,8 +17,7 @@ import * as React from "react";
 
 import RedirectPage from "../../components/redirect/RedirectPage";
 import { CircularProgress } from "@mui/material";
-import {getCsrfToken, useSession} from "next-auth/react";
-
+import { getCsrfToken, useSession } from "next-auth/react";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -33,13 +32,13 @@ export async function getServerSideProps(context) {
     props: {
       csrfToken: await getCsrfToken(context),
     },
-  }
+  };
 }
 export default function Home() {
   const router = useRouter();
-  const user = useUser();
+  const { data: session, status } = useSession();
 
-  const shouldRedirect = !user;
+  const shouldRedirect = !session;
 
   useEffect(() => {
     if (shouldRedirect) {
@@ -48,29 +47,29 @@ export default function Home() {
   }, [shouldRedirect, router]);
 
   // TODO: rehacer completamente esto
+
   return (
     <div>
       {shouldRedirect ? (
         <RedirectPage />
       ) : (
         <>
-          <h1 className={`${style.helloMessage}`}>{"¡Bienvenido " + user.name + "!"}</h1>
-            <Item className={`${style.aaa}`}>
-              <h2 className={`${style.itemasInfo}`}>
-                {"Rol: "}{user.isAdmin ? "Administrador" : "Cliente"}
-              </h2>
-            </Item>
-            <Item>
-              <h2 className={`${style.itemasInfo}`}>{"Billetera asociada: " + user.address}</h2>
-            </Item>
-         
-         
+          <h1 className={`${style.helloMessage}`}>
+            {"¡Bienvenido " + session.user.name + "!"}
+          </h1>
+          <Item className={`${style.aaa}`}>
+            <h2 className={`${style.itemasInfo}`}>
+              {"Rol: "}
+              {session.user.isAdmin ? "Administrador" : "Cliente"}
+            </h2>
+          </Item>
+          <Item>
+            <h2 className={`${style.itemasInfo}`}>
+              {"Billetera asociada: " + session.address}
+            </h2>
+          </Item>
         </>
       )}
     </div>
-  );}
-
-
-
-
-
+  );
+}

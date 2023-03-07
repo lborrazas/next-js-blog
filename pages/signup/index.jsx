@@ -11,7 +11,7 @@ import { keyframes } from "@mui/material";
 import styled from "@emotion/styled";
 import { renderToStaticMarkup } from "react-dom/server";
 import { Hexagons } from "../../assets/svg";
-import {useAccount} from "wagmi";
+import { useAccount } from "wagmi";
 
 const gradient = keyframes`
   0% {
@@ -56,8 +56,7 @@ export default function SignUp() {
   const [error, setError] = useState("");
   const username = useRef();
   const email = useRef();
-  const setUser = useSetUser();
-  const {address, isConnected} = useAccount()
+  const { address, isConnected } = useAccount();
   const router = useRouter();
   useEffect(() => {
     setError("");
@@ -83,7 +82,7 @@ export default function SignUp() {
         is_registered.data[0].isAdmin
       )
     );
-    if(is_registered) router.push("/login");
+    if (is_registered) router.push("/login");
   };
 
   const handleSignup = (e) => {

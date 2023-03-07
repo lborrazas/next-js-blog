@@ -15,11 +15,12 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { EditPlotDialog } from "../../components/dialog/EditPlotDialog";
-import {useSession} from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 export default function Parcelas() {
-  const address = useAddress();
-  const user = useUser();
+  77;
+  const { data: session, status } = useSession();
+  const address = session.address;
   // TODO: get de los users
   const users = [];
 
@@ -31,18 +32,17 @@ export default function Parcelas() {
   const [selectedPlot, setSelectedPlot] = useState(undefined);
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const router = useRouter();
-  const { data: session, status } = useSession()
-
 
   const fetcher = (url) => fetch(url).then((res) => res.json());
-  let addressSend = address;
+  const addressSend = address;
   let titleListView = "Lista de mis parcelas";
   if (session && session.isAdmin) {
-    addressSend = "admin";
     titleListView = "Lista de todas las parcelas";
   }
   const { data, isLoading } = useSWR(
-    session ? `/api/enhance/mytokens/${addressSend}` : null, //todo arreglar (no tiene que ser 'admin'
+    session?.isAdmin
+      ? `/api/enhance/mytokens/all`
+      : `/api/enhance/mytokens/${session.address}`,
     fetcher
   );
 
@@ -72,7 +72,6 @@ export default function Parcelas() {
   }
 
   function redirectUrl(params, p) {
-    console.log(params);
     router.push(params + "/" + p.row.pid);
   }
   useEffect(() => {
@@ -121,7 +120,8 @@ export default function Parcelas() {
       headerName: "Información",
       width: 110,
       renderCell: (params) => (
-        <IconButton color="info"
+        <IconButton
+          color="info"
           onClick={() => {
             router.push({
               pathname: `/plot/${params.row.pid}`,

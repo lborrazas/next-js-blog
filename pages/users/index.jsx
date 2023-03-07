@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import { useUser } from "../../contexts/AppContext";
 import {
   useAddress,
   useVmContract,
@@ -32,7 +31,6 @@ import { da } from "date-fns/locale";
 
 import { getCsrfToken, useSession } from "next-auth/react";
 
-
 export async function getServerSideProps(context) {
   return {
     props: {
@@ -53,7 +51,6 @@ export default function Home({ users }) {
   const router = useRouter();
   const address = useAddress();
   const web3 = useWeb3();
-  const user = useUser();
   const latitude = useRef();
   const longitude = useRef();
   const area = useRef();
@@ -137,7 +134,6 @@ export default function Home({ users }) {
         >
           <InfoIcon />
         </IconButton>
-
       ),
     },
   ];
