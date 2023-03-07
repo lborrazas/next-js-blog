@@ -39,7 +39,7 @@ export const ExportPDF = () => {
                   onClick={() => downloadPDF(data)}
                   sx={{
                     minWidth: 0,
-                    mr: open ? 3 : "auto",
+                    mr: "auto",
                     justifyContent: "center",
                   }}
                 >

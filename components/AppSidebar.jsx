@@ -13,6 +13,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
+import LogoutIcon from '@mui/icons-material/Logout';
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
@@ -127,7 +128,12 @@ export default function Sidebar({ children }) {
           <Typography variant="h6" noWrap component="div">
             Ixalab Aplication
           </Typography>
-          <button onClick={() => signOut()}>Sign out</button>
+          <div className={`${style.rightButton}`}>
+            <IconButton color="inherit" onClick={() => signOut()}>
+              <LogoutIcon />
+            </IconButton>
+          </div>
+          {/* <button onClick={() => signOut()}>Sign out</button> */}
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
