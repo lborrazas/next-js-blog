@@ -1,9 +1,9 @@
 import {
   useSetAddress,
   useSetVmContract,
-  useSetWeb3,
+  useSetWeb3, useVmContract,
 } from "../../blockchain/BlockchainContext";
-import { forwardRef, useState } from "react";
+import {forwardRef, useEffect, useState} from "react";
 import contractCollector from "../../blockchain/ContractCollector";
 import Web3 from "web3";
 import { useRouter } from "next/router";
@@ -79,6 +79,7 @@ export default function Login() {
   const setUser = useSetUser();
   const setTokens = useSetTokens();
   const router = useRouter();
+  const vmContract = useVmContract();
   const setVmContract = useSetVmContract();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -93,12 +94,27 @@ export default function Login() {
   const {data: session, status} = useSession()
   const contract2 = contractCollector(signer)
 
+  // useEffect(async () => {
+  //   // if(signer && vmContract){
+  //   //   const tokens = await allTokens(contract2);
+  //   //   setTokens(tokens);
+  //   // }
+  // },[vmContract, contract2, isLoading, isError, signer] )
+
+  useEffect(() => {
+    //const storedState = localStorage.getItem('myContextState');
+    if (!vmContract && !isLoading && signer) {
+      setVmContract(contract2)
+    }
+  }, [vmContract, contract2, isLoading, isError, signer]);
+
   const handleLogin = async () => {
     if (
         typeof window !== "undefined" &&
         typeof window.ethereum !== "undefined"
     ) {
       try {
+        console.log(address)
         const callbackUrl = "/protected"
         const message = new SiweMessage({
           domain: window.location.host,
@@ -114,8 +130,6 @@ export default function Login() {
         })
 
         console.log(message)
-        const tokens = await allTokens(contract2);
-        setTokens(tokens);
         await signIn("credentials", {
           message: JSON.stringify(message),
           redirect: false,
@@ -164,52 +178,13 @@ export default function Login() {
     setOpenDialog(false);
   };
 
-  // const connectWalletHandler = async () => {
-  //   if (
-  //     typeof window !== "undefined" &&
-  //     typeof window.ethereum !== "undefined"
-  //   ) {
-  //     try {
-  //       setIsLoading(true);
-  //       await window.ethereum.request({ method: "eth_requestAccounts" });
-  //       const web3 = new Web3(window.ethereum);
-  //       /*set web3 instance*/
-  //       setWeb3(web3);
-  //       /*get list of accounts*/
-  //       const account = await web3.eth.getAccounts();
-  //       setAddress(account[0]);
-  //
-  //       /*Create a contract copy*/
-  //       const vmContract_ = contractCollector(web3);
-  //       setVmContract(vmContract_);
-  //       const body = { address: account[0] };
-  //       const is_registered = await axios.post("/api/getuser", body);
-  //       const tokens = await allTokens(vmContract_);
-  //       setTokens(tokens);
-  //       if (is_registered.data[0]) {
-  //         setUser(
-  //           new User(
-  //             is_registered.data[0].id,
-  //             is_registered.data[0].name,
-  //             is_registered.data[0].email,
-  //             account[0],
-  //             is_registered.data[0].isAdmin
-  //           )
-  //         );
-  //         router.push("/home");
-  //       } else {
-  //         router.push("/signup");
-  //       }
-  //     } catch (err) {
-  //       setIsLoading(false);
-  //       setError(err.message);
-  //     }
-  //   } else {
-  //     setIsLoading(false);
-  //     setOpenDialog(true);
-  //     // alert("please install Metamask");
-  //   }
-  // };
+  useEffect(() => {
+    console.log(isConnected);
+    if (isConnected && !session) {
+      handleLogin()
+    }
+  }, [isConnected])
+
 
   return (
     <PageLogin>
@@ -221,7 +196,14 @@ export default function Login() {
           <CircularProgress />
         ) : (
           <Button
-            onClick={handleLogin}
+              onClick={(e) => {
+                e.preventDefault()
+                if (!isConnected) {
+                  connect()
+                } else {
+                  handleLogin()
+                }
+              }}
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
