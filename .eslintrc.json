@@ -1,0 +1,74 @@
+{
+  "extends": [
+    "next/core-web-vitals",
+    "prettier"
+  ],
+  "plugins": [
+    "react",
+    "prettier"
+  ],
+  "ignorePatterns": [
+    "**/*.json"
+  ],
+  "rules": {
+    "prettier/prettier": [
+      "warn",
+      {
+        "tabWidth": 2,
+        "semi": true,
+        "singleQuote": false,
+        "endOfLine": "auto"
+      }
+    ],
+    "no-console": [
+      "warn",
+      {
+        "allow": [
+          "warn",
+          "error"
+        ]
+      }
+    ],
+    "no-duplicate-imports": "warn",
+    "react/react-in-jsx-scope": "off",
+    "react/prop-types": 0,
+    "react/jsx-props-no-spreading": "off",
+    "react/jsx-curly-brace-presence": [
+      "warn",
+      {
+        "props": "never"
+      }
+    ],
+    "react/jsx-boolean-value": 1,
+    "react/jsx-no-useless-fragment": [
+      "warn",
+      {
+        "allowExpressions": true
+      }
+    ],
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [
+          ".js",
+          ".jsx",
+          "ts",
+          "tsx"
+        ]
+      }
+    ],
+    "eqeqeq": [
+      "error",
+      "smart"
+    ],
+    "import/extensions": "off",
+    "no-return-await": "warn",
+    "no-unused-vars": "warn",
+    "no-var": "error",
+    "one-var": [
+      "error",
+      "never"
+    ],
+    "prefer-const": "warn"
+  }
+}

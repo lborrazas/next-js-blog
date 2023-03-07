@@ -1,0 +1,46 @@
+.buttonTable{
+    border: 1px solid #000000;
+    color: black;
+    /* box-shadow: 1px 1px 1px 0px black; */
+    border-radius: 3px;
+    padding: 5px;
+    width: 90px;
+    font-family: system-ui;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.greenBack{
+    background-color: #be9ccb;
+}
+
+.greenBack:hover{
+    background-color: #d1b5dc;
+}
+
+.redBack{
+    background-color: #87afcb;
+}
+
+.redBack:hover{
+    background-color: #a4c5dc;
+}
+
+.blueBack{
+    background-color: #89b98f;
+}
+
+.blueBack:hover{
+    background-color: #abd2b0;
+}
+
+.odd{
+    background-color: #fbfbfb;
+}
+
+.filterInput{
+    height: 30px;
+    border-radius: 2px;
+    border: 1px solid rgb(188, 188, 188);
+    padding-inline: 7px;
+}

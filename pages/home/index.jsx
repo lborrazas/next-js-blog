@@ -9,38 +9,34 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import * as React from "react";
+
+import RedirectPage from "../../components/redirect/RedirectPage";
 import { CircularProgress } from "@mui/material";
+import {getCsrfToken, useSession} from "next-auth/react";
+
+export async function getServerSideProps(context) {
+    return {
+        props: {
+            csrfToken: await getCsrfToken(context),
+        },
+    }
+}
+
 
 export default function home() {
-  const router = useRouter();
-  const address = useAddress();
-  const web3 = useWeb3();
-  const user = useUser();
+    const router = useRouter();
+    const address = useAddress();
+    const web3 = useWeb3();
+    const { data: session, status } = useSession()
 
-  const [error, setError] = useState(null);
+    const [error, setError] = useState(null);
 
-  const shouldRedirect = !user;
 
-  useEffect(() => {
-    if (shouldRedirect) {
-      router.push("/login");
-    }
-  }, [shouldRedirect, router]);
-
-  return (
-    <div>
-      {shouldRedirect ? (
-        <div><p>Redirecting to login page...</p>
-         <CircularProgress/></div>
-      ) : (
-        <>
-          <h1>{"Hola " + user.name}</h1>
-          <h2>
-            {"Eres admin? "} {user.isAdmin ? "si" : "no"}
-          </h2>
-          <h2>{"Manden plata a " + user.address}</h2>
-        </>
-      )}
-    </div>
-  );
+    return (
+        <div>
+                <>
+                    <h1> Hola {session && session.user ? session.user.name : "ha"}</h1>
+                </>
+        </div>
+    );
 }

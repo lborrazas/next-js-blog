@@ -1,0 +1,14 @@
+# Ignore artifacts:
+build
+coverage
+.next
+public/resources
+.prettierignore
+package-lock.json
+.env*
+.gitignore
+*.ico
+
+# IDE
+.vscode
+.idea

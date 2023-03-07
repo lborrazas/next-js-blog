@@ -10,18 +10,24 @@ export class User {
   }
 }
 
-const UserContext = createContext(
-  new User("mate", "mate", "mate", "mate", true)
-);
+const UserContext = createContext(null);
 const SetUserContext = createContext(null);
+
+const TokensContext = createContext(null);
+const SetTokensContext = createContext(null);
 
 export function AppProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [tokens, setTokens] = useState([]);
 
   return (
     <UserContext.Provider value={user}>
       <SetUserContext.Provider value={setUser}>
-        {children}
+        <TokensContext.Provider value={tokens}>
+          <SetTokensContext.Provider value={setTokens}>
+            {children}
+          </SetTokensContext.Provider>
+        </TokensContext.Provider>
       </SetUserContext.Provider>
     </UserContext.Provider>
   );
@@ -33,4 +39,12 @@ export function useUser() {
 
 export function useSetUser() {
   return useContext(SetUserContext);
+}
+
+export function useTokens() {
+  return useContext(TokensContext);
+}
+
+export function useSetTokens() {
+  return useContext(SetTokensContext);
 }
