@@ -1,8 +1,12 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Box from "@mui/material/Box";
 import { useAddress, useVmContract } from "../../blockchain/BlockchainContext";
 import { BlockAnomalies } from "../../components/anomalies/BlockAnomalies";
+import { ExterAnomalies } from "../../components/anomalies/ExterAnomalies";
+import { InnerAnomalies } from "../../components/anomalies/InnerAnomalies";
 import { AnomalieSkeleton } from "../../components/skeletons/Anomalies";
+import Paper from "@mui/material/Paper";
 
 export default function HomePage() {
   const [loading, setLoading] = useState(true);
@@ -54,8 +58,21 @@ export default function HomePage() {
 
   return (
     <div>
-      {/* Display your NFT data here */}
-      <BlockAnomalies data={anomalies.data}></BlockAnomalies>
+      <Paper elevation={3} sx={{ padding: "30px" }}>
+        <Box>
+          <BlockAnomalies data={anomalies.data}></BlockAnomalies>
+        </Box>
+      </Paper>
+      <Paper elevation={3} sx={{ padding: "30px" }}>
+        <Box>
+        <ExterAnomalies data={anomalies.data}></ExterAnomalies>
+        </Box>
+      </Paper>
+      <Paper elevation={3} sx={{ padding: "30px" }}>
+        <Box>
+          <InnerAnomalies data={anomalies.data}></InnerAnomalies>
+        </Box>
+      </Paper>
     </div>
   );
 }

@@ -22,11 +22,11 @@ export const BlockAnomalies = ( anomalies ) => {
             Latitud{nft.data.latitud}, {nft.data.longitud}, {nft.owner}
           </p>
           <Stack direction="row" >
-            <IconButton color="primary" onClick={() => createParcela(nft)}>
+            <IconButton color="info" onClick={() => createParcela(nft)}>
               <EditIcon />
             </IconButton>
             <IconButton
-              color="info"
+              color="error"
               onClick={() => {
                 burnNft(nft);
               }}

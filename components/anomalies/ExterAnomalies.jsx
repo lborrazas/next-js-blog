@@ -3,14 +3,13 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 
-export const InnerAnomalies = ( anomalies ) => {
-  async function createParcela(nft) {}
-  async function burnNft(nft) {
+export const ExterAnomalies = (anomalies) => {
+  async function deleteParcela(nft) {
     //TODO BURN nft.id
   }
   return (
     <Stack spacing={1}>
-      {anomalies.data.inner.map((nft,index) => (
+      {anomalies.data.exter.map((nft, index) => (
         <Stack
           key={nft.id}
           direction="row"
@@ -18,17 +17,14 @@ export const InnerAnomalies = ( anomalies ) => {
           justifyContent="space-between"
           sx={{ bgcolor: index % 2 === 0 ? "#fbfbfb" : "abd2b0" }}
         >
-          <p>
-            Latitud{nft.latitud},Longitud {nft.longitud}, {nft.address}
+          <p>   
+            Latitud{nft.latitud} Longitud {nft.longitud} Dueño {nft.address}
           </p>
-          <Stack direction="row" >
-            <IconButton color="primary" onClick={() => createParcela(nft)}>
-              <EditIcon />
-            </IconButton>
+          <Stack direction="row">
             <IconButton
-              color="info"
+              color="error"
               onClick={() => {
-                burnNft(nft);
+                deleteParcela(nft);
               }}
             >
               <DeleteIcon />
@@ -39,4 +35,4 @@ export const InnerAnomalies = ( anomalies ) => {
     </Stack>
   );
 };
-export default InnerAnomalies;
+export default ExterAnomalies;
