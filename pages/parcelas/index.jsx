@@ -40,7 +40,7 @@ export default function Parcelas() {
     titleListView = "Lista de todas las parcelas";
   }
   const { data, isLoading } = useSWR(
-    address ? `/api/enhance/mytokens/${addressSend}` : null, //todo arreglar (no tiene que ser 'admin'
+    address ? `/api/enhance/mytokens/all` : null, //todo arreglar (no tiene que ser 'admin'
     fetcher
   );
 

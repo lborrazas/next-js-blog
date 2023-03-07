@@ -30,12 +30,6 @@ export default function Create({ users }) {
         <Typography component="h1" variant="h4">
           Crear parcela
         </Typography>
-        <Button
-          variant="contained"
-          startIcon={<Iconify icon="eva:plus-fill" />}
-        >
-          Refresh
-        </Button>
       </Stack>
       <Paper elevation={3} sx={{ padding: "30px" }}>
         <PlotForm users={users} />
