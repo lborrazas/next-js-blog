@@ -73,15 +73,7 @@ export default function SignUp() {
     await axios.post("/api/usercreate", user);
     const body = { address: address };
     const is_registered = await axios.post("/api/getuser", body);
-    setUser(
-      new User(
-        is_registered.data[0].id,
-        is_registered.data[0].name,
-        is_registered.data[0].email,
-        address,
-        is_registered.data[0].isAdmin
-      )
-    );
+
     if (is_registered) router.push("/login");
   };
 

@@ -1,5 +1,8 @@
 import { useUser, useTokens } from "../../../contexts/AppContext";
-import { useAddress, useVmContract } from "../../../blockchain/BlockchainContext";
+import {
+  useAddress,
+  useVmContract,
+} from "../../../blockchain/BlockchainContext";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import Paper from "@mui/material/Paper";
@@ -18,41 +21,41 @@ const { PrismaClient } = require("./../../../node_modules/.prisma/client");
 
 const prisma = new PrismaClient();
 
-
 export async function getServerSideProps(context) {
   // Realiza una llamada a la API o base de datos para obtener los datos de la publicación con el ID correspondiente
- 
 
   const client = await prisma.user.findMany({
     where: {
       address: context.query.address,
     },
   });
- return {
+  return {
     props: {
-     client,
+      client,
     },
   };
 }
 
-export default function DashboardUser({client}) {
-  client =client[0]
+export default function DashboardUser({ client }) {
+  client = client[0];
   const vmContract = useVmContract();
   const address = useAddress();
   const router = useRouter();
 
-
   const tokens = useTokens();
   const [parcelas, setParcelas] = useState([]);
-  
+
   const fetcher = (url) => fetch(url).then((res) => res.json());
-  const { data, error } = useSWR(`/api/enhance/mytokens/${client.address}`,
+  const { data, error } = useSWR(
+    `/api/enhance/mytokens/${client.address}`,
     fetcher
   );
-  const { data: total, error: error2 } = useSWR(`/api/co2Data/Cliente/Total/${client.address}`,
+  const { data: total, error: error2 } = useSWR(
+    `/api/co2Data/Cliente/Total/${client.address}`,
     fetcher
   );
-  const { data: prom, error: error3 } = useSWR(`/api/co2Data/Cliente/Promedio/${client.address}`,
+  const { data: prom, error: error3 } = useSWR(
+    `/api/co2Data/Cliente/Promedio/${client.address}`,
     fetcher
   );
   if (error) {
@@ -85,7 +88,7 @@ export default function DashboardUser({client}) {
         <Grid item xs={12} sm={6} md={3}>
           <ParcelasWidgetViewer
             title="Total de Parcelas"
-            total={data.length}
+            total={data.length ? data.length : "0"}
             icon="material-symbols:token"
           />
         </Grid>

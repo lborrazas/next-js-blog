@@ -128,7 +128,7 @@ export default function Home({ users }) {
           color="info"
           onClick={() => {
             router.push({
-              pathname: `/plot/${params.row.pid}`,
+              pathname: `/plot/user/${params.row.address}`,
             });
           }}
         >

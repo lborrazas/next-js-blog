@@ -45,6 +45,7 @@ export default async function auth(req, res) {
               },
             });
             const user = userArr[0];
+            console.log(userArr[0]);
             if (user) {
               return {
                 id: user.address,

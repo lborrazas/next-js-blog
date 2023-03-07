@@ -37,7 +37,7 @@ export async function getServerSideProps(context) {
 export default function Home() {
   const router = useRouter();
   const { data: session, status } = useSession();
-
+  console.log(session);
   const shouldRedirect = !session;
 
   useEffect(() => {
@@ -60,7 +60,7 @@ export default function Home() {
           <Item className={`${style.aaa}`}>
             <h2 className={`${style.itemasInfo}`}>
               {"Rol: "}
-              {session.user.isAdmin ? "Administrador" : "Cliente"}
+              {session.isAdmin ? "Administrador" : "Cliente"}
             </h2>
           </Item>
           <Item>
