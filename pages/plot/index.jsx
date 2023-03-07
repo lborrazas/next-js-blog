@@ -11,19 +11,19 @@ import ParcelasGridViewer, {
 import ParcelasWidgetViewer from "../../components/pagesComponents/parcelasWidgetViewer";
 import useSWR from "swr";
 import { DashboardSkeleton } from "../../components/skeletons/DashboardSkeleton";
-import {getCsrfToken, useSession} from "next-auth/react";
+import { getCsrfToken, useSession } from "next-auth/react";
 
 export async function getServerSideProps(context) {
-    return {
-        props: {
-            csrfToken: await getCsrfToken(context),
-        },
-    }
+  return {
+    props: {
+      csrfToken: await getCsrfToken(context),
+    },
+  };
 }
 
 export default function Dashboard() {
   const router = useRouter();
-  const { data: session, status } = useSession()
+  const { data: session, status } = useSession();
 
   function handleCLick() {
     // TODO: harcodeado no
@@ -36,7 +36,7 @@ export default function Dashboard() {
       200
     );
     router.push({
-      pathname: `/plot/user/${user.address}`,
+      pathname: `/plot/user/${session.address}`,
     });
   }
 
