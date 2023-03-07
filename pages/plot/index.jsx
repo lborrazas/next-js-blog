@@ -28,11 +28,12 @@ export default function plot() {
   const [tokens, setTokens] = useState(null);
 
   const allTokens = async () => {
-    let max = await vmContract.methods.tokenCounter().call();
+      console.log(vmContract)
+    let max = await vmContract.tokenCounter();
     let plots = [];
     for (let i = 0; i < max; i++) {
       //let address_temp= await vmContract.methods.ownerOf(i).call()
-      let parse = await vmContract.methods.tokenIdToParcelasIndex(i).call();
+      let parse = await vmContract.tokenIdToParcelasIndex(i);
       plots.push(parse);
     }
       setTokens(plots)

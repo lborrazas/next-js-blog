@@ -530,10 +530,11 @@ const abi = [
 //   );
 // };
 
-export default function ContractCollector(){
+export default function ContractCollector(signer){
   return new useContract({
     abi: abi,
-    address:"0x2CEC1c0af9ECA2E5a4e153019082C4D9Cb6B593c"
+    address:"0x2CEC1c0af9ECA2E5a4e153019082C4D9Cb6B593c",
+    signerOrProvider: signer
   });
 };
 

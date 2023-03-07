@@ -2,7 +2,8 @@ import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import {getCsrfToken} from "next-auth/react"
 import {SiweMessage} from "siwe"
-const { PrismaClient } = require("./../../../node_modules/.prisma/client");
+
+const {PrismaClient} = require("./../../../node_modules/.prisma/client");
 const prisma = new PrismaClient();
 
 // For more information on each option (and a full list of options) go to
@@ -35,20 +36,21 @@ export default async function auth(req, res) {
                     })
 
                     if (result.success) {
-                        const user_exist = await prisma.user.findMany({
+                        const userArr = await prisma.user.findMany({
                             where: {
                                 address: siwe.address,
                             },
-                        });
-
-                        if (!user_exist) {
+                        })
+                        const user = userArr[0]
+                        if (user) {
                             return {
-                                id: siwe.address,
+                                ...user
                             }
                         }
                     }
                     return null
                 } catch (e) {
+                    console.log(e)
                     return null
                 }
             },
@@ -66,17 +68,29 @@ export default async function auth(req, res) {
     return await NextAuth(req, res, {
         // https://next-auth.js.org/configuration/providers/oauth
         providers,
+        pages: {
+            signIn: "/login"
+        },
         session: {
             strategy: "jwt",
         },
         secret: process.env.NEXTAUTH_SECRET,
         callbacks: {
-            async session({session, token}) {
-                session.address = token.sub
-                session.user.name = token.sub
-                session.user.image = "https://www.fillmurray.com/128/128"
+            // async jwt({token, user, account, profile, isNewUser}) {
+            //     token.papa = {...user}
+            //     console.log(user)
+            //     console.log("papa")
+            //     console.log(token)
+            //     return token
+            // },
+            async session({session, token, user}) {
+                session.user = token
+                session.address  = token.sub
+                console.log(token)
+                console.log(session)
                 return session
-            },
+            }
+            ,
         },
     })
 }

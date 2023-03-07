@@ -6,13 +6,14 @@ import CssBaseline from "@mui/material/CssBaseline";
 
 export const siteTitle = "Next.js Sample Website";
 import "./layout.module.css";
+import {useSession} from "next-auth/react";
 
 export default function Layout({children}) {
-    const user = useUser();
+    const session = useSession();
 
     return (<main>
         <CssBaseline/>
-        {user ? (<Sidebar> {children} </Sidebar>) : (<div>
+        {session.data ? (<Sidebar> {children} </Sidebar>) : (<div>
             {children}
         </div>)}
     </main>);

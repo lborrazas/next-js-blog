@@ -16,7 +16,7 @@ import Typography from "@mui/material/Typography";
 import {CircularProgress} from "@mui/material";
 import {SiweMessage} from "siwe";
 import {getCsrfToken, signIn, useSession} from "next-auth/react";
-import {useAccount, useConnect, useNetwork, useSignMessage} from "wagmi";
+import {useAccount, useConnect, useNetwork, useSignMessage, useSigner} from "wagmi";
 import {InjectedConnector} from "wagmi/connectors/injected";
 
 export default function Login() {
@@ -29,48 +29,61 @@ export default function Login() {
     const {address, isConnected} = useAccount()
     const {chain} = useNetwork()
     const {signMessageAsync} = useSignMessage()
+    const { data: signer, isError, isLoading2 } = useSigner()
     const {connect} = useConnect({
         connector: new InjectedConnector(),
     });
     const {data: session, status} = useSession()
+    const contract2 = contractCollector(signer)
 
 
     const handleLogin = async () => {
-        try {
-            const callbackUrl = "/protected"
-            const message = new SiweMessage({
-                domain: window.location.host,
-                address: address,
-                statement: "Sign in with Ethereum to the app.",
-                uri: window.location.origin,
-                version: "1",
-                chainId: chain?.id,
-                nonce: await getCsrfToken(),
-            })
-            const signature = await signMessageAsync({
-                message: message.prepareMessage(),
-            })
-            console.log(message)
-            await signIn("credentials", {
-                message: JSON.stringify(message),
-                redirect: false,
-                signature,
-                callbackUrl,
-            }).then(
-                function (result) {
-                    if(result.status == "200")
-                        setVmContract(contractCollector());
-                        router.push("/home")
-                    if(result.status == "401")
-                        router.push("signup")
-                },
-                function (error) {
-                   alert(error)
-                }
-            )
-            console.log(session)
-        } catch (error) {
-            window.alert(error)
+        if (
+            typeof window !== "undefined" &&
+            typeof window.ethereum !== "undefined"
+        ) {
+            try {
+                alert("sss")
+                const callbackUrl = "/protected"
+                const message = new SiweMessage({
+                    domain: window.location.host,
+                    address: address,
+                    statement: "Sign in with Ethereum to the app.",
+                    uri: window.location.origin,
+                    version: "1",
+                    chainId: chain?.id,
+                    nonce: await getCsrfToken(),
+                })
+                    const signature = await signMessageAsync({
+                        message: message.prepareMessage(),
+                    })
+                    console.log(message)
+                    await signIn("credentials", {
+                        message: JSON.stringify(message),
+                        redirect: false,
+                        signature,
+                        callbackUrl,
+                    }).then(
+                        function (result) {
+                            if(result.status == "200"){
+                                setVmContract(contract2);
+                                router.push("/home")
+                            }
+                            if(result.status == "401") {
+                                router.push("/signup")
+                            }
+                        },
+                        function (error) {
+                           alert(error)
+                        }
+                    )
+                    console.log(session)
+            } catch (error) {
+                window.alert(error)
+            }
+        } else {
+            setIsLoading(false);
+            alert("please install Metamask");
         }
     }
 

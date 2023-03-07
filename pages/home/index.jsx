@@ -31,7 +31,7 @@ export default function home() {
 
   const [error, setError] = useState(null);
 
-  const shouldRedirect = !true;
+  const shouldRedirect = false;
 
   useEffect(() => {
     if (shouldRedirect) {
