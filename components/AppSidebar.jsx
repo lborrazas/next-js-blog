@@ -6,6 +6,7 @@ import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
+import style from "./layout.module.css";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -21,6 +22,7 @@ import { useState } from "react";
 import { navItems } from "./navbar/navbarLists";
 import { useRouter } from "next/router";
 import CssBaseline from "@mui/material/CssBaseline";
+import { ExportPDF } from "./pdf/exportPDF";
 
 const drawerWidth = 240;
 
@@ -178,15 +180,9 @@ export default function Sidebar({ children }) {
                   px: 2.5,
                 }}
               >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                  }}
-                >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
+                <div className={`${style.marginH}`} >
+                  <ExportPDF></ExportPDF>
+                </div>
                 <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>

@@ -1,9 +1,9 @@
-const { PrismaClient } =  require("./../../../../node_modules/.prisma/client");
+const { PrismaClient } =  require("./../../../node_modules/.prisma/client");
 const prisma = new PrismaClient();
+const fs = require('fs');
 
 export default async function handle(req, res) {
   const { address } = req.query;
-  if (address === "admin") {
     try {
       const result = await prisma.$queryRaw`SELECT *
       FROM "History"
@@ -11,56 +11,25 @@ export default async function handle(req, res) {
       ON "Parcela".id = "History".pid
       WHERE "History".address = ${address};`;
 
-            console.log(result);
-            res.status(200).json(result);
-        }
-        catch(err){
+
+      const createCsvWriter = require('csv-writer').createObjectCsvWriter;
+
+
+
+        const headers = Object.keys(result[0]).join(',') + '\n';
+        const rows = result.map(obj => Object.values(obj).join(',')).join('\n');
+        const csv = headers + rows;
+
+        fs.writeFile('public/reportes/' + address + '.csv', csv, function(err) {
+          if (err) throw err;
+          console.log('Archivo guardado exitosamente!');
+        });
+        
+
+        res.status(200).json('/reportes/' + address + '.csv');
+            
+        }catch(err){
             console.log(err);
-            res.status(508).json({ err: "Error occured while adding a new food." });
-        }
-    }else{
-        try{
-            const result = await prisma.$queryRaw`SELECT p.*, h.*
-            FROM "Parcela" p
-            LEFT JOIN (
-              SELECT pid, MAX(date) AS max_date
-              FROM "History"
-              WHERE address = ${address}
-              GROUP BY pid
-            ) latest ON p.id = latest.pid
-            LEFT JOIN "History" h ON latest.pid = h.pid AND latest.max_date = h.date
-            WHERE p.address = ${address}`
-            res.status(200).json(result);
-        }
-        catch(err){
-            console.log(err);
-            res.status(508).json({ err: "Error occured while adding a new food." });
+            res.status(508).json({ err: "Error occured while adding a new food." + err });
         }
     }
-    
-
-
-
-  // try {
-  //     const parcelas = await prisma.parcela.findMany({where:
-  //         {address:address}
-  //         }
-  //     )
-  //     const post = await parcelas.map(async(parcela)=>{
-  //         const hist = await prisma.history.findMany({
-  //             orderBy:{date:'desc'},
-  //             take: 1,
-  //             where:{pid:parcela.id}
-  //         })
-  //         const token=Object.assign({}, parcela, hist[0]);
-  //         console.log(token)
-  //         return token
-  //     })
-  //
-  //     res.status(200).json(post);
-  // }
-  // catch (err) {
-  //     console.log(err);
-  //     res.status(508).json({ err: "Error occured while adding a new food." });
-  // }
-}
