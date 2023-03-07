@@ -82,7 +82,7 @@ export default function SignUp() {
         is_registered.data[0].isAdmin
       )
     );
-    router.push("/home");
+    if(is_registered) router.push("/login");
   };
 
   const handleSignup = (e) => {

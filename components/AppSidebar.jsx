@@ -19,8 +19,11 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import { useState } from "react";
 import { navItems } from "./navbar/navbarLists";
+import { navAdminItems } from "./navbar/navbarAdminLists";
 import { useRouter } from "next/router";
 import CssBaseline from "@mui/material/CssBaseline";
+import {signOut, useSession} from "next-auth/react"
+
 
 const drawerWidth = 240;
 
@@ -93,6 +96,7 @@ export default function Sidebar({ children }) {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const router = useRouter();
+  const { data: session, status } = useSession()
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -122,6 +126,7 @@ export default function Sidebar({ children }) {
           <Typography variant="h6" noWrap component="div">
             Ixalab Aplication
           </Typography>
+          <button onClick={() => signOut()}>Sign out</button>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
@@ -136,7 +141,7 @@ export default function Sidebar({ children }) {
         </DrawerHeader>
         <Divider />
         <List>
-          {navItems.map(({ Name, Icon, Url }) => (
+          {session && session.isAdmin ? navAdminItems.map(({ Name, Icon, Url }) => (
             <ListItem key={Name} disablePadding sx={{ display: "block" }}>
               <ListItemButton
                 onClick={() => router.push(Url)}
@@ -165,6 +170,35 @@ export default function Sidebar({ children }) {
                 <ListItemText primary={Name} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
+          )) : navItems.map(({ Name, Icon, Url }) => (
+              <ListItem key={Name} disablePadding sx={{ display: "block" }}>
+                <ListItemButton
+                    onClick={() => router.push(Url)}
+                    sx={{
+                      minHeight: 48,
+                      justifyContent: open ? "initial" : "center",
+                      px: 2.5,
+                    }}
+                >
+                  <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 3 : "auto",
+                        justifyContent: "center",
+                      }}
+                  >
+                  <span>
+                    {" "}
+                    {
+                      <Icon
+                          color={router.pathname == Url ? "primary" : "inherit"}
+                      />
+                    }{" "}
+                  </span>
+                  </ListItemIcon>
+                  <ListItemText primary={Name} sx={{ opacity: open ? 1 : 0 }} />
+                </ListItemButton>
+              </ListItem>
           ))}
         </List>
         <Divider />

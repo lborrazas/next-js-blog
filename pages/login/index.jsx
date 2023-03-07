@@ -23,6 +23,11 @@ import DialogTitle from "@mui/material/DialogTitle";
 import MetaMaskIcon from "../../components/icons/MetaMaskIcon";
 import { renderToStaticMarkup } from "react-dom/server";
 import { Hexagons } from "../../assets/svg";
+import {SiweMessage} from "siwe";
+import {getCsrfToken, signIn, useSession} from "next-auth/react";
+import {useAccount, useConnect, useNetwork, useSignMessage, useSigner} from "wagmi";
+import {InjectedConnector} from "wagmi/connectors/injected";
+
 
 const gradient = keyframes`
   0% {
@@ -78,14 +83,77 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
+  const {address, isConnected} = useAccount()
+  const {chain} = useNetwork()
+  const {signMessageAsync} = useSignMessage()
+  const { data: signer, isError, isLoading2 } = useSigner()
+  const {connect} = useConnect({
+    connector: new InjectedConnector(),
+  });
+  const {data: session, status} = useSession()
+  const contract2 = contractCollector(signer)
+
+  const handleLogin = async () => {
+    if (
+        typeof window !== "undefined" &&
+        typeof window.ethereum !== "undefined"
+    ) {
+      try {
+        const callbackUrl = "/protected"
+        const message = new SiweMessage({
+          domain: window.location.host,
+          address: address,
+          statement: "Sign in with Ethereum to the app.",
+          uri: window.location.origin,
+          version: "1",
+          chainId: chain?.id,
+          nonce: await getCsrfToken(),
+        })
+        const signature = await signMessageAsync({
+          message: message.prepareMessage(),
+        })
+
+        console.log(message)
+        const tokens = await allTokens(contract2);
+        setTokens(tokens);
+        await signIn("credentials", {
+          message: JSON.stringify(message),
+          redirect: false,
+          signature,
+          callbackUrl,
+        }).then(
+            function (result) {
+              if(result.status == "200"){
+                setVmContract(contract2);
+                localStorage.setItem('myContextState', contract2);
+                router.push("/home")
+              }
+              if(result.status == "401") {
+                router.push("/signup")
+              }
+            },
+            function (error) {
+              alert(error)
+            }
+        )
+        console.log(session)
+      } catch (error) {
+        window.alert(error)
+      }
+    } else {
+      setIsLoading(false);
+      alert("please install Metamask");
+    }
+  }
+
 
   const allTokens = async (vmContract) => {
-    const max = await vmContract.methods.tokenCounter().call();
+    const max = await contract2.tokenCounter();
     const plots = [];
     for (let i = 0; i < max; i++) {
       // TODO: hacer algo con esta variable
-      const address_temp = await vmContract.methods.ownerOf(i).call();
-      const parse = await vmContract.methods.tokenIdToParcelasIndex(i).call();
+      const address_temp = await contract2.ownerOf(i);
+      const parse = await contract2.tokenIdToParcelasIndex(i);
         
       plots.push(parse);
     }
@@ -96,52 +164,52 @@ export default function Login() {
     setOpenDialog(false);
   };
 
-  const connectWalletHandler = async () => {
-    if (
-      typeof window !== "undefined" &&
-      typeof window.ethereum !== "undefined"
-    ) {
-      try {
-        setIsLoading(true);
-        await window.ethereum.request({ method: "eth_requestAccounts" });
-        const web3 = new Web3(window.ethereum);
-        /*set web3 instance*/
-        setWeb3(web3);
-        /*get list of accounts*/
-        const account = await web3.eth.getAccounts();
-        setAddress(account[0]);
-
-        /*Create a contract copy*/
-        const vmContract_ = contractCollector(web3);
-        setVmContract(vmContract_);
-        const body = { address: account[0] };
-        const is_registered = await axios.post("/api/getuser", body);
-        const tokens = await allTokens(vmContract_);
-        setTokens(tokens);
-        if (is_registered.data[0]) {
-          setUser(
-            new User(
-              is_registered.data[0].id,
-              is_registered.data[0].name,
-              is_registered.data[0].email,
-              account[0],
-              is_registered.data[0].isAdmin
-            )
-          );
-          router.push("/home");
-        } else {
-          router.push("/signup");
-        }
-      } catch (err) {
-        setIsLoading(false);
-        setError(err.message);
-      }
-    } else {
-      setIsLoading(false);
-      setOpenDialog(true);
-      // alert("please install Metamask");
-    }
-  };
+  // const connectWalletHandler = async () => {
+  //   if (
+  //     typeof window !== "undefined" &&
+  //     typeof window.ethereum !== "undefined"
+  //   ) {
+  //     try {
+  //       setIsLoading(true);
+  //       await window.ethereum.request({ method: "eth_requestAccounts" });
+  //       const web3 = new Web3(window.ethereum);
+  //       /*set web3 instance*/
+  //       setWeb3(web3);
+  //       /*get list of accounts*/
+  //       const account = await web3.eth.getAccounts();
+  //       setAddress(account[0]);
+  //
+  //       /*Create a contract copy*/
+  //       const vmContract_ = contractCollector(web3);
+  //       setVmContract(vmContract_);
+  //       const body = { address: account[0] };
+  //       const is_registered = await axios.post("/api/getuser", body);
+  //       const tokens = await allTokens(vmContract_);
+  //       setTokens(tokens);
+  //       if (is_registered.data[0]) {
+  //         setUser(
+  //           new User(
+  //             is_registered.data[0].id,
+  //             is_registered.data[0].name,
+  //             is_registered.data[0].email,
+  //             account[0],
+  //             is_registered.data[0].isAdmin
+  //           )
+  //         );
+  //         router.push("/home");
+  //       } else {
+  //         router.push("/signup");
+  //       }
+  //     } catch (err) {
+  //       setIsLoading(false);
+  //       setError(err.message);
+  //     }
+  //   } else {
+  //     setIsLoading(false);
+  //     setOpenDialog(true);
+  //     // alert("please install Metamask");
+  //   }
+  // };
 
   return (
     <PageLogin>
@@ -153,7 +221,7 @@ export default function Login() {
           <CircularProgress />
         ) : (
           <Button
-            onClick={connectWalletHandler}
+            onClick={handleLogin}
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}

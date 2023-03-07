@@ -1,5 +1,3 @@
-import { useUser, useTokens } from "../../contexts/AppContext";
-import { useAddress, useVmContract } from "../../blockchain/BlockchainContext";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import Paper from "@mui/material/Paper";
@@ -7,19 +5,26 @@ import Grid from "@mui/material/Grid";
 import { Button } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Iconify from "../../components/iconify";
-8;
 import ParcelasGridViewer, {
   Parcela,
 } from "../../components/pagesComponents/parcelasGridViewer";
 import ParcelasWidgetViewer from "../../components/pagesComponents/parcelasWidgetViewer";
 import useSWR from "swr";
 import { DashboardSkeleton } from "../../components/skeletons/DashboardSkeleton";
+import {getCsrfToken, useSession} from "next-auth/react";
+
+export async function getServerSideProps(context) {
+    return {
+        props: {
+            csrfToken: await getCsrfToken(context),
+        },
+    }
+}
 
 export default function Dashboard() {
-  const user = useUser();
-  const vmContract = useVmContract();
-  const address = useAddress();
   const router = useRouter();
+  const { data: session, status } = useSession()
+
   function handleCLick() {
     // TODO: harcodeado no
     const parcela = new Parcela(
@@ -35,26 +40,25 @@ export default function Dashboard() {
     });
   }
 
-  const tokens = useTokens();
   const [parcelas, setParcelas] = useState([]);
-  console.log(user);
+
   const fetcher = (url) => fetch(url).then((res) => res.json());
   const { data, error } = useSWR(
-    user?.isAdmin
+    session?.isAdmin
       ? `/api/enhance/mytokens/all`
-      : `/api/enhance/mytokens/${user.address}`,
+      : `/api/enhance/mytokens/${session.address}`,
     fetcher
   );
   const { data: total, error: error2 } = useSWR(
-    user?.isAdmin
+    session?.isAdmin
       ? `/api/co2Data/Admin/total`
-      : `/api/co2Data/Cliente/Total/${user.address}`,
+      : `/api/co2Data/Cliente/Total/${session.address}`,
     fetcher
   );
   const { data: prom, error: error3 } = useSWR(
-    user?.isAdmin
+    session?.isAdmin
       ? `/api/co2Data/Admin/promedio`
-      : `/api/co2Data/Cliente/Promedio/${user.address}`,
+      : `/api/co2Data/Cliente/Promedio/${session.address}`,
     fetcher
   );
   if (error) {
