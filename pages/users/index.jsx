@@ -22,7 +22,15 @@ import Iconify from "../../components/iconify";
 import { DataGrid } from '@mui/x-data-grid';
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
+import {getCsrfToken, useSession} from "next-auth/react";
 
+export async function getServerSideProps(context) {
+  return {
+    props: {
+      csrfToken: await getCsrfToken(context),
+    },
+  }
+}
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -47,16 +55,17 @@ export default function home({ users }) {
   const [errora, setError] = useState(null);
   const [rows, setRows] = useState();
   const [inputValue, setInputValue] = useState('');
+  const { data: session, status } = useSession()
 
-  const shouldRedirect = !user;
   const fetcher = (url) => fetch(url).then((res) => res.json())
   let addressSend = address;
   let titleListView = "";
-  if (user.isAdmin) {
+  if (session.isAdmin) {
     addressSend = "admin"
     titleListView = "Lista de usuarios";
   }
-  const { data, error, isLoading } = useSWR(address ? `/api/allusers` : null, fetcher)
+  //todo los null no hacen una mierda
+  const { data, error, isLoading } = useSWR(session.address ? `/api/allusers` : null, fetcher)
 
   const filterItems = query => {
     return data.filter((el) =>
@@ -107,7 +116,6 @@ export default function home({ users }) {
     return (
       <Box sx={{ flexGrow: 1 }}>
         {
-          shouldRedirect ? (<RedirectPage />) :
             <><Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
               <Typography component="h1" variant="h4">
                 {titleListView}

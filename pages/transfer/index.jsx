@@ -15,6 +15,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
 import RedirectPage from "../../components/redirect/RedirectPage";
 import { TransferSkeleton } from "../../components/skeletons/TransferSkeleton";
+import {useSession} from "next-auth/react";
 
 export default function Transfer() {
   const [errorb, setError] = useState("");
@@ -23,10 +24,14 @@ export default function Transfer() {
   const address = useAddress();
   const router = useRouter();
   const vmContract = useVmContract();
+  const { data: session, status } = useSession()
 
   const fetcher = (url) => fetch(url).then((res) => res.json());
+  //todo el null hace que no haga nada, no parece un comportamiento correcto,
+  // salvo que no queiras que haga llamada
+
   const { data, error } = useSWR(
-    address ? `api/parcela/address/${address}` : null,
+    session.address ? `api/parcela/address/${session.address}` : null,
     fetcher
   );
 
@@ -56,11 +61,11 @@ export default function Transfer() {
   };
 
   async function transaccion() {
-    const max = await vmContract.methods.tokenCounter().call();
+    const max = await vmContract.tokenCounter()
     const tokens_temp = [];
     const parcela_id = [];
     for (let i = 0; i < max; i++) {
-      const parse = await vmContract.methods.tokenIdToParcelasIndex(i).call();
+      const parse = await vmContract.tokenIdToParcelasIndex(i)
       if (
         Number(parse.latitud) === parcela.latitud &&
         Number(parse.longitud) === parcela.longitud

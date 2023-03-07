@@ -1,5 +1,3 @@
-import { useUser, useTokens } from "../../contexts/AppContext";
-import { useAddress, useVmContract } from "../../blockchain/BlockchainContext";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import Paper from "@mui/material/Paper";
@@ -13,12 +11,19 @@ import ParcelasGridViewer, {
 import ParcelasWidgetViewer from "../../components/pagesComponents/parcelasWidgetViewer";
 import useSWR from "swr";
 import { DashboardSkeleton } from "../../components/skeletons/DashboardSkeleton";
+import {getCsrfToken, useSession} from "next-auth/react";
+
+export async function getServerSideProps(context) {
+    return {
+        props: {
+            csrfToken: await getCsrfToken(context),
+        },
+    }
+}
 
 export default function Dashboard() {
-  const user = useUser();
-  const vmContract = useVmContract();
-  const address = useAddress();
   const router = useRouter();
+  const { data: session, status } = useSession()
 
   function handleCLick() {
     // TODO: harcodeado no
@@ -35,12 +40,11 @@ export default function Dashboard() {
     });
   }
 
-  const tokens = useTokens();
   const [parcelas, setParcelas] = useState([]);
 
   const fetcher = (url) => fetch(url).then((res) => res.json());
   const { data, error } = useSWR(
-    address ? `/api/enhance/mytokens/${address}` : null,
+    session.address ? `/api/enhance/mytokens/${session.address}` : null,
     fetcher
   );
   if (error) {
