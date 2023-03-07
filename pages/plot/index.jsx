@@ -44,7 +44,7 @@ export default function Dashboard() {
 
   const fetcher = (url) => fetch(url).then((res) => res.json());
   const { data, error } = useSWR(
-    session.address ? `/api/enhance/mytokens/${session.address}` : null,
+    session ? `/api/enhance/mytokens/${session.address}` : null,
     fetcher
   );
   if (error) {
