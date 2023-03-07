@@ -3,7 +3,6 @@ const prisma = new PrismaClient();
 
 export default async function handle(req, res) {
   const data = req.body;
-  console.log(data)
   const parcela = {
     data: {
       address: data.address,
