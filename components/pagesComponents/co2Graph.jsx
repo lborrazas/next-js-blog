@@ -49,7 +49,7 @@ const Chart = ({ datos }) => {
 
 export default function Co2Graph({ datos }) {
   return (
-    <Box height="100%">
+    <Box height="85%">
       <Chart datos={datos} />
     </Box>
   );

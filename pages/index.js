@@ -2,12 +2,12 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useUser } from "../contexts/AppContext";
 import LoadingPage from "../components/loading/LoadingPage";
+import { useSession } from "next-auth/react";
 
 export default function Index() {
-  const user = useUser();
   const router = useRouter();
-
-  const shouldRedirectToLogin = !user;
+  const { data: session, status } = useSession();
+  const shouldRedirectToLogin = !session;
 
   useEffect(() => {
     if (shouldRedirectToLogin) {

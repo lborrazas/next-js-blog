@@ -37,7 +37,7 @@ export function colorGrading(number) {
 
 export default function ParcelasGridViewer({ tokens }) {
   const { data: session, status } = useSession();
-  console.log(session);
+
   const valuesHarcoded = [
     { color: "red", text: "0-10%" },
     { color: "orange", text: "11-30%" },

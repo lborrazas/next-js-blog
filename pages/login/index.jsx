@@ -1,9 +1,10 @@
 import {
   useSetAddress,
   useSetVmContract,
-  useSetWeb3, useVmContract,
+  useSetWeb3,
+  useVmContract,
 } from "../../blockchain/BlockchainContext";
-import {forwardRef, useEffect, useState} from "react";
+import { forwardRef, useEffect, useState } from "react";
 import contractCollector from "../../blockchain/ContractCollector";
 import Web3 from "web3";
 import { useRouter } from "next/router";
@@ -23,11 +24,16 @@ import DialogTitle from "@mui/material/DialogTitle";
 import MetaMaskIcon from "../../components/icons/MetaMaskIcon";
 import { renderToStaticMarkup } from "react-dom/server";
 import { Hexagons } from "../../assets/svg";
-import {SiweMessage} from "siwe";
-import {getCsrfToken, signIn, useSession} from "next-auth/react";
-import {useAccount, useConnect, useNetwork, useSignMessage, useSigner} from "wagmi";
-import {InjectedConnector} from "wagmi/connectors/injected";
-
+import { SiweMessage } from "siwe";
+import { getCsrfToken, signIn, useSession } from "next-auth/react";
+import {
+  useAccount,
+  useConnect,
+  useNetwork,
+  useSignMessage,
+  useSigner,
+} from "wagmi";
+import { InjectedConnector } from "wagmi/connectors/injected";
 
 const gradient = keyframes`
   0% {
@@ -84,15 +90,15 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
-  const {address, isConnected} = useAccount()
-  const {chain} = useNetwork()
-  const {signMessageAsync} = useSignMessage()
-  const { data: signer, isError, isLoading2 } = useSigner()
-  const {connect} = useConnect({
+  const { address, isConnected } = useAccount();
+  const { chain } = useNetwork();
+  const { signMessageAsync } = useSignMessage();
+  const { data: signer, isError, isLoading2 } = useSigner();
+  const { connect } = useConnect({
     connector: new InjectedConnector(),
   });
-  const {data: session, status} = useSession()
-  const contract2 = contractCollector(signer)
+  const { data: session, status } = useSession();
+  const contract2 = contractCollector(signer);
 
   // useEffect(async () => {
   //   // if(signer && vmContract){
@@ -104,18 +110,17 @@ export default function Login() {
   useEffect(() => {
     //const storedState = localStorage.getItem('myContextState');
     if (!vmContract && !isLoading && signer) {
-      setVmContract(contract2)
+      setVmContract(contract2);
     }
   }, [vmContract, contract2, isLoading, isError, signer]);
 
   const handleLogin = async () => {
     if (
-        typeof window !== "undefined" &&
-        typeof window.ethereum !== "undefined"
+      typeof window !== "undefined" &&
+      typeof window.ethereum !== "undefined"
     ) {
       try {
-        console.log(address)
-        const callbackUrl = "/protected"
+        const callbackUrl = "/protected";
         const message = new SiweMessage({
           domain: window.location.host,
           address: address,
@@ -124,42 +129,39 @@ export default function Login() {
           version: "1",
           chainId: chain?.id,
           nonce: await getCsrfToken(),
-        })
+        });
         const signature = await signMessageAsync({
           message: message.prepareMessage(),
-        })
+        });
 
-        console.log(message)
         await signIn("credentials", {
           message: JSON.stringify(message),
           redirect: false,
           signature,
           callbackUrl,
         }).then(
-            function (result) {
-              if(result.status == "200"){
-                setVmContract(contract2);
-                localStorage.setItem('myContextState', contract2);
-                router.push("/home")
-              }
-              if(result.status == "401") {
-                router.push("/signup")
-              }
-            },
-            function (error) {
-              alert(error)
+          function (result) {
+            if (result.status == "200") {
+              setVmContract(contract2);
+              localStorage.setItem("myContextState", contract2);
+              router.push("/home");
             }
-        )
-        console.log(session)
+            if (result.status == "401") {
+              router.push("/signup");
+            }
+          },
+          function (error) {
+            alert(error);
+          }
+        );
       } catch (error) {
-        window.alert(error)
+        window.alert(error);
       }
     } else {
       setIsLoading(false);
       alert("please install Metamask");
     }
-  }
-
+  };
 
   const allTokens = async (vmContract) => {
     const max = await contract2.tokenCounter();
@@ -168,7 +170,7 @@ export default function Login() {
       // TODO: hacer algo con esta variable
       const address_temp = await contract2.ownerOf(i);
       const parse = await contract2.tokenIdToParcelasIndex(i);
-        
+
       plots.push(parse);
     }
     return plots;
@@ -179,12 +181,10 @@ export default function Login() {
   };
 
   useEffect(() => {
-    console.log(isConnected);
     if (isConnected && !session) {
-      handleLogin()
+      handleLogin();
     }
-  }, [isConnected])
-
+  }, [isConnected]);
 
   return (
     <PageLogin>
@@ -196,14 +196,14 @@ export default function Login() {
           <CircularProgress />
         ) : (
           <Button
-              onClick={(e) => {
-                e.preventDefault()
-                if (!isConnected) {
-                  connect()
-                } else {
-                  handleLogin()
-                }
-              }}
+            onClick={(e) => {
+              e.preventDefault();
+              if (!isConnected) {
+                connect();
+              } else {
+                handleLogin();
+              }
+            }}
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}

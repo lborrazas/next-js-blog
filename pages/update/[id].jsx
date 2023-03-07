@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
 
-import { useUser } from "../../contexts/AppContext";
 import { useAddress, useVmContract } from "../../blockchain/BlockchainContext";
 import { useRouter } from "next/router";
 import useSWR from "swr";
@@ -33,7 +32,6 @@ const Item = styled(Paper)(({ theme }) => ({
 export default function UpdatePlot({ users }) {
   const router = useRouter();
   const address = useAddress();
-  const user = useUser();
   const latitude = useRef();
   const longitude = useRef();
   const area = useRef();
@@ -49,21 +47,19 @@ export default function UpdatePlot({ users }) {
   const { data, error } = useSWR(id ? `/api/parcela/${id}` : null, fetcher);
   // body: {"latitude":1,"longitud":1}
 
-
-
   useEffect(() => {
     if (shouldRedirect) {
       router.push("/login");
     }
   }, [shouldRedirect, router]);
 
-  function updateHistory(){
-    let history = {
-      "id": data[0].id,
-      "m2used": data[0].m2used,
-      "m3": data[0].m3,
-      "address": data[0].address,
-    }
+  function updateHistory() {
+    const history = {
+      id: data[0].id,
+      m2used: data[0].m2used,
+      m3: data[0].m3,
+      address: data[0].address,
+    };
     console.log(history);
     // const { data, error } = useSWR(id ? `/api/parcelaupdate` : history, fetcher);
   }
