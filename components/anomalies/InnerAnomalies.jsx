@@ -3,7 +3,19 @@ import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 
 export const InnerAnomalies = ( anomalies ) => {
-  async function fixDB(nft) {}
+  async function fixDB(nft) {
+    const plots = [];
+    for (let i = 0; i < max; i++) {
+      const parse = await vmContract.methods.tokenIdToParcelasIndex(i).call();
+      if(parse.longitud   ==nft.latitud && parse.latitud ==nft.latitud){
+        const owner = await vmContract.methods.ownerOf(i).call();
+        plots.push(owner);
+    }
+    //if ownwr = history_address => updateParcela  
+    //if ownwr = parcela_address => updateHistory  
+    }
+
+  }
 
   return (
     <Stack spacing={1}>
