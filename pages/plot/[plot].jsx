@@ -61,8 +61,6 @@ export default function Plot({ parcela, lastLog, owner }) {
     `/api/co2Data/Parcela/Anual/${parcela[0].id}`,
     fetcher
   );
-  console.log(lastLog);
-  console.log(owner);
 
   const { data: total, error: error2 } = useSWR(
     `/api/co2Data/Parcela/Total/${parcela[0].id}`,

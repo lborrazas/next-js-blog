@@ -8,8 +8,12 @@ import AppsIcon from "@mui/icons-material/Apps";
 import BugReportRoundedIcon from "@mui/icons-material/BugReportRounded";
 import RecentActorsIcon from "@mui/icons-material/RecentActors";
 
-export const navItems = [
+export const navAdminItems = [
   { Name: "Inicio", Icon: HomeIcon, Url: "/home" },
   { Name: "Parcelas", Icon: TokenIcon, Url: "/plot" },
+  { Name: "Crear Parcela", Icon: GrassIcon, Url: "/create" },
+  { Name: "Lista de Usuarios", Icon: RecentActorsIcon, Url: "/users" },
   { Name: "Lista de parcelas", Icon: AppsIcon, Url: "/parcelas" },
+  { Name: "Transfer", Icon: SyncAltIcon, Url: "/transfer" },
+  { Name: "Anomalies", Icon: BugReportRoundedIcon, Url: "/anomalies" },
 ];

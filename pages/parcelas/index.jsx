@@ -15,6 +15,7 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { EditPlotDialog } from "../../components/dialog/EditPlotDialog";
+import {useSession} from "next-auth/react";
 
 export default function Parcelas() {
   const address = useAddress();
@@ -30,17 +31,18 @@ export default function Parcelas() {
   const [selectedPlot, setSelectedPlot] = useState(undefined);
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const router = useRouter();
+  const { data: session, status } = useSession()
 
 
   const fetcher = (url) => fetch(url).then((res) => res.json());
   let addressSend = address;
   let titleListView = "Lista de mis parcelas";
-  if (user.isAdmin) {
+  if (session && session.isAdmin) {
     addressSend = "admin";
     titleListView = "Lista de todas las parcelas";
   }
   const { data, isLoading } = useSWR(
-    address ? `/api/enhance/mytokens/${addressSend}` : null, //todo arreglar (no tiene que ser 'admin'
+    session ? `/api/enhance/mytokens/${addressSend}` : null, //todo arreglar (no tiene que ser 'admin'
     fetcher
   );
 

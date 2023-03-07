@@ -17,6 +17,7 @@ import RedirectPage from "../../components/redirect/RedirectPage";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import { TransferSkeleton } from "../../components/skeletons/TransferSkeleton";
+import {useSession} from "next-auth/react";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -33,10 +34,14 @@ export default function Transfer() {
   const address = useAddress();
   const router = useRouter();
   const vmContract = useVmContract();
+  const { data: session, status } = useSession()
 
   const fetcher = (url) => fetch(url).then((res) => res.json());
+  //todo el null hace que no haga nada, no parece un comportamiento correcto,
+  // salvo que no queiras que haga llamada
+
   const { data, error } = useSWR(
-    address ? `api/parcela/address/${address}` : null,
+    session.address ? `api/parcela/address/${session.address}` : null,
     fetcher
   );
 
@@ -66,11 +71,11 @@ export default function Transfer() {
   };
 
   async function transaccion() {
-    const max = await vmContract.methods.tokenCounter().call();
+    const max = await vmContract.tokenCounter()
     const tokens_temp = [];
     const parcela_id = [];
     for (let i = 0; i < max; i++) {
-      const parse = await vmContract.methods.tokenIdToParcelasIndex(i).call();
+      const parse = await vmContract.tokenIdToParcelasIndex(i)
       if (
         Number(parse.latitud) === parcela.latitud &&
         Number(parse.longitud) === parcela.longitud
@@ -79,8 +84,12 @@ export default function Transfer() {
         parcela_id.push(i);
       }
     }
-    // axios.post('/api/transfer',{body:{toAdd:forwardAddress,fromAdd:address,id:parcela_id[0]}})
-    //await vmContract.methods.safeTransferFrom(address, forwardAddress, parcela_id[0]).send({ from: address })
+    axios.post("/api/transfer", {
+      body: { toAdd: forwardAddress, id: parcela.id },
+    });
+    await vmContract.methods
+      .safeTransferFrom(address, forwardAddress, Number(parcela_id[0]))
+      .send({ from: address });
     alert(
       `NFT ${parcela.id} transferred from ${address} to ${forwardAddress}`
     );

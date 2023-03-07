@@ -27,13 +27,13 @@ const Chart = ({ datos }) => {
   return (
     <ResponsiveContainer width="100%">
       <AreaChart
-        width={500}
-        height={400}
+        width="100%"
+        height="100%"
         data={datos}
         margin={{
           top: 10,
-          right: 30,
-          left: 90,
+          right: 10,
+          left: 10,
           bottom: 0,
         }}
       >
@@ -49,7 +49,7 @@ const Chart = ({ datos }) => {
 
 export default function Co2Graph({ datos }) {
   return (
-    <Box height="85%">
+    <Box height="100%">
       <Chart datos={datos} />
     </Box>
   );
