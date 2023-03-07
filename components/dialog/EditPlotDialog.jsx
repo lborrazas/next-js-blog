@@ -1,10 +1,9 @@
 import Dialog from "@mui/material/Dialog";
-import { PlotForm } from "../plot/PlotFormUpdate";
+import { PlotForm } from "../plot/PlotForm";
 import Box from "@mui/material/Box";
 
 export const EditPlotDialog = ({ open, handleClose, users, selectedPlot }) => {
-  console.log(users);
-
+  console.log(selectedPlot)
   return (
     <Dialog
       open={open}
@@ -15,7 +14,11 @@ export const EditPlotDialog = ({ open, handleClose, users, selectedPlot }) => {
       fullWidth
     >
       <Box sx={{ padding: "30px" }}>
-        <PlotForm users={users} selectedPlot={selectedPlot} />
+        <PlotForm
+          users={users}
+          handleClose={handleClose}
+          selectedPlot={selectedPlot}
+        />
       </Box>
     </Dialog>
   );

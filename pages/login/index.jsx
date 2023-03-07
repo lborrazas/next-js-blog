@@ -86,6 +86,7 @@ export default function Login() {
       // TODO: hacer algo con esta variable
       const address_temp = await vmContract.methods.ownerOf(i).call();
       const parse = await vmContract.methods.tokenIdToParcelasIndex(i).call();
+        
       plots.push(parse);
     }
     return plots;
