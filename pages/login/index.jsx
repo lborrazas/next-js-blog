@@ -125,6 +125,7 @@ export default function Login() {
             function (result) {
               if(result.status == "200"){
                 setVmContract(contract2);
+                localStorage.setItem('myContextState', contract2);
                 router.push("/home")
               }
               if(result.status == "401") {

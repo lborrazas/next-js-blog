@@ -37,12 +37,12 @@ export default function Parcelas() {
   const fetcher = (url) => fetch(url).then((res) => res.json());
   let addressSend = address;
   let titleListView = "Lista de mis parcelas";
-  if (session.isAdmin) {
+  if (session && session.isAdmin) {
     addressSend = "admin";
     titleListView = "Lista de todas las parcelas";
   }
   const { data, isLoading } = useSWR(
-    session.address ? `/api/enhance/mytokens/${addressSend}` : null, //todo arreglar (no tiene que ser 'admin'
+    session ? `/api/enhance/mytokens/${addressSend}` : null, //todo arreglar (no tiene que ser 'admin'
     fetcher
   );
 
