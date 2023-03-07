@@ -5,8 +5,8 @@ export default async function handle(req, res) {
   try {
     const data = req.body;
     const result = await prisma.parcela.update({
-      where: { id: data.pid },
-      data: { address: data.history_address },
+      where: { id: data.id },
+      data: { address : data.toAdd },
     });
 
     console.log(data);
