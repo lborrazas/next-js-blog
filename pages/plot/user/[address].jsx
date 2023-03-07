@@ -1,64 +1,58 @@
+import { useUser, useTokens } from "../../../contexts/AppContext";
+import { useAddress, useVmContract } from "../../../blockchain/BlockchainContext";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import { Button } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import Iconify from "../../components/iconify";
+import Iconify from "../../../components/iconify";
+8;
 import ParcelasGridViewer, {
   Parcela,
-} from "../../components/pagesComponents/parcelasGridViewer";
-import ParcelasWidgetViewer from "../../components/pagesComponents/parcelasWidgetViewer";
+} from "../../../components/pagesComponents/parcelasGridViewer";
+import ParcelasWidgetViewer from "../../../components/pagesComponents/parcelasWidgetViewer";
 import useSWR from "swr";
-import { DashboardSkeleton } from "../../components/skeletons/DashboardSkeleton";
-import {getCsrfToken, useSession} from "next-auth/react";
+import { DashboardSkeleton } from "../../../components/skeletons/DashboardSkeleton";
+const { PrismaClient } = require("./../../../node_modules/.prisma/client");
+
+const prisma = new PrismaClient();
+
 
 export async function getServerSideProps(context) {
-    return {
-        props: {
-            csrfToken: await getCsrfToken(context),
-        },
-    }
+  // Realiza una llamada a la API o base de datos para obtener los datos de la publicación con el ID correspondiente
+ 
+
+  const client = await prisma.user.findMany({
+    where: {
+      address: context.query.address,
+    },
+  });
+ return {
+    props: {
+     client,
+    },
+  };
 }
 
-export default function Dashboard() {
+export default function DashboardUser({client}) {
+  client =client[0]
+  const vmContract = useVmContract();
+  const address = useAddress();
   const router = useRouter();
-  const { data: session, status } = useSession()
 
-  function handleCLick() {
-    // TODO: harcodeado no
-    const parcela = new Parcela(
-      "clerbc7s50000l5nkm288v8u5",
-      10,
-      20,
-      100,
-      40,
-      200
-    );
-    router.push({
-      pathname: `/plot/user/${user.address}`,
-    });
-  }
 
+  const tokens = useTokens();
   const [parcelas, setParcelas] = useState([]);
-
+  
   const fetcher = (url) => fetch(url).then((res) => res.json());
-  const { data, error } = useSWR(
-    session?.isAdmin
-      ? `/api/enhance/mytokens/all`
-      : `/api/enhance/mytokens/${session.address}`,
+  const { data, error } = useSWR(`/api/enhance/mytokens/${client.address}`,
     fetcher
   );
-  const { data: total, error: error2 } = useSWR(
-    session?.isAdmin
-      ? `/api/co2Data/Admin/total`
-      : `/api/co2Data/Cliente/Total/${session.address}`,
+  const { data: total, error: error2 } = useSWR(`/api/co2Data/Cliente/Total/${client.address}`,
     fetcher
   );
-  const { data: prom, error: error3 } = useSWR(
-    session?.isAdmin
-      ? `/api/co2Data/Admin/promedio`
-      : `/api/co2Data/Cliente/Promedio/${session.address}`,
+  const { data: prom, error: error3 } = useSWR(`/api/co2Data/Cliente/Promedio/${client.address}`,
     fetcher
   );
   if (error) {
@@ -71,7 +65,7 @@ export default function Dashboard() {
       <Grid container spacing={2}>
         <Grid item xs={8}>
           <Typography variant="h4" gutterBottom>
-            Dashboard
+            Usuario : {client.name}
           </Typography>
         </Grid>
         <Grid item xs={4} sx={{ display: "flex", justifyContent: "end" }}>

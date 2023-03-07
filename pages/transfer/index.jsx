@@ -74,8 +74,12 @@ export default function Transfer() {
         parcela_id.push(i);
       }
     }
-    // axios.post('/api/transfer',{body:{toAdd:forwardAddress,fromAdd:address,id:parcela_id[0]}})
-    //await vmContract.methods.safeTransferFrom(address, forwardAddress, parcela_id[0]).send({ from: address })
+    axios.post("/api/transfer", {
+      body: { toAdd: forwardAddress, id: parcela.id },
+    });
+    await vmContract.methods
+      .safeTransferFrom(address, forwardAddress, Number(parcela_id[0]))
+      .send({ from: address });
     alert(
       `NFT ${parcela_id[0]} transferred from ${address} to ${forwardAddress}`
     );
