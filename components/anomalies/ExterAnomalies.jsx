@@ -2,6 +2,8 @@ import axios from "axios";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
+import { Tooltip } from "@mui/material";
+
 
 export const ExterAnomalies = (anomalies) => {
   async function deleteParcela(nft) {
@@ -22,14 +24,16 @@ export const ExterAnomalies = (anomalies) => {
             Latitud{nft.latitud} Longitud {nft.longitud} Dueño {nft.address}
           </p>
           <Stack direction="row">
-            <IconButton
-              color="error"
-              onClick={() => {
-                deleteParcela(nft);
-              }}
-            >
-              <DeleteIcon />
-            </IconButton>
+            <Tooltip  title="descripcion boton 4">
+              <IconButton
+                color="error"
+                onClick={() => {
+                  deleteParcela(nft);
+                }}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
           </Stack>
         </Stack>
       ))}
