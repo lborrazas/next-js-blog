@@ -35,8 +35,21 @@
 
 .rightButton{
   color: white;
-  width: 85%;
   display: flex;
   justify-content: right;
   text-align: right;
+}
+
+.leftButton{
+  color: white;
+  width: 85%;
+  display: flex;
+  justify-content: left;
+  text-align: left;
+}
+
+.row{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
 }

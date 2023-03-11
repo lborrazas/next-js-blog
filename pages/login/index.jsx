@@ -186,53 +186,58 @@ export default function Login() {
     }
   }, [isConnected]);
 
-  return (
-    <PageLogin>
-      <LoginContainer>
-        <Typography component="h1" variant="h4">
-          IxaTesis
-        </Typography>
-        {isLoading ? (
-          <CircularProgress />
-        ) : (
-          <Button
-            onClick={(e) => {
-              e.preventDefault();
-              if (!isConnected) {
-                connect();
-              } else {
-                handleLogin();
-              }
-            }}
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
-            Iniciar Sesión
-          </Button>
-        )}
-        {error && <Typography variant="body2">{error}</Typography>}
-      </LoginContainer>
-      <Dialog
-        open={openDialog}
-        TransitionComponent={Transition}
-        keepMounted
-        onClose={handleCloseDialog}
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <DialogTitle>Por favor instale Metamask</DialogTitle>
-        <DialogContent sx={{ display: "grid" }}>
-          <Button
-            sx={{ alignSelf: "center" }}
-            variant="outlined"
-            startIcon={<MetaMaskIcon />}
-            target="_blank"
-            href="https://metamask.io/download/"
-          >
-            Descargar Metamask
-          </Button>
-        </DialogContent>
-      </Dialog>
-    </PageLogin>
-  );
+  if(session == null){
+    return (
+      <PageLogin>
+        <LoginContainer>
+          <Typography component="h1" variant="h4">
+            IxaTesis
+          </Typography>
+          {isLoading ? (
+            <CircularProgress />
+          ) : (
+            <Button
+              onClick={(e) => {
+                e.preventDefault();
+                if (!isConnected) {
+                  connect();
+                } else {
+                  handleLogin();
+                }
+              }}
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Iniciar Sesión
+            </Button>
+          )}
+          {error && <Typography variant="body2">{error}</Typography>}
+        </LoginContainer>
+        <Dialog
+          open={openDialog}
+          TransitionComponent={Transition}
+          keepMounted
+          onClose={handleCloseDialog}
+          aria-describedby="alert-dialog-slide-description"
+        >
+          <DialogTitle>Por favor instale Metamask</DialogTitle>
+          <DialogContent sx={{ display: "grid" }}>
+            <Button
+              sx={{ alignSelf: "center" }}
+              variant="outlined"
+              startIcon={<MetaMaskIcon />}
+              target="_blank"
+              href="https://metamask.io/download/"
+            >
+              Descargar Metamask
+            </Button>
+          </DialogContent>
+        </Dialog>
+      </PageLogin>
+    );
+  }else{
+    router.push("/home");
+  }
+
 }

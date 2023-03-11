@@ -9,6 +9,7 @@ import { IconButton } from "@mui/material";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import style from "./users.module.css";
+import InfoIcon from "@mui/icons-material/Info";
 import axios from "axios";
 import RedirectPage from "../../components/redirect/RedirectPage";
 import Slider from "@mui/material/Slider";
@@ -121,8 +122,11 @@ export default function Home({ users }) {
       field: "viewinfo",
       headerName: "Información",
       width: 110,
+      display: 'flex',
+      justifyContent: 'center',
       renderCell: (params) => (
-        <IconButton
+        <div  style={{ justifyContent: 'center', display: 'flex', width: '100%'}}>
+           <IconButton
           color="info"
           onClick={() =>
             router.push({ pahtname: `/plot/user/${params.row.address}` })
@@ -130,6 +134,8 @@ export default function Home({ users }) {
         >
           <InfoIcon />
         </IconButton>
+        </div>
+       
       ),
     },
   ];
