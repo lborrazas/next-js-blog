@@ -20,6 +20,7 @@ export default async function handle(req, res) {
 
 function eventsToData(events) {
   let month;
+  let year;
   let value = 0;
   const data = [];
   let lastEvent;
@@ -33,12 +34,17 @@ function eventsToData(events) {
     //caso cambio de mes
     if (event.date.getMonth() !== month) {
       while (Math.abs(event.date.getMonth() - month) > 1) {
-        month = month + 1;
-        if (month === 12) month = 0;
+       
+        year = lastEvent.date.getFullYear();
+        if (month === 12) {
+          month = 0;
+          year ++;
+        }
         data.push({
-          month: getMonthName(month - 1),
+          month: ` ${getMonthName(month)} ${year } `,
           value: value,
         });
+        month = month + 1;
       }
       // eslint-disable-next-line prettier/prettier
       primerDia = new Date(
@@ -52,13 +58,14 @@ function eventsToData(events) {
       );
       value = value + (event.date - primerDia) * event.m2used * event.m3;
       data.push({
-        month: getMonthName(month),
+        month: ` ${getMonthName(month)} ${event.date.getFullYear()} `,
         value: value,
       });
       month = event.date.getMonth();
       value = 0;
     }
-    value = value + (event.date - lastEvent.date) * event.m2used * event.m3; //todo hacer bien el calculo
+    value = value + (event.date - lastEvent.date) * event.m2used * event.m3;
+    month = event.date.getMonth(); //todo hacer bien el calculo
     lastEvent = event;
   });
   //ultimo caso
@@ -66,7 +73,7 @@ function eventsToData(events) {
   value =
     value + (currentDate - lastEvent.date) * lastEvent.m2used * lastEvent.m3;
   data.push({
-    month: getMonthName(month),
+    month: ` ${getMonthName(month)} ${lastEvent.date.getFullYear()} `,
     value: value,
   });
   return data;
