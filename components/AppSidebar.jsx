@@ -125,13 +125,17 @@ export default function Sidebar({ children }) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Ixalab Aplication
-          </Typography>
-          <div className={`${style.rightButton}`}>
-            <IconButton color="inherit" onClick={() => signOut()}>
-              <LogoutIcon />
-            </IconButton>
+          <div className={`${style.row}`}>
+            <div className={`${style.leftButton}`}>
+              <Typography variant="h6" noWrap component="div">
+                Ixalab Aplication
+              </Typography>
+            </div>
+            <div className={`${style.rightButton}`}>
+              <IconButton color="inherit" onClick={() => signOut()}>
+                <LogoutIcon />
+              </IconButton>
+            </div>  
           </div>
           {/* <button onClick={() => signOut()}>Sign out</button> */}
         </Toolbar>
