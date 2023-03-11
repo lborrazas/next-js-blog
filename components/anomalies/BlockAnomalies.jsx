@@ -2,9 +2,32 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
+import axios from "axios";
 
 export const BlockAnomalies = ( anomalies ) => {
-  async function createParcela(nft) {}
+  async function createParcela(nft) {  
+    console.log(nft) 
+  let url = "/api/parcelacreate";
+let plot = {
+    latitud: nft.data.latitud,
+    longitud: nft.data.longitud,
+    m2:0,
+    m2used: 0,
+    m3: 0,
+    address: nft.owner,
+  };
+  const result = await axios.post(url, plot);
+  if (result.data === -1) {
+
+    }
+    alert("parcela already exist");
+    const result = await axios.post('/api/fixes/updateowner', {addres:nft.owner});  
+    alert("parcela was corrected on our database ");
+  }
+} 
+  async function(){}
+
+  
   async function burnNft(nft) {
     //TODO BURN nft.id
   }

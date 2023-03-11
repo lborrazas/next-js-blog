@@ -20,8 +20,16 @@ export default function Layout({children}) {
     useEffect(() => {
         //const storedState = localStorage.getItem('myContextState');
         if (!vmContract && !isLoading && signer) {
+            console.log("--------------------------")
             setVmContract(contract2)
+        
+            console.log(contract2)
         }
+        
+        console.log(vmContract)
+        console.log(isLoading)
+        console.log(signer)
+        console.log("===============")
     }, [vmContract, contract2, isLoading, isError, signer]);
 
 

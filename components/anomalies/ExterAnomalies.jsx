@@ -1,11 +1,12 @@
-import EditIcon from "@mui/icons-material/Edit";
+import axios from "axios";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 
 export const ExterAnomalies = (anomalies) => {
   async function deleteParcela(nft) {
-    //TODO BURN nft.id
+    console.log(nft)
+    await axios.post("/api/fixes/deleteparcela", nft);
   }
   return (
     <Stack spacing={1}>

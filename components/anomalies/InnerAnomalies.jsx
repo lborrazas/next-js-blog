@@ -7,12 +7,12 @@ import { useAddress, useVmContract } from "../../blockchain/BlockchainContext";
 export const InnerAnomalies = (anomalies) => {
   const vmContract = useVmContract();
   async function fixDB(nft) {
-    const max = await vmContract.methods.tokenCounter().call();
+    const max = await vmContract.tokenCounter();
     const plots = [];
     for (let i = 0; i < max; i++) {
-      const parse = await vmContract.methods.tokenIdToParcelasIndex(i).call();
+      const parse = await vmContract.tokenIdToParcelasIndex(i);
       if (parse.longitud == nft.latitud && parse.latitud == nft.latitud) {
-        const owner = await vmContract.methods.ownerOf(i).call();
+        const owner = await vmContract.ownerOf(i);
         console.log(owner);
         console.log(i);
         plots.push(owner);

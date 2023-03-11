@@ -41,7 +41,6 @@ async function blockchainAnalize(nfts) {
   const externalfilter = [];
   for (let i = 0; i < nfts.length; i++) {
     const parcela = nfts[i];
-    console.log(parcela);
     const nft = await prisma.parcela.findMany({
       where: {
         latitud: Number(parcela.data.latitud),
