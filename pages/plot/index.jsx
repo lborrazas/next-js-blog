@@ -40,6 +40,7 @@ export default function Dashboard() {
       : `/api/enhance/mytokens/${session.address}`,
     fetcher
   );
+  console.log(data);
   const { data: total, error: error2 } = useSWR(
     session?.isAdmin
       ? `/api/co2Data/Admin/total`
