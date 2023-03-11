@@ -26,15 +26,6 @@ export default function Dashboard() {
   const { data: session, status } = useSession();
 
   function handleCLick() {
-    // TODO: harcodeado no
-    const parcela = new Parcela(
-      "clerbc7s50000l5nkm288v8u5",
-      10,
-      20,
-      100,
-      40,
-      200
-    );
     router.push({
       pathname: `/plot/user/${session.address}`,
     });
@@ -61,12 +52,20 @@ export default function Dashboard() {
       : `/api/co2Data/Cliente/Promedio/${session.address}`,
     fetcher
   );
+
+  const { data: m2, error: error4 } = useSWR(
+    session?.isAdmin
+      ? `/api/co2Data/Admin/m2`
+      : `/api/co2Data/Cliente/M2/${session.address}`,
+    fetcher
+  );
   if (error) {
     return <div>failed to load</div>;
   }
   if (!data) {
     return <DashboardSkeleton />;
   } else {
+    console.log(data.length);
     return (
       <Grid container spacing={2}>
         <Grid item xs={8}>
@@ -91,7 +90,7 @@ export default function Dashboard() {
         <Grid item xs={12} sm={6} md={3}>
           <ParcelasWidgetViewer
             title="Total de Parcelas"
-            total={data.length}
+            total={data.length ? data.length : "0"}
             icon="material-symbols:token"
           />
         </Grid>
@@ -106,7 +105,7 @@ export default function Dashboard() {
         <Grid item xs={12} sm={6} md={3}>
           <ParcelasWidgetViewer
             title="m2 abarcados"
-            total={43}
+            total={m2}
             color="warning"
             icon="game-icons:plant-seed"
           />

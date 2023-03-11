@@ -1,9 +1,11 @@
 import { useState, useEffect, useRef } from "react";
+import { useUser } from "../../contexts/AppContext";
 import {
   useAddress,
   useVmContract,
   useWeb3,
 } from "../../blockchain/BlockchainContext";
+import { IconButton } from "@mui/material";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import style from "./users.module.css";
@@ -20,15 +22,10 @@ import Typography from "@mui/material/Typography";
 import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
 import Iconify from "../../components/iconify";
-import InfoIcon from "@mui/icons-material/Info";
-import IconButton from "@mui/material/IconButton";
 
 import { DataGrid } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
-
-import { da } from "date-fns/locale";
-
 import { getCsrfToken, useSession } from "next-auth/react";
 
 export async function getServerSideProps(context) {
@@ -51,6 +48,7 @@ export default function Home({ users }) {
   const router = useRouter();
   const address = useAddress();
   const web3 = useWeb3();
+  const user = useUser();
   const latitude = useRef();
   const longitude = useRef();
   const area = useRef();
@@ -126,11 +124,9 @@ export default function Home({ users }) {
       renderCell: (params) => (
         <IconButton
           color="info"
-          onClick={() => {
-            router.push({
-              pathname: `/plot/${params.row.pid}`,
-            });
-          }}
+          onClick={() =>
+            router.push({ pahtname: `/plot/user/${params.row.address}` })
+          }
         >
           <InfoIcon />
         </IconButton>

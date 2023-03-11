@@ -17,7 +17,7 @@ import RedirectPage from "../../components/redirect/RedirectPage";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import { TransferSkeleton } from "../../components/skeletons/TransferSkeleton";
-import {useSession} from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -34,7 +34,7 @@ export default function Transfer() {
   const address = useAddress();
   const router = useRouter();
   const vmContract = useVmContract();
-  const { data: session, status } = useSession()
+  const { data: session, status } = useSession();
 
   const fetcher = (url) => fetch(url).then((res) => res.json());
   //todo el null hace que no haga nada, no parece un comportamiento correcto,
@@ -71,11 +71,11 @@ export default function Transfer() {
   };
 
   async function transaccion() {
-    const max = await vmContract.tokenCounter()
+    const max = await vmContract.tokenCounter();
     const tokens_temp = [];
     const parcela_id = [];
     for (let i = 0; i < max; i++) {
-      const parse = await vmContract.tokenIdToParcelasIndex(i)
+      const parse = await vmContract.tokenIdToParcelasIndex(i);
       if (
         Number(parse.latitud) === parcela.latitud &&
         Number(parse.longitud) === parcela.longitud
@@ -87,12 +87,13 @@ export default function Transfer() {
     axios.post("/api/transfer", {
       body: { toAdd: forwardAddress, id: parcela.id },
     });
-    await vmContract.methods
-      .safeTransferFrom(address, forwardAddress, Number(parcela_id[0]))
-      .send({ from: address });
-    alert(
-      `NFT ${parcela.id} transferred from ${address} to ${forwardAddress}`
+    console.log(vmContract);
+    await vmContract.safeTransferFrom(
+      address,
+      forwardAddress,
+      Number(parcela_id[0])
     );
+    alert(`NFT ${parcela.id} transferred from ${address} to ${forwardAddress}`);
   }
 
   async function handleCLick() {
@@ -109,7 +110,6 @@ export default function Transfer() {
         if (res.data[0]) {
           setMess(res.data[0].name);
           popUP();
-          
         } else {
           setMess(`address is nor register on our database`);
           popUP();
@@ -194,14 +194,24 @@ export default function Transfer() {
           <Dialog open={open}>
             <DialogTitle>TRANSACCION DE PARCELA</DialogTitle>
 
-              <div className={style.padding}>
-                <Typography>Transaccion dirigida a: <a className={style.bold}>{mess}</a></Typography>
-              </div>
+            <div className={style.padding}>
+              <Typography>
+                Transaccion dirigida a: <a className={style.bold}>{mess}</a>
+              </Typography>
+            </div>
 
-            <Button className={style.button} onClick={() => setOpen(false)} color="primary">
+            <Button
+              className={style.button}
+              onClick={() => setOpen(false)}
+              color="primary"
+            >
               Decline
             </Button>
-            <Button className={style.button} onClick={() => transaccion()} color="primary">
+            <Button
+              className={style.button}
+              onClick={() => transaccion()}
+              color="primary"
+            >
               Accept
             </Button>
           </Dialog>

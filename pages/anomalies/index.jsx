@@ -8,6 +8,7 @@ import { InnerAnomalies } from "../../components/anomalies/InnerAnomalies";
 import { AnomalieSkeleton } from "../../components/skeletons/Anomalies";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
+import {} from "wagmi";
 
 export default function HomePage() {
   const [loading, setLoading] = useState(true);
@@ -16,12 +17,16 @@ export default function HomePage() {
   const vmContract = useVmContract();
 
   const allTokens = async () => {
-    const max = await vmContract.methods.tokenCounter().call();
+    const max = await vmContract.tokenCounter();
     const plots = [];
     for (let i = 0; i < max; i++) {
-      const parse = await vmContract.methods.tokenIdToParcelasIndex(i).call();
-      const owner = await vmContract.methods.ownerOf(i).call();
-      const parcela = { data: parse, owner: owner, id: i };
+      const parse = await vmContract.tokenIdToParcelasIndex(i);
+      const owner = await vmContract.ownerOf(i);
+      const pasar = {
+        latitud: parse.latitud,
+        longitud: parse.longitud,
+      };
+      const parcela = { data: pasar, owner: owner, id: i };
       plots.push(parcela);
     }
     return plots;
@@ -59,7 +64,7 @@ export default function HomePage() {
 
   return (
     <Stack>
-        <Paper elevation={3} sx={{ padding: "30px" }}>
+      <Paper elevation={3} sx={{ padding: "30px" }}>
         <Box>
           <InnerAnomalies data={anomalies.data}></InnerAnomalies>
         </Box>
