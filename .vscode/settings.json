@@ -9,7 +9,7 @@
     "editor.defaultFormatter": "ms-vsliveshare.vsliveshare"
   },
   "[javascript]": {
-    "editor.defaultFormatter": "ms-vsliveshare.vsliveshare"
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
   },
   "[jsonc]": {
     "editor.defaultFormatter": "ms-vsliveshare.vsliveshare"
