@@ -26,7 +26,6 @@ function eventsToData(events) {
   let lastEvent;
   let primerDia;
   events.forEach((event) => {
-    //caso 0
     if (!month) {
       month = event.date.getMonth();
       lastEvent = event;
@@ -34,19 +33,17 @@ function eventsToData(events) {
     //caso cambio de mes
     if (event.date.getMonth() !== month) {
       while (Math.abs(event.date.getMonth() - month) > 1) {
-       
         year = lastEvent.date.getFullYear();
         if (month === 12) {
           month = 0;
-          year ++;
+          year++;
         }
         data.push({
-          month: ` ${getMonthName(month)} ${year } `,
+          month: ` ${getMonthName(month)} ${year} `,
           value: value,
         });
         month = month + 1;
       }
-      // eslint-disable-next-line prettier/prettier
       primerDia = new Date(
         event.date.getFullYear(),
         event.date.getMonth(),
@@ -68,7 +65,6 @@ function eventsToData(events) {
     month = event.date.getMonth(); //todo hacer bien el calculo
     lastEvent = event;
   });
-  //ultimo caso
   const currentDate = new Date();
   value =
     value + (currentDate - lastEvent.date) * lastEvent.m2used * lastEvent.m3;

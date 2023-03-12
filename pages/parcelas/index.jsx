@@ -152,7 +152,7 @@ export default function Parcelas() {
           onChange={filterTable}
         />
       </Stack>
-      <Paper elevation={3} sx={{ padding: "30px", height: "100%" }}>
+      <Paper elevation={3} sx={{ p: 3, height: "100%" }}>
         <DataGrid
           rows={rows}
           columns={columns}

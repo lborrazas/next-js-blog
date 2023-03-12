@@ -25,7 +25,6 @@ export async function getServerSideProps(context) {
 
 export default function Home({ users }) {
   const router = useRouter();
-  const address = useAddress();
   // TODO: Hay que setear el error
   const [rows, setRows] = useState();
   const [inputValue, setInputValue] = useState("");
@@ -121,7 +120,7 @@ export default function Home({ users }) {
           onChange={filterTable}
         />
       </Stack>
-      <Paper elevation={3} sx={{ padding: "30px", height: "100%" }}>
+      <Paper elevation={3} sx={{ p: 3, height: "100%" }}>
         <DataGrid
           rows={rows}
           columns={columns}

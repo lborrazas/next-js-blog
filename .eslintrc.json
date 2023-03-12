@@ -57,7 +57,7 @@
         ]
       }
     ],
-    "react/no-danger-with-children" : "error",
+    "react/no-danger-with-children": "error",
     "eqeqeq": [
       "error",
       "smart"
@@ -71,6 +71,7 @@
       "never"
     ],
     "prefer-const": "warn",
-    "no-empty": "warn"
+    "no-empty": "warn",
+    "no-undef": "error"
   }
 }

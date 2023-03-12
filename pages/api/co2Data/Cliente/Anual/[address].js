@@ -48,7 +48,7 @@ function eventsToData(events) {
           month = month + 1;
         }
         // eslint-disable-next-line prettier/prettier
-      primerDia = new Date(
+        primerDia = new Date(
           event.date.getFullYear(),
           event.date.getMonth(),
           1,
@@ -110,7 +110,6 @@ function getMonthName(monthNumber) {
     month: "long",
   });
 }
-
 
 function mergeData(data) {
   const mergedData = {};

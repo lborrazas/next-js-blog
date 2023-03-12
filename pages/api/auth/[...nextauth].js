@@ -69,7 +69,7 @@ export default async function auth(req, res) {
     providers.pop();
   }
 
-  return await NextAuth(req, res, {
+  return NextAuth(req, res, {
     // https://next-auth.js.org/configuration/providers/oauth
     providers,
     pages: {

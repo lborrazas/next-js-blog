@@ -195,9 +195,8 @@ export default function Sidebar({ children }) {
                   px: 2.5,
                 }}
               >
-                <div className={`${style.marginH}`}>
-                  <ExportPDF></ExportPDF>
-                </div>
+                <ExportPDF></ExportPDF>
+
                 <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>

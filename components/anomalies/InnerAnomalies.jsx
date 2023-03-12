@@ -1,8 +1,7 @@
 import BuildRoundedIcon from "@mui/icons-material/BuildRounded";
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
-import axios from "axios";
-import { useAddress, useVmContract } from "../../blockchain/BlockchainContext";
+import { useVmContract } from "../../blockchain/BlockchainContext";
 
 export const InnerAnomalies = (anomalies) => {
   const vmContract = useVmContract();
@@ -11,7 +10,7 @@ export const InnerAnomalies = (anomalies) => {
     const plots = [];
     for (let i = 0; i < max; i++) {
       const parse = await vmContract.methods.tokenIdToParcelasIndex(i).call();
-      if (parse.longitud == nft.latitud && parse.latitud == nft.latitud) {
+      if (parse.longitud === nft.latitud && parse.latitud === nft.latitud) {
         const owner = await vmContract.methods.ownerOf(i).call();
 
         plots.push(owner);

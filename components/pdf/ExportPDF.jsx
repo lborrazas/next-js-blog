@@ -1,33 +1,21 @@
-import styled from "@emotion/styled";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
-import { useState, useEffect } from "react";
-import { useUser } from "../../contexts/AppContext";
-import { useAddress } from "../../blockchain/BlockchainContext";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 import useSWR from "swr";
-import { getCsrfToken, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
+import { Button } from "@mui/material";
+import axios from "axios";
 
 export const ExportPDF = () => {
-  const router = useRouter();
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
 
-  const shouldRedirect = !session;
-
-  useEffect(() => {
-    if (shouldRedirect) {
-      router.push("/login");
-    }
-  }, [shouldRedirect, router]);
-
-  const fetcher = (url) => fetch(url).then((res) => res.json());
-
-  const address = session ? session.address : "qwdsa";
-
-  const { data, error, isLoading } = useSWR(
-    address ? `/api/pdf/${address}` : null,
-    fetcher
-  );
+  async function mandar() {
+    const result = await axios.get(
+      session.address ? `/api/pdf/${session.address}` : null
+    );
+    console.log(result);
+  }
 
   return (
     <ListItemIcon
@@ -37,11 +25,9 @@ export const ExportPDF = () => {
         justifyContent: "center",
       }}
     >
-      <a download href={data ? data.toString() : ""}>
+      <Button onClick={mandar}>
         <InboxIcon />
-      </a>
+      </Button>
     </ListItemIcon>
   );
 };
-
-export default ExportPDF;

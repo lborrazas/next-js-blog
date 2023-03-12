@@ -80,7 +80,7 @@ export default function Dashboard() {
           </Button>
         </Grid>
         <Grid item xs={12}>
-          <Paper elevation={3} sx={{ padding: "30px" }}>
+          <Paper elevation={3} sx={{ p: 3 }}>
             <ParcelasGridViewer tokens={data} />
           </Paper>
         </Grid>

@@ -1,19 +1,9 @@
-import { useUser, useTokens } from "../../../contexts/AppContext";
-import {
-  useAddress,
-  useVmContract,
-} from "../../../blockchain/BlockchainContext";
-import { useRouter } from "next/router";
-import { useState } from "react";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import { Button } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Iconify from "../../../components/iconify";
-8;
-import ParcelasGridViewer, {
-  Parcela,
-} from "../../../components/pagesComponents/parcelasGridViewer";
+import ParcelasGridViewer from "../../../components/pagesComponents/parcelasGridViewer";
 import ParcelasWidgetViewer from "../../../components/pagesComponents/parcelasWidgetViewer";
 import useSWR from "swr";
 import { DashboardSkeleton } from "../../../components/skeletons/DashboardSkeleton";
@@ -38,27 +28,21 @@ export async function getServerSideProps(context) {
 
 export default function DashboardUser({ client }) {
   client = client[0];
-  const vmContract = useVmContract();
-  const address = useAddress();
-  const router = useRouter();
-
-  const tokens = useTokens();
-  const [parcelas, setParcelas] = useState([]);
 
   const fetcher = (url) => fetch(url).then((res) => res.json());
   const { data, error } = useSWR(
     `/api/enhance/mytokens/${client.address}`,
     fetcher
   );
-  const { data: total, error: error2 } = useSWR(
+  const { data: total } = useSWR(
     `/api/co2Data/Cliente/Total/${client.address}`,
     fetcher
   );
-  const { data: prom, error: error3 } = useSWR(
+  const { data: prom } = useSWR(
     `/api/co2Data/Cliente/Promedio/${client.address}`,
     fetcher
   );
-  const { data: m2, error: error4 } = useSWR(
+  const { data: m2 } = useSWR(
     `/api/co2Data/Cliente/M2/${client.address}`,
     fetcher
   );
@@ -77,6 +61,7 @@ export default function DashboardUser({ client }) {
         </Grid>
         <Grid item xs={4} sx={{ display: "flex", justifyContent: "end" }}>
           <Button
+            // TODO: compa tenes que definir las cosas
             onClick={() => handleCLick()}
             variant="contained"
             startIcon={<Iconify icon="eva:plus-fill" />}
@@ -85,7 +70,7 @@ export default function DashboardUser({ client }) {
           </Button>
         </Grid>
         <Grid item xs={12}>
-          <Paper elevation={3} sx={{ padding: "30px" }}>
+          <Paper elevation={3} sx={{ p: 3 }}>
             <ParcelasGridViewer tokens={data}></ParcelasGridViewer>
           </Paper>
         </Grid>
@@ -115,6 +100,7 @@ export default function DashboardUser({ client }) {
         <Grid item xs={12} sm={6} md={3}>
           <ParcelasWidgetViewer
             title="Terreno utilizado"
+            // TODO: esta mal el tipo que se manda
             total={`${prom} %`}
             color="error"
             icon="ic:baseline-remove-red-eye"

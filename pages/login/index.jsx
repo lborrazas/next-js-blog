@@ -141,12 +141,12 @@ export default function Login() {
           callbackUrl,
         }).then(
           function (result) {
-            if (result.status == "200") {
+            if (result.status === 200) {
               setVmContract(contract2);
               localStorage.setItem("myContextState", contract2);
               router.push("/home");
             }
-            if (result.status == "401") {
+            if (result.status === 401) {
               router.push("/signup");
             }
           },
@@ -186,7 +186,7 @@ export default function Login() {
     }
   }, [isConnected]);
 
-  if(session == null){
+  if (session == null) {
     return (
       <PageLogin>
         <LoginContainer>
@@ -236,8 +236,7 @@ export default function Login() {
         </Dialog>
       </PageLogin>
     );
-  }else{
+  } else {
     router.push("/home");
   }
-
 }
