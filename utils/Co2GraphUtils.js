@@ -1,4 +1,4 @@
-function eventsToData(events) {
+export function eventsToData(events) {
   let month;
   let year;
   let value = 0;
@@ -82,4 +82,44 @@ function eventsToData(events) {
   const finalData = mergeData(dataTotal);
 
   return orderByMonth(finalData);
+}
+
+function getMonthName(monthNumber) {
+  const date = new Date();
+  date.setMonth(monthNumber);
+
+  return date.toLocaleString("en-US", {
+    month: "long",
+  });
+}
+
+function orderByMonth(data) {
+  return data.sort((a, b) => {
+    const dateA = new Date(a.month.trim());
+    const dateB = new Date(b.month.trim());
+    return dateA.getTime() - dateB.getTime();
+  });
+}
+
+function mergeData(data) {
+  const mergedData = {};
+
+  data.forEach((obj) => {
+    obj.data.forEach((entry) => {
+      const { month, value } = entry;
+
+      if (mergedData[month]) {
+        mergedData[month] += value;
+      } else {
+        mergedData[month] = value;
+      }
+    });
+  });
+
+  const result = [];
+
+  Object.keys(mergedData).forEach((month) => {
+    result.push({ month, value: mergedData[month] });
+  });
+  return result;
 }
