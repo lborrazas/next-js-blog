@@ -45,7 +45,6 @@ export default async function auth(req, res) {
               },
             });
             const user = userArr[0];
-            console.log(userArr[0]);
             if (user) {
               return {
                 id: user.address,
@@ -56,7 +55,6 @@ export default async function auth(req, res) {
           }
           return null;
         } catch (e) {
-          console.log(e);
           return null;
         }
       },

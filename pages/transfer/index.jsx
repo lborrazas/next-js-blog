@@ -87,7 +87,6 @@ export default function Transfer() {
     axios.post("/api/transfer", {
       body: { toAdd: forwardAddress, id: parcela.id },
     });
-    console.log(vmContract);
     await vmContract.safeTransferFrom(
       address,
       forwardAddress,
@@ -115,9 +114,7 @@ export default function Transfer() {
           popUP();
         }
       })
-      .catch((err) => {
-        console.error(err);
-      });
+      .catch((err) => {});
   }
 
   const handleSignup = (e) => {

@@ -4,6 +4,7 @@ const fs = require("fs");
 
 export default async function handle(req, res) {
   const { address } = req.query;
+  console.log(req.query);
   try {
     const result = await prisma.$queryRaw`SELECT *
       FROM "History"
@@ -15,16 +16,12 @@ export default async function handle(req, res) {
     const headers = Object.keys(result[0]).join(",") + "\n";
     const rows = result.map((obj) => Object.values(obj).join(",")).join("\n");
     const csv = headers + rows;
-    console.log(headers);
-    console.log(rows);
+
     fs.writeFile("public/reportes/" + address + ".csv", csv, function (err) {
       if (err) throw err;
-      console.log("Archivo guardado exitosamente!");
     });
-
     res.status(200).json("/reportes/" + address + ".csv");
   } catch (err) {
-    console.log(err);
     res
       .status(508)
       .json({ err: "Error occured while adding a new food." + err });

@@ -8,56 +8,38 @@ import { useRouter } from "next/router";
 import useSWR from "swr";
 import { getCsrfToken, useSession } from "next-auth/react";
 
-
-
-
 export const ExportPDF = () => {
+  const router = useRouter();
+  const { data: session, status } = useSession();
 
-    const router = useRouter();
-    const { data: session, status } = useSession();
-   
+  const shouldRedirect = !session;
 
-    const shouldRedirect = !session;
-
-    useEffect(() => {
-      if (shouldRedirect) {
-        router.push("/login");
-      }
-    }, [shouldRedirect, router]);
-
-
-    const fetcher = (url) => fetch(url).then((res) => res.json());
-
-    
-    const address = session ? session.address : 'qwdsa';
-
-    const { data, error, isLoading } = useSWR(address ? `/api/pdf/${address}` : null, fetcher);
-
-    function downloadPDF(url){
-        console.log(url)
+  useEffect(() => {
+    if (shouldRedirect) {
+      router.push("/login");
     }
+  }, [shouldRedirect, router]);
 
-    // const link = document.createElement('a');
-    // link.href = 'https://www.ejemplo.com/archivo.pdf';
-    // link.download = 'archivo.pdf';
+  const fetcher = (url) => fetch(url).then((res) => res.json());
 
-    // simular un clic en el enlace
-    // document.body.appendChild(link);
-    // link.click();
+  const address = session ? session.address : "qwdsa";
 
+  const { data, error, isLoading } = useSWR(
+    address ? `/api/pdf/${address}` : null,
+    fetcher
+  );
 
   return (
     <ListItemIcon
-                  onClick={() => downloadPDF(data)}
-                  sx={{
-                    minWidth: 0,
-                    mr: "auto",
-                    justifyContent: "center",
-                  }}
-                >
-                    <a download href={data ? data.toString() : ''}>
-                        <InboxIcon />
-                    </a>
+      sx={{
+        minWidth: 0,
+        mr: "auto",
+        justifyContent: "center",
+      }}
+    >
+      <a download href={data ? data.toString() : ""}>
+        <InboxIcon />
+      </a>
     </ListItemIcon>
   );
 };

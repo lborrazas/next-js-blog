@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState } from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -13,17 +14,13 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
-import LogoutIcon from '@mui/icons-material/Logout';
+import LogoutIcon from "@mui/icons-material/Logout";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-import { useState } from "react";
 import { navItems } from "./navbar/navbarLists";
 import { navAdminItems } from "./navbar/navbarAdminLists";
 import { useRouter } from "next/router";
-import CssBaseline from "@mui/material/CssBaseline";
 import { ExportPDF } from "./pdf/exportPDF";
 import { signOut, useSession } from "next-auth/react";
 
@@ -100,6 +97,8 @@ export default function Sidebar({ children }) {
   const router = useRouter();
   const { data: session, status } = useSession();
 
+  const items = session && session.isAdmin ? navAdminItems : navItems;
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -109,8 +108,7 @@ export default function Sidebar({ children }) {
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
+    <Box sx={{ display: "flex", height: "100%" }}>
       <AppBar position="fixed" open={open}>
         <Toolbar>
           <IconButton
@@ -135,7 +133,7 @@ export default function Sidebar({ children }) {
               <IconButton color="inherit" onClick={() => signOut()}>
                 <LogoutIcon />
               </IconButton>
-            </div>  
+            </div>
           </div>
           {/* <button onClick={() => signOut()}>Sign out</button> */}
         </Toolbar>
@@ -152,77 +150,39 @@ export default function Sidebar({ children }) {
         </DrawerHeader>
         <Divider />
         <List>
-          {session && session.isAdmin
-            ? navAdminItems.map(({ Name, Icon, Url }) => (
-                <ListItem key={Name} disablePadding sx={{ display: "block" }}>
-                  <ListItemButton
-                    onClick={() => router.push(Url)}
+          {session &&
+            items.map(({ Name, Icon, Url }) => (
+              <ListItem key={Name} disablePadding sx={{ display: "block" }}>
+                <ListItemButton
+                  onClick={() => router.push(Url)}
+                  sx={{
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
+                  }}
+                >
+                  <ListItemIcon
                     sx={{
-                      minHeight: 48,
-                      justifyContent: open ? "initial" : "center",
-                      px: 2.5,
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
                     }}
                   >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        mr: open ? 3 : "auto",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <span>
-                        {" "}
-                        {
-                          <Icon
-                            color={
-                              router.pathname == Url ? "primary" : "inherit"
-                            }
-                          />
-                        }{" "}
-                      </span>
-                    </ListItemIcon>
-                    <ListItemText
-                      primary={Name}
-                      sx={{ opacity: open ? 1 : 0 }}
-                    />
-                  </ListItemButton>
-                </ListItem>
-              ))
-            : navItems.map(({ Name, Icon, Url }) => (
-                <ListItem key={Name} disablePadding sx={{ display: "block" }}>
-                  <ListItemButton
-                    onClick={() => router.push(Url)}
-                    sx={{
-                      minHeight: 48,
-                      justifyContent: open ? "initial" : "center",
-                      px: 2.5,
-                    }}
-                  >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 0,
-                        mr: open ? 3 : "auto",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <span>
-                        {" "}
-                        {
-                          <Icon
-                            color={
-                              router.pathname == Url ? "primary" : "inherit"
-                            }
-                          />
-                        }{" "}
-                      </span>
-                    </ListItemIcon>
-                    <ListItemText
-                      primary={Name}
-                      sx={{ opacity: open ? 1 : 0 }}
-                    />
-                  </ListItemButton>
-                </ListItem>
-              ))}
+                    <span>
+                      {" "}
+                      {
+                        <Icon
+                          color={
+                            router.pathname === Url ? "primary" : "inherit"
+                          }
+                        />
+                      }{" "}
+                    </span>
+                  </ListItemIcon>
+                  <ListItemText primary={Name} sx={{ opacity: open ? 1 : 0 }} />
+                </ListItemButton>
+              </ListItem>
+            ))}
         </List>
         <Divider />
         <List>
@@ -244,10 +204,7 @@ export default function Sidebar({ children }) {
           ))}
         </List>
       </Drawer>
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, p: 3, backgroundColor: "#f7f7fa" }}
-      >
+      <Box sx={{ flexGrow: 1, p: 3, backgroundColor: "#f7f7fa" }}>
         <DrawerHeader />
         {children}
       </Box>
