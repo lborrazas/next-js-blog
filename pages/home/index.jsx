@@ -5,6 +5,8 @@ import { redirect } from "next/navigation";
 import useSWR from "swr";
 import { useRouter } from "next/router";
 import Paper from "@mui/material/Paper";
+import { styled, useTheme } from "@mui/material/styles";
+import style from "./home.module.css";
 import Co2Icon from '@mui/icons-material/Co2';
 
 import RedirectPage from "../../components/redirect/RedirectPage";

@@ -9,12 +9,13 @@ import axios from "axios";
 
 export const ExportPDF = () => {
   const { data: session } = useSession();
+  const router = useRouter();
 
   async function mandar() {
     const result = await axios.get(
       session.address ? `/api/pdf/${session.address}` : null
     );
-    console.log(result);
+    router.push("/" + result.data);
   }
 
   return (
