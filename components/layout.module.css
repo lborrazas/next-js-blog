@@ -29,18 +29,15 @@
   margin: 3rem 0 0;
 }
 
-.marginH{
-  /* margin-left: 20px; */
-}
 
-.rightButton{
+.rightButton {
   color: white;
   display: flex;
   justify-content: right;
   text-align: right;
 }
 
-.leftButton{
+.leftButton {
   color: white;
   width: 85%;
   display: flex;
@@ -48,7 +45,7 @@
   text-align: left;
 }
 
-.row{
+.row {
   display: flex;
   width: 100%;
   justify-content: space-between;

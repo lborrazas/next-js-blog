@@ -6,11 +6,11 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Slider from "@mui/material/Slider";
 import Button from "@mui/material/Button";
+import * as React from "react";
 import { useState } from "react";
 import axios from "axios";
 import { useVmContract } from "../../blockchain/BlockchainContext";
 import { useRouter } from "next/router";
-import * as React from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -69,8 +69,10 @@ export const PlotForm = ({ selectedPlot, handleClose, users }) => {
         } else {
           if (!selectedPlot) {
             // TODO: esto se deberia usar en algun lado?
-            const a = await vmContract
-              .createCollectible(plot.longitud, plot.latitud)
+            const a = await vmContract.createCollectible(
+              plot.longitud,
+              plot.latitud
+            );
             await router.push("/home");
           }
           setOpen(false);
@@ -148,6 +150,14 @@ export const PlotForm = ({ selectedPlot, handleClose, users }) => {
           id="latitude"
           label="Latitud"
           name="latitude"
+          type="number"
+          InputProps={{
+            inputProps: {
+              step: 1,
+              min: 0,
+              pattern: "\\d+",
+            },
+          }}
           required
           fullWidth
         />

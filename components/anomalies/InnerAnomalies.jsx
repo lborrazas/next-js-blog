@@ -1,8 +1,7 @@
 import BuildRoundedIcon from "@mui/icons-material/BuildRounded";
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
-import axios from "axios";
-import { useAddress, useVmContract } from "../../blockchain/BlockchainContext";
+import { useVmContract } from "../../blockchain/BlockchainContext";
 
 export const InnerAnomalies = (anomalies) => {
   const vmContract = useVmContract();
@@ -11,15 +10,12 @@ export const InnerAnomalies = (anomalies) => {
     const plots = [];
     for (let i = 0; i < max; i++) {
       const parse = await vmContract.methods.tokenIdToParcelasIndex(i).call();
-      if (parse.longitud == nft.latitud && parse.latitud == nft.latitud) {
+      if (parse.longitud === nft.latitud && parse.latitud === nft.latitud) {
         const owner = await vmContract.methods.ownerOf(i).call();
-        console.log(owner);
-        console.log(i);
+
         plots.push(owner);
       }
     }
-    console.log(plots);
-    console.log(nft.history_address);
     if (!plots[1]) {
       if (plots[0] === nft.history_address) {
         alert("esta mal en parcela mock: descomenta el codigo papa");
@@ -29,8 +25,11 @@ export const InnerAnomalies = (anomalies) => {
         alert("esta mal en history  mock: descomenta el codigo papa");
         //await axios.post("/api/fixes/history", nft);
       }
+    } else {
+      alert(
+        "La anomalia puede ser de otro tipo,buscala en las otras listas y solucionala, si vuelve a aparecer en esta lista este mesnaje no deberia aparecer"
+      );
     }
-    else{alert('La anomalia puede ser de otro tipo,buscala en las otras listas y solucionala, si vuelve a aparecer en esta lista este mesnaje no deberia aparecer')}
   }
 
   return (
