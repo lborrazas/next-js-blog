@@ -3,7 +3,7 @@ const prisma = new PrismaClient();
 
 export default async function handle(req, res) {
   const data = req.body;
-  console.log(data);
+
   try {
     const parcelas = await prisma.$queryRaw`
     SELECT p.*, h.m2used, h.m3,h.pid, h.id As history_id, h.address AS history_address, p.address AS parcela_address
@@ -25,7 +25,6 @@ export default async function handle(req, res) {
       exter: external_anomalies,
     });
   } catch (err) {
-    console.log(err);
     res.status(500).json({ err: "Error occured." });
   }
 }
@@ -41,7 +40,7 @@ async function blockchainAnalize(nfts) {
   const externalfilter = [];
   for (let i = 0; i < nfts.length; i++) {
     const parcela = nfts[i];
-    console.log(parcela);
+
     const nft = await prisma.parcela.findMany({
       where: {
         latitud: Number(parcela.data.latitud),

@@ -4,22 +4,13 @@ import { useUser } from "../../contexts/AppContext";
 import { redirect } from "next/navigation";
 import useSWR from "swr";
 import { useRouter } from "next/router";
-import style from "./home.module.css";
-import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import Co2Icon from '@mui/icons-material/Co2';
 
-import { navItems } from "../../components/navbar/navbarLists";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-
-import * as React from "react";
-
 import RedirectPage from "../../components/redirect/RedirectPage";
-import { CircularProgress } from "@mui/material";
 import { getCsrfToken, useSession } from "next-auth/react";
+import Typography from "@mui/material/Typography";
+import { Stack } from "@mui/material";
 
 const BigItem = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#D0F2FF",
@@ -60,6 +51,7 @@ export async function getServerSideProps(context) {
     },
   };
 }
+
 export default function Home() {
   const router = useRouter();
   const { data: session, status } = useSession();
@@ -79,7 +71,6 @@ export default function Home() {
   );
 
   // TODO: rehacer completamente esto
-
   return (
     <div>
       {shouldRedirect ? (

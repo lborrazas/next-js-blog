@@ -10,7 +10,7 @@ export default async function handle(req, res) {
     });
     const temp_hist = await prisma.history.findUnique({
       where: { pid },
-    })
+    });
     const hist = {
       data: {
         pid: temp_hist.id,

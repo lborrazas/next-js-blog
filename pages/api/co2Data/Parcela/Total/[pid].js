@@ -12,7 +12,7 @@ export default async function handle(req, res) {
   });
   const data = eventsToValue(events);
   res.json(data);
-}   
+}
 
 function eventsToValue(events) {
   let value = 0;

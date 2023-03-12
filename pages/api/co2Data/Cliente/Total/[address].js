@@ -48,7 +48,7 @@ function eventsToData(events) {
           month = month + 1;
         }
         // eslint-disable-next-line prettier/prettier
-      primerDia = new Date(
+        primerDia = new Date(
           event.date.getFullYear(),
           event.date.getMonth(),
           1,
@@ -80,7 +80,6 @@ function eventsToData(events) {
       });
       //primer caso del actualr
       dataTotal.push({ data });
-      data;
       month = event.date.getMonth();
       lastEvent = event;
       pid = event.pid;
@@ -99,9 +98,9 @@ function eventsToData(events) {
 
   const finalData = mergeData(dataTotal);
   let lastValue = 0;
-  finalData.forEach((montht) =>{
-    lastValue=lastValue + montht.value;
-  })
+  finalData.forEach((montht) => {
+    lastValue = lastValue + montht.value;
+  });
   return lastValue;
 }
 
@@ -113,7 +112,6 @@ function getMonthName(monthNumber) {
     month: "long",
   });
 }
-
 
 function mergeData(data) {
   const mergedData = {};

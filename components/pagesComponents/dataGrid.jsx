@@ -4,23 +4,38 @@ import Typography from "@mui/material/Typography";
 
 import { fShortenNumber } from "../../utils/formatNumber";
 import styled from "@emotion/styled";
-
-const InformationContainer = styled(Paper)({
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  justifyContent: "center",
-  padding: "30px",
-});
+import { Box } from "@mui/material";
 
 const InformationItem = ({ value, description }) => {
   return (
-    <InformationContainer elevation={3}>
-      <Typography variant="h3">{value}</Typography>
-      <Typography variant="caption" sx={{ opacity: 0.72 }}>
-        {description}
-      </Typography>
-    </InformationContainer>
+    <Paper
+      elevation={6}
+      sx={{
+        p: 2,
+        width: "100%",
+        height: "100%",
+      }}
+    >
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "100%",
+          height: "100%",
+        }}
+      >
+        <Typography variant="h4">{value}</Typography>
+        <Typography
+          color="#808080"
+          variant="caption"
+          sx={{ textAlign: "center" }}
+        >
+          {description}
+        </Typography>
+      </Box>
+    </Paper>
   );
 };
 
@@ -30,7 +45,7 @@ export default function DataGrid({ datos }) {
   const alturaTitle = "Metros de altura promedio";
   const co2title = "CO2 Absorbido";
   return (
-    <Grid paddingY="2vh" container rowSpacing={1} columnSpacing={2}>
+    <Grid container spacing={2} sx={{ height: "100%" }}>
       <Grid item xs={6}>
         <InformationItem
           value={`${fShortenNumber(datos.percentage)}%`}

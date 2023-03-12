@@ -50,7 +50,7 @@ export default function home({ users }) {
   // // });
   // // Escribir los datos en el archivo CSV
   // csvWriter.writeRecords(data)
-  //   .then(() => console.log('The CSV file was written successfully'));
+  //   .then(() en successfully'));
   //   const http = require('http');
   //   const archivo = 'contenido del archivo';
   //   http.createServer((req, res) => {
@@ -59,7 +59,7 @@ export default function home({ users }) {
   //     res.write(csvWriter);
   //     res.end();
   //   }).listen(3000, () => {
-  //     console.log('Servidor iniciado en el puerto 3000');
+  // 'Servidor iniciado en el puerto 3000');
   //   });
   // csvWriter.download
   //     return (<div className="App">PDF</div>)

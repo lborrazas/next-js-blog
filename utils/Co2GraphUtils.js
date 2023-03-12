@@ -1,21 +1,4 @@
-const { PrismaClient } = require(".prisma/client");
-const prisma = new PrismaClient();
-
-export default async function handle(req, res) {
-  const events = await prisma.history.findMany({
-    where: {
-      date: {
-        gte: new Date(new Date().setFullYear(new Date().getFullYear() - 1)), // >= 1 year ago
-        lte: new Date(), // <= today
-      },
-    },
-    orderBy: [{ pid: "desc" }, { date: "asc" }],
-  });
-  const data = eventsToData(events);
-  res.json(data);
-}
-
-function eventsToData(events) {
+export function eventsToData(events) {
   let month;
   let year;
   let value = 0;
@@ -110,6 +93,14 @@ function getMonthName(monthNumber) {
   });
 }
 
+function orderByMonth(data) {
+  return data.sort((a, b) => {
+    const dateA = new Date(a.month.trim());
+    const dateB = new Date(b.month.trim());
+    return dateA.getTime() - dateB.getTime();
+  });
+}
+
 function mergeData(data) {
   const mergedData = {};
 
@@ -131,12 +122,4 @@ function mergeData(data) {
     result.push({ month, value: mergedData[month] });
   });
   return result;
-}
-
-function orderByMonth(data) {
-  return data.sort((a, b) => {
-    const dateA = new Date(a.month.trim());
-    const dateB = new Date(b.month.trim());
-    return dateA.getTime() - dateB.getTime();
-  });
 }

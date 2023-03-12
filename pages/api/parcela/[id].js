@@ -4,25 +4,24 @@ const prisma = new PrismaClient();
 export default async function handle(req, res) {
   const { id } = req.query;
   try {
-    // const posts = 
+    // const posts =
     // await prisma.$queryRaw`SELECT *
     // FROM "Parcela"
     // INNER JOIN "History" ON "Parcela".id = "History".pid
     // WHERE "Parcela".id = ${id};`;
 
-    console.log(id);
-    let parcela = await prisma.parcela.findMany({
+    const parcela = await prisma.parcela.findMany({
       where: {
         id: id,
       },
     });
 
-    let history = await prisma.history.findMany({
+    const history = await prisma.history.findMany({
       where: {
         pid: id,
       },
       orderBy: {
-        date: 'desc',
+        date: "desc",
       },
     });
 

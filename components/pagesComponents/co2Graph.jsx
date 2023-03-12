@@ -1,26 +1,33 @@
-import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import {
-  ResponsiveContainer,
-  AreaChart,
   Area,
+  AreaChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
 } from "recharts";
-import { styled } from "@mui/material/styles";
 
-const CustomTooltip = ({ active, payload, label }) => {
-  if (active && payload && payload.length) {
-    return (
-      <div className="custom-tooltip">
-        <p className="label">{`${label} : ${payload[0].value}`}</p>
-      </div>
-    );
+const CustomYAxisTick = ({ x, y, payload }) => {
+  let formattedNumber = payload.value;
+  if (payload.value >= 1000000000000) {
+    formattedNumber = `${Math.round(payload.value / 1000000000000).toFixed(
+      2
+    )}T`;
+  } else if (payload.value >= 1000000000) {
+    formattedNumber = `${Math.round(payload.value / 1000000000).toFixed(2)}G`;
+  } else if (payload.value >= 1000000) {
+    formattedNumber = `${Math.round(payload.value / 1000000).toFixed(2)}M`;
+  } else if (payload.value >= 1000) {
+    formattedNumber = `${Math.round(payload.value / 1000).toFixed(2)}K`;
   }
 
-  return null;
+  return (
+    <text x={x} y={y} dy={16} textAnchor="end" fill="#666" fontSize={16}>
+      {formattedNumber}
+    </text>
+  );
 };
 
 const Chart = ({ datos }) => {
@@ -39,7 +46,7 @@ const Chart = ({ datos }) => {
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="month" />
-        <YAxis />
+        <YAxis tick={<CustomYAxisTick />} />
         <Tooltip />
         <Area type="monotone" dataKey="value" stroke="#8884d8" fill="#8884d8" />
       </AreaChart>
