@@ -8,7 +8,11 @@ import { InnerAnomalies } from "../../components/anomalies/InnerAnomalies";
 import { AnomaliesSkeleton } from "../../components/skeletons/AnomaliesSkeleton";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
+import style from "./style.module.css";
 import {} from "wagmi";
+import InfoIcon from '@mui/icons-material/Info';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
 
 export default function HomePage() {
   const [loading, setLoading] = useState(true);
@@ -63,17 +67,38 @@ export default function HomePage() {
 
   return (
     <Stack>
-      <Paper elevation={3} sx={{ p: 3 }}>
+      <h2 className={`${style.title}`}>Anomalias Internas 
+        <Tooltip className={`${style.button}`} title="Anomalias dentro de nuestra base de datos">
+          <IconButton>
+            <InfoIcon />
+          </IconButton>
+      </Tooltip>
+      </h2>
+      <Paper className={`${style.marginTable}`} elevation={3} sx={{ padding: "30px" }}>
         <Box>
           <InnerAnomalies data={anomalies.data}></InnerAnomalies>
         </Box>
       </Paper>
-      <Paper elevation={3} sx={{ p: 3 }}>
+      <h2 className={`${style.title}`}>Anomalias en la blockchain 
+        <Tooltip className={`${style.button}`} title="Nfts repetidos en el contrato o ausentes en nuetra base">
+          <IconButton>
+            <InfoIcon />
+          </IconButton>
+      </Tooltip>
+      </h2>
+      <Paper className={`${style.marginTable}`} elevation={3} sx={{ padding: "30px" }}>
         <Box>
           <BlockAnomalies data={anomalies.data}></BlockAnomalies>
         </Box>
       </Paper>
-      <Paper elevation={3} sx={{ p: 3 }}>
+      <h2 className={`${style.title}`}>Anomalias Externas 
+        <Tooltip className={`${style.button}`} title="Parcelas que no tiene nft correspondiente">
+          <IconButton>
+            <InfoIcon />
+          </IconButton>
+      </Tooltip>
+      </h2>
+      <Paper className={`${style.marginTable}`} elevation={3} sx={{ padding: "30px" }}>
         <Box>
           <ExterAnomalies data={anomalies.data}></ExterAnomalies>
         </Box>

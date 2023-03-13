@@ -39,6 +39,11 @@ export default function Transfer() {
   const popUP = () => {
     setOpen(true);
   };
+  const handleClose = (tran_bool) => {
+    setOpen(false);
+  };
+
+ 
 
   const handleChange = (event) => {
     // SelectChangeEvent
@@ -53,26 +58,37 @@ export default function Transfer() {
     for (let i = 0; i < max; i++) {
       const parse = await vmContract.tokenIdToParcelasIndex(i);
       if (
-        Number(parse.latitud) === parcela.latitud &&
+        Number(parse.latitud) === parcela.latitud &&  
         Number(parse.longitud) === parcela.longitud
       ) {
         tokens_temp.push(parse);
         parcela_id.push(i);
+        const owner1 = await vmContract.ownerOf(i-1);
+        const owner2 = await vmContract.ownerOf(i);
+        const owner3 = await vmContract.ownerOf(i+1);
+        console.log(owner1)
+        console.log(owner2)
+        console.log(owner3)
+        console.log(i)
+        console.log(parse.longitud)
+        console.log(parse.latitud)  
+    
       }
     }
-    axios.post("/api/transfer", {
-      body: { toAdd: forwardAddress, id: parcela.id },
-    });
-    await vmContract.safeTransferFrom(
-      address,
+    
+    console.log(forwardAddress)
+    console.log(parcela_id)
+    //axios.post("/api/transfer", { body: { history_address: forwardAddress, id: parcela.id },});
+    await vmContract["safeTransferFrom(address,address,uint256)"](
+      session.address,
       forwardAddress,
-      Number(parcela_id[0])
+      parcela_id[0]
     );
-    alert(`NFT ${parcela.id} transferred from ${address} to ${forwardAddress}`);
+    alert(`NFT ${parcela_id[0]} transferred from ${session.address} to ${forwardAddress}`);
   }
 
-  async function handleCLick() {
-    const body = { address: forwardAddress };
+  async function handleCLick(addressF) {
+    const body = { address: addressF };
     await axios
       .post("/api/getuser", body)
       .then((res) => {
@@ -89,13 +105,14 @@ export default function Transfer() {
 
   const handleSignup = (e) => {
     e.preventDefault();
+
     const data = new FormData(e.currentTarget);
     if (data.get("parcela") === "" || data.get("address") === "") {
       setError("Los campos no pueden ser vacios");
     } else {
+      console.log(data.get("address"))
       setForwardAddress(data.get("address"));
-      // TODO: la idea de handle click es que se llame cuando se apreta algo No programaticamente
-      handleCLick();
+      handleCLick(data.get("address"));
     }
   };
 

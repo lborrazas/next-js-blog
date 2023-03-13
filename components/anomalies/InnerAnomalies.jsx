@@ -1,4 +1,5 @@
 import BuildRoundedIcon from "@mui/icons-material/BuildRounded";
+import { Tooltip } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import { useVmContract } from "../../blockchain/BlockchainContext";
@@ -6,13 +7,14 @@ import { useVmContract } from "../../blockchain/BlockchainContext";
 export const InnerAnomalies = (anomalies) => {
   const vmContract = useVmContract();
   async function fixDB(nft) {
-    const max = await vmContract.methods.tokenCounter().call();
+    const max = await vmContract.tokenCounter();
     const plots = [];
     for (let i = 0; i < max; i++) {
-      const parse = await vmContract.methods.tokenIdToParcelasIndex(i).call();
-      if (parse.longitud === nft.latitud && parse.latitud === nft.latitud) {
-        const owner = await vmContract.methods.ownerOf(i).call();
-
+      const parse = await vmContract.tokenIdToParcelasIndex(i);
+      if (parse.longitud == nft.latitud && parse.latitud == nft.latitud) {
+        const owner = await vmContract.ownerOf(i);
+        console.log(owner);
+        console.log(i);
         plots.push(owner);
       }
     }
@@ -46,9 +48,11 @@ export const InnerAnomalies = (anomalies) => {
             Latitud{nft.latitud}, Longitud {nft.longitud}, {nft.address}
           </p>
           <Stack direction="row">
-            <IconButton color="primary" onClick={() => fixDB(nft)}>
-              <BuildRoundedIcon />
-            </IconButton>
+            <Tooltip  title="descripcion boton 1">
+              <IconButton color="primary" onClick={() => fixDB(nft)}>
+                <BuildRoundedIcon />
+              </IconButton>
+            </Tooltip>
           </Stack>
         </Stack>
       ))}
