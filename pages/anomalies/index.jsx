@@ -69,7 +69,7 @@ export default function HomePage() {
   return (
     <Stack>
       <h2 className={`${style.title}`}>Anomalias Internas 
-        <Tooltip className={`${style.button}`} title="Anomalas dentro de nuestra base de datos">
+        <Tooltip className={`${style.button}`} title="Anomalias dentro de nuestra base de datos">
           <IconButton>
             <InfoIcon />
           </IconButton>
@@ -81,7 +81,7 @@ export default function HomePage() {
         </Box>
       </Paper>
       <h2 className={`${style.title}`}>Anomalias en la blockchain 
-        <Tooltip className={`${style.button}`} title="Nfts repetidos en el contrato">
+        <Tooltip className={`${style.button}`} title="Nfts repetidos en el contrato o ausentes en nuetra base">
           <IconButton>
             <InfoIcon />
           </IconButton>
