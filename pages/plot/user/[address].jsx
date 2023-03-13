@@ -7,6 +7,7 @@ import ParcelasGridViewer from "../../../components/pagesComponents/parcelasGrid
 import ParcelasWidgetViewer from "../../../components/pagesComponents/parcelasWidgetViewer";
 import useSWR from "swr";
 import { DashboardSkeleton } from "../../../components/skeletons/DashboardSkeleton";
+import { fShortenNumber } from "../../../utils/formatNumber";
 const { PrismaClient } = require("./../../../node_modules/.prisma/client");
 
 const prisma = new PrismaClient();
@@ -69,7 +70,7 @@ export default function DashboardUser({ client }) {
       <Grid item xs={12} sm={6} md={3}>
         <ParcelasWidgetViewer
           title="Total de Parcelas"
-          total={data.length ? data.length : "0"}
+          total={data.length}
           icon="material-symbols:token"
         />
       </Grid>
@@ -84,7 +85,7 @@ export default function DashboardUser({ client }) {
       <Grid item xs={12} sm={6} md={3}>
         <ParcelasWidgetViewer
           title="m2 abarcados"
-          total={m2 ? m2 : "0"}
+          total={m2}
           color="warning"
           icon="game-icons:plant-seed"
         />
@@ -92,8 +93,7 @@ export default function DashboardUser({ client }) {
       <Grid item xs={12} sm={6} md={3}>
         <ParcelasWidgetViewer
           title="Terreno utilizado"
-          // TODO: esta mal el tipo que se manda
-          total={`${prom} %`}
+          total={`${fShortenNumber(+prom)} %`}
           color="error"
           icon="ic:baseline-remove-red-eye"
         />

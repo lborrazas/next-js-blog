@@ -83,7 +83,7 @@ export default function Co2Graph({ datos }) {
 
   return (
     <Stack
-      // sx={{ height: "85%" }}
+      sx={{ height: "85%" }}
       direction="column"
       justifyContent="center"
       alignItems="center"

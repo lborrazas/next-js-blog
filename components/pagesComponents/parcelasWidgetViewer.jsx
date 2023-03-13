@@ -32,7 +32,7 @@ ParcelasWidgetViewer.propTypes = {
 
 export default function ParcelasWidgetViewer({
   title,
-  total,
+  total = 0,
   icon,
   color = "primary",
   sx,
@@ -62,7 +62,9 @@ export default function ParcelasWidgetViewer({
       >
         <Iconify icon={icon} width={36} height={36} />
       </StyledIcon>
-      <Typography variant="h3">{fShortenNumber(total)}</Typography>
+      <Typography variant="h3">
+        {typeof total === "number" ? fShortenNumber(total) : total}
+      </Typography>
       <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
         {title}
       </Typography>

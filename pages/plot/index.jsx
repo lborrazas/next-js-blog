@@ -10,6 +10,7 @@ import ParcelasWidgetViewer from "../../components/pagesComponents/parcelasWidge
 import useSWR from "swr";
 import { DashboardSkeleton } from "../../components/skeletons/DashboardSkeleton";
 import { getCsrfToken, useSession } from "next-auth/react";
+import { fShortenNumber } from "../../utils/formatNumber";
 
 export async function getServerSideProps(context) {
   return {
@@ -87,7 +88,7 @@ export default function Dashboard() {
         <Grid item xs={12} sm={6} md={3}>
           <ParcelasWidgetViewer
             title="Total de Parcelas"
-            total={data.length ? data.length : "0"}
+            total={data.length ? data.length : 0}
             icon="material-symbols:token"
           />
         </Grid>
@@ -110,7 +111,7 @@ export default function Dashboard() {
         <Grid item xs={12} sm={6} md={3}>
           <ParcelasWidgetViewer
             title="Terreno utilizado"
-            total={`${prom} %`}
+            total={`${fShortenNumber(prom)} %`}
             color="error"
             icon="ic:baseline-remove-red-eye"
           />

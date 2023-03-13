@@ -12,6 +12,7 @@ export default async function handle(req, res) {
     lastRecords.forEach((log) => {
       mean = mean + log.m2used;
     });
+
     res.status(200).json(mean / lastRecords.length);
   } catch (err) {
     res.status(500).json({ err: "Error occured." });
