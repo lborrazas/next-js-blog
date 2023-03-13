@@ -16,6 +16,7 @@ export default async function handle(req, res) {
             WHERE p.address = ${address}`;
 
     let val = 0;
+    if (result.length === 0) return "0";
     result.forEach((element) => {
       val = val + (element.m2 * element.m2used) / 100;
     });

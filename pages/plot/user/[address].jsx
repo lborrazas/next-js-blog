@@ -51,62 +51,53 @@ export default function DashboardUser({ client }) {
   }
   if (!data) {
     return <DashboardSkeleton />;
-  } else {
-    return (
-      <Grid container spacing={2}>
-        <Grid item xs={8}>
-          <Typography variant="h4" gutterBottom>
-            Usuario : {client.name}
-          </Typography>
-        </Grid>
-        <Grid item xs={4} sx={{ display: "flex", justifyContent: "end" }}>
-          <Button
-            // TODO: compa tenes que definir las cosas
-            onClick={() => handleCLick()}
-            variant="contained"
-            startIcon={<Iconify icon="eva:plus-fill" />}
-          >
-            Refresh
-          </Button>
-        </Grid>
-        <Grid item xs={12}>
-          <Paper elevation={3} sx={{ p: 3 }}>
-            <ParcelasGridViewer tokens={data}></ParcelasGridViewer>
-          </Paper>
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <ParcelasWidgetViewer
-            title="Total de Parcelas"
-            total={data.length ? data.length : "0"}
-            icon="material-symbols:token"
-          />
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <ParcelasWidgetViewer
-            title="Co2"
-            total={total}
-            color="info"
-            icon="mdi:molecule-co2"
-          />
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <ParcelasWidgetViewer
-            title="m2 abarcados"
-            total={m2}
-            color="warning"
-            icon="game-icons:plant-seed"
-          />
-        </Grid>
-        <Grid item xs={12} sm={6} md={3}>
-          <ParcelasWidgetViewer
-            title="Terreno utilizado"
-            // TODO: esta mal el tipo que se manda
-            total={`${prom} %`}
-            color="error"
-            icon="ic:baseline-remove-red-eye"
-          />
-        </Grid>
-      </Grid>
-    );
   }
+
+  return (
+    <Grid container spacing={2}>
+      <Grid item xs={8}>
+        <Typography variant="h4" gutterBottom>
+          Usuario : {client.name}
+        </Typography>
+      </Grid>
+      <Grid item xs={4} sx={{ display: "flex", justifyContent: "end" }}></Grid>
+      <Grid item xs={12}>
+        <Paper elevation={3} sx={{ p: 3 }}>
+          <ParcelasGridViewer tokens={data} address={client.address} />
+        </Paper>
+      </Grid>
+      <Grid item xs={12} sm={6} md={3}>
+        <ParcelasWidgetViewer
+          title="Total de Parcelas"
+          total={data.length ? data.length : "0"}
+          icon="material-symbols:token"
+        />
+      </Grid>
+      <Grid item xs={12} sm={6} md={3}>
+        <ParcelasWidgetViewer
+          title="Co2"
+          total={total}
+          color="info"
+          icon="mdi:molecule-co2"
+        />
+      </Grid>
+      <Grid item xs={12} sm={6} md={3}>
+        <ParcelasWidgetViewer
+          title="m2 abarcados"
+          total={m2 ? m2 : "0"}
+          color="warning"
+          icon="game-icons:plant-seed"
+        />
+      </Grid>
+      <Grid item xs={12} sm={6} md={3}>
+        <ParcelasWidgetViewer
+          title="Terreno utilizado"
+          // TODO: esta mal el tipo que se manda
+          total={`${prom} %`}
+          color="error"
+          icon="ic:baseline-remove-red-eye"
+        />
+      </Grid>
+    </Grid>
+  );
 }

@@ -1,12 +1,13 @@
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { Stack } from "@mui/material";
+import { Skeleton, Stack } from "@mui/material";
 import Box from "@mui/material/Box";
 import TokenIcon from "@mui/icons-material/Token";
 import styled from "@emotion/styled";
 import useSWR from "swr";
 import Co2Graph from "../../components/pagesComponents/co2Graph";
 import { useSession } from "next-auth/react";
+import React from "react";
 
 const GeographicAreaItem = styled("div")({
   display: "flex",
@@ -34,7 +35,7 @@ export function colorGrading(number) {
   return grading;
 }
 
-export default function ParcelasGridViewer({ tokens }) {
+export default function ParcelasGridViewer({ tokens, address }) {
   const { data: session } = useSession();
 
   const valuesHarcoded = [
@@ -45,11 +46,12 @@ export default function ParcelasGridViewer({ tokens }) {
   ];
 
   const fetcher = (url) => fetch(url).then((res) => res.json());
-
+  let user = session.address;
+  if (address) user = address;
   const { data: data } = useSWR(
-    session?.isAdmin
+    session?.isAdmin && !address
       ? `/api/co2Data/Admin/anual`
-      : `/api/co2Data/Cliente/Anual/${session.address}`,
+      : `/api/co2Data/Cliente/Anual/${user}`,
     fetcher
   );
 

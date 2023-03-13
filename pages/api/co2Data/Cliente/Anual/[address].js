@@ -13,6 +13,7 @@ export default async function handle(req, res) {
     },
     orderBy: [{ pid: "desc" }, { date: "asc" }],
   });
+  if (events.length === 0) return [];
   const data = eventsToData(events);
   res.json(data);
 }

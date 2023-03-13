@@ -25,7 +25,9 @@ function eventsToData(events) {
   let lastEvent;
   let primerDia;
   let pid;
+  if (events.length === 0) return "0";
   events.forEach((event) => {
+    console.log(event);
     //todo hacer por evento y agregar ahi a data va a quedar un vector de vectores recorro los vectores y ahi agrego a un total data
     if (!pid) pid = event.pid;
     if (pid === event.pid) {
@@ -87,6 +89,7 @@ function eventsToData(events) {
       data = [];
     }
   });
+
   const currentDate = new Date();
   value =
     value + (currentDate - lastEvent.date) * lastEvent.m2used * lastEvent.m3;
