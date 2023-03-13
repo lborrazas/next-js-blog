@@ -23,7 +23,7 @@ let plot = {
     alert("parcela was corrected on our database ");
     }
   }
-} 
+
   async function multiplenfts(nft){
     let anomalies=[]
     for (let i = 0; i < max; i++) {
@@ -43,13 +43,14 @@ let plot = {
       }
     
   }
-
+}
   
   async function burnNft(nft) {
     //TODO BURN nft.id
   }
   return (
     <Stack spacing={1}>
+      
       {anomalies.data.block.map((nft,index) => (
         <Stack
           key={nft.id}
