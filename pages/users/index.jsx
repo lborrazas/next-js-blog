@@ -1,12 +1,15 @@
 import { useState, useEffect, useRef } from "react";
+import { useUser } from "../../contexts/AppContext";
 import {
   useAddress,
   useVmContract,
   useWeb3,
 } from "../../blockchain/BlockchainContext";
+import { IconButton } from "@mui/material";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import style from "./users.module.css";
+import InfoIcon from "@mui/icons-material/Info";
 import axios from "axios";
 import RedirectPage from "../../components/redirect/RedirectPage";
 import Slider from "@mui/material/Slider";
@@ -20,15 +23,10 @@ import Typography from "@mui/material/Typography";
 import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
 import Iconify from "../../components/iconify";
-import InfoIcon from "@mui/icons-material/Info";
-import IconButton from "@mui/material/IconButton";
 
 import { DataGrid } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
-
-import { da } from "date-fns/locale";
-
 import { getCsrfToken, useSession } from "next-auth/react";
 
 export async function getServerSideProps(context) {
@@ -51,6 +49,7 @@ export default function Home({ users }) {
   const router = useRouter();
   const address = useAddress();
   const web3 = useWeb3();
+  const user = useUser();
   const latitude = useRef();
   const longitude = useRef();
   const area = useRef();
@@ -123,17 +122,20 @@ export default function Home({ users }) {
       field: "viewinfo",
       headerName: "Información",
       width: 110,
+      display: 'flex',
+      justifyContent: 'center',
       renderCell: (params) => (
-        <IconButton
+        <div  style={{ justifyContent: 'center', display: 'flex', width: '100%'}}>
+           <IconButton
           color="info"
-          onClick={() => {
-            router.push({
-              pathname: `/plot/user/${params.row.address}`,
-            });
-          }}
+          onClick={() =>
+            router.push({ pahtname: `/plot/user/${params.row.address}` })
+          }
         >
           <InfoIcon />
         </IconButton>
+        </div>
+       
       ),
     },
   ];

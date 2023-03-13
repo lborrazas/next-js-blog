@@ -1,4 +1,5 @@
 import BuildRoundedIcon from "@mui/icons-material/BuildRounded";
+import { Tooltip } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import axios from "axios";
@@ -47,9 +48,11 @@ export const InnerAnomalies = (anomalies) => {
             Latitud{nft.latitud}, Longitud {nft.longitud}, {nft.address}
           </p>
           <Stack direction="row">
-            <IconButton color="primary" onClick={() => fixDB(nft)}>
-              <BuildRoundedIcon />
-            </IconButton>
+            <Tooltip  title="descripcion boton 1">
+              <IconButton color="primary" onClick={() => fixDB(nft)}>
+                <BuildRoundedIcon />
+              </IconButton>
+            </Tooltip>
           </Stack>
         </Stack>
       ))}

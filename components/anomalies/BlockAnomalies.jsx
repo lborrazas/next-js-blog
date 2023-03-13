@@ -3,6 +3,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import axios from "axios";
+import { Tooltip } from "@mui/material";
+
 
 export const BlockAnomalies = ( anomalies ) => {
   async function createParcela(nft) {  
@@ -19,6 +21,7 @@ let plot = {
   const result = await axios.post(url, plot);
   if (result.data === -1) {
     alert("parcela already exist");
+    // const result = await axios.post('/api/fixes/updateowner', {addres:nft.owner});  
     multiplenfts(nft.data)
     alert("parcela was corrected on our database ");
     }
@@ -48,6 +51,7 @@ let plot = {
   async function burnNft(nft) {
     //TODO BURN nft.id
   }
+
   return (
     <Stack spacing={1}>
       
@@ -63,17 +67,21 @@ let plot = {
             Latitud{nft.data.latitud}, {nft.data.longitud}, {nft.owner}
           </p>
           <Stack direction="row" >
-            <IconButton color="info" onClick={() => createParcela(nft)}>
-              <EditIcon />
-            </IconButton>
-            <IconButton
-              color="error"
-              onClick={() => {
-                burnNft(nft);
-              }}
-            >
-              <DeleteIcon />
-            </IconButton>
+            <Tooltip  title="descripcion boton 2">
+              <IconButton color="info" onClick={() => createParcela(nft)}>
+                <EditIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip  title="descripcion boton 3">
+              <IconButton
+                color="error"
+                onClick={() => {
+                  burnNft(nft);
+                }}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
           </Stack>
         </Stack>
       ))}

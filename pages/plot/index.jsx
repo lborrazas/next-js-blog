@@ -52,6 +52,13 @@ export default function Dashboard() {
       : `/api/co2Data/Cliente/Promedio/${session.address}`,
     fetcher
   );
+
+  const { data: m2, error: error4 } = useSWR(
+    session?.isAdmin
+      ? `/api/co2Data/Admin/m2`
+      : `/api/co2Data/Cliente/M2/${session.address}`,
+    fetcher
+  );
   if (error) {
     return <div>failed to load</div>;
   }
@@ -98,7 +105,7 @@ export default function Dashboard() {
         <Grid item xs={12} sm={6} md={3}>
           <ParcelasWidgetViewer
             title="m2 abarcados"
-            total={43}
+            total={m2}
             color="warning"
             icon="game-icons:plant-seed"
           />

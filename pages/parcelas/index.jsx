@@ -110,9 +110,11 @@ export default function Parcelas() {
       headerName: "Actualizar",
       width: 100,
       renderCell: (params) => (
-        <IconButton color="primary" onClick={() => handleEditPlot(params.row)}>
+        <div  style={{ justifyContent: 'center', display: 'flex', width: '100%'}}>
+           <IconButton color="primary" onClick={() => handleEditPlot(params.row)}>
           <EditIcon />
         </IconButton>
+        </div>
       ),
     },
     {
@@ -120,7 +122,8 @@ export default function Parcelas() {
       headerName: "Información",
       width: 110,
       renderCell: (params) => (
-        <IconButton
+        <div  style={{ justifyContent: 'center', display: 'flex', width: '100%'}}>
+           <IconButton
           color="info"
           onClick={() => {
             router.push({
@@ -130,18 +133,11 @@ export default function Parcelas() {
         >
           <InfoIcon />
         </IconButton>
+        </div>
+        
       ),
     },
-    {
-      field: "borrar",
-      headerName: "Borrar",
-      width: 100,
-      renderCell: (params) => (
-        <IconButton color="error" onClick={() => handleDeletePlot(params)}>
-          <DeleteIcon />
-        </IconButton>
-      ),
-    },
+    
   ];
   if (error) {
     return <div> failed to load</div>;
