@@ -51,6 +51,7 @@ export default async function auth(req, res) {
                 id: user.address,
                 name: user.name,
                 email: user.isAdmin,
+                image: user.address
               };
             }
           }

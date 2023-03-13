@@ -10,5 +10,7 @@ export const config = {
         "/update",
         "/users",
         "/anomalies",
+        "/mate",
+        "/ger"
     ]
 }
