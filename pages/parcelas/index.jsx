@@ -1,6 +1,4 @@
-import { useState, useEffect } from "react";
-import { useUser } from "../../contexts/AppContext";
-import { useAddress } from "../../blockchain/BlockchainContext";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import style from "./parcelas.module.css";
@@ -9,24 +7,19 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { DataGrid } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
-import { UpdatePlotSkeleton } from "../../components/skeletons/PlotSkeleton";
+import { DataGridSkeleton } from "../../components/skeletons/DataGridSkeleton";
 import InfoIcon from "@mui/icons-material/Info";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { EditPlotDialog } from "../../components/dialog/EditPlotDialog";
 import { useSession } from "next-auth/react";
+import TextField from "@mui/material/TextField";
 
 export default function Parcelas() {
-  77;
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const address = session.address;
   // TODO: get de los users
   const users = [];
-
-  // TODO: setear el error para que no?
-  const [error, setError] = useState(null);
-  // TODO: esto no deberia existir
   const [rows, setRows] = useState();
   const [inputValue, setInputValue] = useState("");
   const [selectedPlot, setSelectedPlot] = useState(undefined);
@@ -34,11 +27,6 @@ export default function Parcelas() {
   const router = useRouter();
 
   const fetcher = (url) => fetch(url).then((res) => res.json());
-  const addressSend = address;
-  let titleListView = "Lista de mis parcelas";
-  if (session && session.isAdmin) {
-    titleListView = "Lista de todas las parcelas";
-  }
   const { data, isLoading } = useSWR(
     session?.isAdmin
       ? `/api/enhance/mytokens/all`
@@ -74,6 +62,7 @@ export default function Parcelas() {
   function redirectUrl(params, p) {
     router.push(params + "/" + p.row.pid);
   }
+
   useEffect(() => {
     if (!isLoading) {
       setRows(data);
@@ -88,11 +77,6 @@ export default function Parcelas() {
   const handleCloseEditDialog = () => {
     setOpenEditDialog(false);
     setSelectedPlot(undefined);
-  };
-
-  const handleDeletePlot = (params) => {
-    // TODO: delete plot
-    console.log(`TODO${params}`);
   };
 
   const columns = [
@@ -110,10 +94,15 @@ export default function Parcelas() {
       headerName: "Actualizar",
       width: 100,
       renderCell: (params) => (
-        <div  style={{ justifyContent: 'center', display: 'flex', width: '100%'}}>
-           <IconButton color="primary" onClick={() => handleEditPlot(params.row)}>
-          <EditIcon />
-        </IconButton>
+        <div
+          style={{ justifyContent: "center", display: "flex", width: "100%" }}
+        >
+          <IconButton
+            color="primary"
+            onClick={() => handleEditPlot(params.row)}
+          >
+            <EditIcon />
+          </IconButton>
         </div>
       ),
     },
@@ -122,29 +111,26 @@ export default function Parcelas() {
       headerName: "Información",
       width: 110,
       renderCell: (params) => (
-        <div  style={{ justifyContent: 'center', display: 'flex', width: '100%'}}>
-           <IconButton
-          color="info"
-          onClick={() => {
-            router.push({
-              pathname: `/plot/${params.row.pid}`,
-            });
-          }}
+        <div
+          style={{ justifyContent: "center", display: "flex", width: "100%" }}
         >
-          <InfoIcon />
-        </IconButton>
+          <IconButton
+            color="info"
+            onClick={() => {
+              router.push({
+                pathname: `/plot/${params.row.pid}`,
+              });
+            }}
+          >
+            <InfoIcon />
+          </IconButton>
         </div>
-        
       ),
     },
-    
   ];
-  if (error) {
-    return <div> failed to load</div>;
-  }
 
   if (!data || !rows) {
-    return <UpdatePlotSkeleton />;
+    return <DataGridSkeleton title="Lista de todas las parcelas" />;
   }
 
   return (
@@ -156,18 +142,17 @@ export default function Parcelas() {
         mb={5}
       >
         <Typography component="h1" variant="h4">
-          {titleListView}
+          Lista de todas las parcelas
         </Typography>
-        <input
-          className={`${style.filterInput}`}
+        <TextField
+          id="search-filter"
+          label="Buscar"
+          variant="outlined"
           value={inputValue}
-          id="filter"
-          placeholder="Buscar"
           onChange={filterTable}
-          name="filter"
         />
       </Stack>
-      <Paper elevation={3} sx={{ padding: "30px", height: "100%" }}>
+      <Paper elevation={3} sx={{ p: 3, height: "100%" }}>
         <DataGrid
           rows={rows}
           columns={columns}

@@ -5,7 +5,7 @@ import { useAddress, useVmContract } from "../../blockchain/BlockchainContext";
 import { BlockAnomalies } from "../../components/anomalies/BlockAnomalies";
 import { ExterAnomalies } from "../../components/anomalies/ExterAnomalies";
 import { InnerAnomalies } from "../../components/anomalies/InnerAnomalies";
-import { AnomalieSkeleton } from "../../components/skeletons/Anomalies";
+import { AnomaliesSkeleton } from "../../components/skeletons/AnomaliesSkeleton";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import {} from "wagmi";
@@ -35,11 +35,10 @@ export default function HomePage() {
   async function fetchData() {
     // Fetch NFT data from your web3 contract
     const nftData = await allTokens();
-    console.log(nftData);
 
     // Send NFT data to your Prisma database via an API
     const anomalies = await axios.post("/api/anomalies", nftData);
-    console.log(anomalies);
+
     if (anomalies.data.inner[0] || anomalies.data.block[0]) {
       setAnomalies(anomalies);
     } else {
@@ -56,7 +55,7 @@ export default function HomePage() {
   }, []);
 
   if (loading) {
-    return <AnomalieSkeleton />;
+    return <AnomaliesSkeleton />;
   }
   if (!anomalies) {
     return <p>No anomalies detected</p>;
@@ -64,17 +63,17 @@ export default function HomePage() {
 
   return (
     <Stack>
-      <Paper elevation={3} sx={{ padding: "30px" }}>
+      <Paper elevation={3} sx={{ p: 3 }}>
         <Box>
           <InnerAnomalies data={anomalies.data}></InnerAnomalies>
         </Box>
       </Paper>
-      <Paper elevation={3} sx={{ padding: "30px" }}>
+      <Paper elevation={3} sx={{ p: 3 }}>
         <Box>
           <BlockAnomalies data={anomalies.data}></BlockAnomalies>
         </Box>
       </Paper>
-      <Paper elevation={3} sx={{ padding: "30px" }}>
+      <Paper elevation={3} sx={{ p: 3 }}>
         <Box>
           <ExterAnomalies data={anomalies.data}></ExterAnomalies>
         </Box>

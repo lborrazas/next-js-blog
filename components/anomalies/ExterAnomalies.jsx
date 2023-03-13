@@ -17,7 +17,7 @@ export const ExterAnomalies = (anomalies) => {
           justifyContent="space-between"
           sx={{ bgcolor: index % 2 === 0 ? "#fbfbfb" : "abd2b0" }}
         >
-          <p>   
+          <p>
             Latitud{nft.latitud} Longitud {nft.longitud} Dueño {nft.address}
           </p>
           <Stack direction="row">

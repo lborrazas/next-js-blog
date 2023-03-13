@@ -5,13 +5,47 @@
   color: #000000;
 }
 
+.itemasInfoD {
+  color: #000000;
+}
+
 .itemasInfo {
   display: flex;
-  justify-content: left;
+  justify-content: right;
   align-items: center;
   color: #000000;
 }
 
 .aaa{
   background-color: white;
+}
+
+.allCO2T{
+    font-size: 55px;
+    margin-top: -0px;
+    font-weight: 200;
+}
+.allCO2M{
+  font-size: 21px;
+  font-weight: bolder;
+}
+.allCO2B{
+  font-size: 45px;
+  font-weight: 500;
+}
+
+.allCO2M Co2Icon{
+  zoom: 2;
+}
+
+.center{
+  /* height: 100%;  */
+}
+
+.icon{
+  zoom: 3;
+}
+
+.rol{
+  font-weight: bold;
 }

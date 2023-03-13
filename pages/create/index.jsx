@@ -31,7 +31,7 @@ export default function Create({ users }) {
           Crear parcela
         </Typography>
       </Stack>
-      <Paper elevation={3} sx={{ padding: "30px" }}>
+      <Paper elevation={3} sx={{ p: 3 }}>
         <PlotForm users={users} />
       </Paper>
     </Box>
