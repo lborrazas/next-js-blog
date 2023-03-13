@@ -68,8 +68,8 @@ export default function HomePage() {
 
   return (
     <Stack>
-      <h2 className={`${style.title}`}>TITULO 1 
-        <Tooltip className={`${style.button}`} title="AQUI VA DESCRIPCION 1">
+      <h2 className={`${style.title}`}>Anomalias Internas 
+        <Tooltip className={`${style.button}`} title="Anomalas dentro de nuestra base de datos">
           <IconButton>
             <InfoIcon />
           </IconButton>
@@ -80,8 +80,8 @@ export default function HomePage() {
           <InnerAnomalies data={anomalies.data}></InnerAnomalies>
         </Box>
       </Paper>
-      <h2 className={`${style.title}`}>TITULO 2 
-        <Tooltip className={`${style.button}`} title="AQUI VA DESCRIPCION 2">
+      <h2 className={`${style.title}`}>Anomalias en la blockchain 
+        <Tooltip className={`${style.button}`} title="Nfts repetidos en el contrato">
           <IconButton>
             <InfoIcon />
           </IconButton>
@@ -92,8 +92,8 @@ export default function HomePage() {
           <BlockAnomalies data={anomalies.data}></BlockAnomalies>
         </Box>
       </Paper>
-      <h2 className={`${style.title}`}>TITULO 3 
-        <Tooltip className={`${style.button}`} title="Aqui va descripcion 3">
+      <h2 className={`${style.title}`}>Anomalias Externas 
+        <Tooltip className={`${style.button}`} title="Parcelas que no tiene nft correspondiente">
           <IconButton>
             <InfoIcon />
           </IconButton>
