@@ -11,16 +11,19 @@ export default async function handle(req, res) {
       ON "Parcela".id = "History".pid
       WHERE "History".address = ${address};`;
     console.log(address);
+    const k = 0.1;
+    const time = 1;
     const createCsvWriter = require("csv-writer").createObjectCsvWriter;
-    const headers = Object.keys(result[0]).join(",") + "\n";
-    const rows = result.map((obj) => Object.values(obj).join(",")).join("\n");
+    const headers = Object.keys(result[0]).join(",") + ",CO2 Absorvido" + "\n";
+    const rows = result.map((obj) => Object.values(obj).join(",")+ "," + (obj.m2used*obj.m3*k*time)).join("\n");
+    console.log(headers)
+    console.log(rows)
     const csv = headers + rows;
-    fs.writeFile("public/reportes/" + address + 1231 + ".csv", csv, (err) => {
+    fs.writeFile("public/reportes/" + address + ".csv", csv, (err) => {
       if (err) throw err;
       console.log("CSV file saved!");
     });
 
-    console.log("la concha de la lora");
     res.status(200).json("/reportes/" + address + ".csv");
   } catch (err) {
     res
