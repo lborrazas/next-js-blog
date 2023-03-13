@@ -1,7 +1,4 @@
-// import { useUser } from "../../contexts/AppContext";
-// import { useAddress, useVmContract } from "../../blockchain/BlockchainContext";
-// import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
@@ -12,7 +9,6 @@ import Co2Graph from "../../components/pagesComponents/co2Graph";
 import DataGrid from "../../components/pagesComponents/dataGrid";
 import useSWR from "swr";
 import { DashboardSkeleton } from "../../components/skeletons/DashboardSkeleton";
-import style from "./plots.module.css";
 import { EditPlotDialog } from "../../components/dialog/EditPlotDialog";
 
 const { PrismaClient } = require("./../../node_modules/.prisma/client");
@@ -81,7 +77,7 @@ export default function Plot({ parcela, lastLog, owner }) {
     m2used: lastLog.m2used,
     m3: lastLog.m3,
     pid: lastLog.pid,
-    userName: owner.name  ,
+    userName: owner.name,
   };
   const handleEditPlot = (plot) => {
     setOpenEditDialog(true);
@@ -96,7 +92,6 @@ export default function Plot({ parcela, lastLog, owner }) {
     return <DashboardSkeleton />;
   } else {
     return (
-      
       <Box sx={{ height: "100%" }}>
         <Grid container spacing={2}>
           <Grid item xs={8}>
@@ -110,13 +105,13 @@ export default function Plot({ parcela, lastLog, owner }) {
             </Box>
           </Grid>
           <Grid item xs={4} sx={{ display: "flex", justifyContent: "end" }}>
-          <Button id="actualizar" variant="contained" className={`${style.maxHeigt}`}>
-            Actualizar
-          </Button>
+            <Button id="button-update" variant="contained">
+              Actualizar
+            </Button>
           </Grid>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <Paper elevation={3} sx={{ padding: "30px" }}>
+              <Paper elevation={3} sx={{ p: 3 }}>
                 <Grid container spacing={2}>
                   <Grid item sm={12} md={7}>
                     <Typography variant="h5" gutterBottom>

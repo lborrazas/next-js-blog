@@ -1,7 +1,5 @@
 import { useRef, useState, useEffect } from "react";
 import axios from "axios";
-import { User, useSetUser } from "../../contexts/AppContext";
-import { useAddress } from "../../blockchain/BlockchainContext";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";

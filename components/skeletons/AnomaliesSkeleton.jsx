@@ -2,12 +2,12 @@ import Grid from "@mui/material/Grid";
 import { Skeleton } from "@mui/material";
 import Typography from "@mui/material/Typography";
 
-export const UpdatePlotSkeleton = () => {
+export const AnomaliesSkeleton = () => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={8}>
         <Typography variant="h4" gutterBottom>
-          Lista de todas las parcelas
+          Detectando anomalias
         </Typography>
       </Grid>
       <Grid item xs={4} sx={{ display: "flex", justifyContent: "end" }}>
@@ -20,4 +20,4 @@ export const UpdatePlotSkeleton = () => {
   );
 };
 
-export default UpdatePlotSkeleton;
+export default AnomaliesSkeleton;

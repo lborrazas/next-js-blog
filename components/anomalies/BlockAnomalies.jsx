@@ -54,8 +54,7 @@ let plot = {
 
   return (
     <Stack spacing={1}>
-      
-      {anomalies.data.block.map((nft,index) => (
+      {anomalies.data.block.map((nft, index) => (
         <Stack
           key={nft.id}
           direction="row"

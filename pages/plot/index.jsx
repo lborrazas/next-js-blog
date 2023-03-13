@@ -5,9 +5,7 @@ import Grid from "@mui/material/Grid";
 import { Button } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Iconify from "../../components/iconify";
-import ParcelasGridViewer, {
-  Parcela,
-} from "../../components/pagesComponents/parcelasGridViewer";
+import ParcelasGridViewer from "../../components/pagesComponents/parcelasGridViewer";
 import ParcelasWidgetViewer from "../../components/pagesComponents/parcelasWidgetViewer";
 import useSWR from "swr";
 import { DashboardSkeleton } from "../../components/skeletons/DashboardSkeleton";
@@ -65,7 +63,6 @@ export default function Dashboard() {
   if (!data) {
     return <DashboardSkeleton />;
   } else {
-    console.log(data.length);
     return (
       <Grid container spacing={2}>
         <Grid item xs={8}>
@@ -83,8 +80,8 @@ export default function Dashboard() {
           </Button>
         </Grid>
         <Grid item xs={12}>
-          <Paper elevation={3} sx={{ padding: "30px" }}>
-            <ParcelasGridViewer tokens={data}></ParcelasGridViewer>
+          <Paper elevation={3} sx={{ p: 3 }}>
+            <ParcelasGridViewer tokens={data} />
           </Paper>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>

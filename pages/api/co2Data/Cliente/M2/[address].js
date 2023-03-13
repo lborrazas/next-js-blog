@@ -2,7 +2,6 @@ const { PrismaClient } = require(".prisma/client");
 const prisma = new PrismaClient();
 
 export default async function handle(req, res) {
-  console.log(req.query);
   const { address } = req.query;
   try {
     const result = await prisma.$queryRaw`SELECT p.*, h.*
@@ -23,7 +22,6 @@ export default async function handle(req, res) {
 
     res.status(200).json(val);
   } catch (err) {
-    console.log(err);
     res.status(508).json({ err: "Error occured while adding a new food." });
   }
 }

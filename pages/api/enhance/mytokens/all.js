@@ -18,7 +18,9 @@ export default async function handle(req, res) {
           address: result[i].address,
         },
       });
-      result[i].userName = user[0].name;
+      if (user.length > 0) {
+        result[i].userName = user[0].name;
+      }
     }
     res.status(200).json(result);
   } catch (err) {
