@@ -14,6 +14,7 @@ model Parcela {
   latitud     Int
   longitud    Int
   m2        Int
+  blockId        Int
   address   String
 }
 
@@ -22,7 +23,7 @@ model History {
   pid       String
   m2used    Int
   m3        Int
-  address   String
+  address   String     
   date      DateTime   @default(now())
   @@index([address, date(sort: Desc)])
 }
@@ -32,8 +33,8 @@ model History {
 model User {
   id            String       @default(cuid()) @id
   name          String?
-  email         String?   
-  address       String?   
+  email         String?     
+  address       String?    @unique   
   isAdmin       Boolean @default(false) @map("is_admin")  
   @@map(name: "users")
   @@index([address])

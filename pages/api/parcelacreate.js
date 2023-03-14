@@ -9,6 +9,7 @@ export default async function handle(req, res) {
       latitud: Number(data.latitud),
       longitud: Number(data.longitud),
       m2: Number(data.m2),
+      blockId:Number(data.blockId)
     },
   };
 
@@ -32,9 +33,10 @@ export default async function handle(req, res) {
         },
       };
       const result2 = await prisma.history.create(hist);
-      res.status(200).json(result);
+      res.status(200).json(result2);
     }
   } catch (err) {
+    console.log(err )
     res.status(403).json({ err: "Error occured while adding a new food." });
   }
 }

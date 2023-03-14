@@ -17,11 +17,13 @@ let plot = {
     m2used: 0,
     m3: 0,
     address: nft.owner,
+    blockId:nft.id
   };
+  
   const result = await axios.post(url, plot);
   if (result.data === -1) {
     alert("parcela already exist");
-    // const result = await axios.post('/api/fixes/updateowner', {addres:nft.owner});  
+    const result = await axios.post('/api/fixes/updateowner', {addres:nft.owner});  
     multiplenfts(nft.data)
     alert("parcela was corrected on our database ");
     }

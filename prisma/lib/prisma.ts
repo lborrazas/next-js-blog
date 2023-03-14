@@ -13,7 +13,7 @@ if (process.env.NODE_ENV === "production") {
         db: {
           provider: "postgresql",
           url: process.env.DATABASE_URL,
-          max: 10,
+          max: 100,
         },
       },
     });

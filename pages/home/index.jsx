@@ -68,7 +68,7 @@ export default function Home() {
 
   const fetcher = (url) => fetch(url).then((res) => res.json());
   const { data, error } = useSWR(
-    session.address ? `api/admin/total/` : null,
+    session.address ? `/api/co2Data/Admin/total` : null,
     fetcher
   );
 

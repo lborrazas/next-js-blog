@@ -63,28 +63,20 @@ export default function Transfer() {
       ) {
         tokens_temp.push(parse);
         parcela_id.push(i);
-        const owner1 = await vmContract.ownerOf(i-1);
-        const owner2 = await vmContract.ownerOf(i);
-        const owner3 = await vmContract.ownerOf(i+1);
-        console.log(owner1)
-        console.log(owner2)
-        console.log(owner3)
-        console.log(i)
-        console.log(parse.longitud)
-        console.log(parse.latitud)  
-    
+
       }
     }
     
     console.log(forwardAddress)
     console.log(parcela_id)
-    //axios.post("/api/transfer", { body: { history_address: forwardAddress, id: parcela.id },});
+    
     await vmContract["safeTransferFrom(address,address,uint256)"](
       session.address,
       forwardAddress,
       parcela_id[0]
-    );
+    ).then(async (rest) =>{axios.post("/api/transfer", { body: { history_address: forwardAddress, id: parcela.id },})});
     alert(`NFT ${parcela_id[0]} transferred from ${session.address} to ${forwardAddress}`);
+    setOpen(false);
   }
 
   async function handleCLick(addressF) {

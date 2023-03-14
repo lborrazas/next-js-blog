@@ -42,8 +42,10 @@ export const PlotForm = ({ selectedPlot, handleClose, users }) => {
     const data = new FormData(document.getElementById("submitid"));
     let plot;
     let url;
+    let url2;
     if (!selectedPlot) {
       url = "/api/parcelacreate";
+      url2 = "/api/getparcela";
       plot = {
         latitud: data.get("latitude"),
         longitud: data.get("longitude"),
@@ -61,20 +63,35 @@ export const PlotForm = ({ selectedPlot, handleClose, users }) => {
         data.get("area-used") &&
         owner.address
       ) {
-        const result = await axios.post(url, plot);
+        const result = await axios.post(url2, plot);
         // TODO: como que -2 ??????????????
-        if (result.data === -1) {
+        console.log("creando")
+        console.log(result)
+        if (result.data[1]) {
           alert("parcela already exist"); //TODO ALERT POR ALGO MAS LINDO SI SACAN EL ALERT SAQUEN EL SET OPEN A MENOS QUE PONDAN EL MENSAJE FUERA DEL DIALOG
           setOpen(false); // YO NO ME ENCARGO DEL MANEJOD E ERROES
         } else {
-          if (!selectedPlot) {
-            // TODO: esto se deberia usar en algun lado?
-            const a = await vmContract.createCollectible(
-              plot.longitud,
-              plot.latitud
-            );
-            await router.push("/home");
-          }
+          const id = await vmContract.tokenCounter().then(
+            async (res)=>{const id= Number(res._hex) 
+              const a = await vmContract.createCollectible(
+                   plot.longitud,
+                   plot.latitud,
+                   plot.m2
+                 ).then(async (res) => {
+                  plot = {
+                    latitud: data.get("latitude"),
+                    longitud: data.get("longitude"),
+                    m2: data.get("area"),
+                    m2used: +data.get("area-used"),
+                    // TODO: wtf esta propiedad, m3?
+                    m3: +data.get("average-height"),
+                    address: owner.address,
+                    blockId:id
+                  };
+                   console.log(res)
+                   await axios.post(url, plot)});
+                 await router.push("/home");
+            })
           setOpen(false);
         }
       } else {
@@ -90,19 +107,6 @@ export const PlotForm = ({ selectedPlot, handleClose, users }) => {
         address: selectedPlot.address,
       };
       const result = await axios.post(url, plot);
-      // TODO: como que -2 ??????????????
-      if (result.data === -1) {
-        alert("parcela already exist");
-      } else {
-        if (!selectedPlot) {
-          // TODO: esto se deberia usar en algun lado?
-          const a = await vmContract
-            .createCollectible(plot.longitud, plot.latitud)
-            .send({ from: plot.address });
-          await router.push("/home");
-        }
-      }
-
       {
         handleClose();
       }
