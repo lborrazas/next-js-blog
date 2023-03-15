@@ -64,6 +64,7 @@ export default function Parcelas() {
   }
 
   useEffect(() => {
+    console.log(data)
     if (!isLoading) {
       setRows(data);
     }

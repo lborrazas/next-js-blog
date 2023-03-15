@@ -116,8 +116,8 @@ export default function Login() {
 
   const handleLogin = async () => {
     if (
-      typeof window !== "undefined" &&
-      typeof window.ethereum !== "undefined"
+      !!window &&
+      !!window.ethereum
     ) {
       try {
         const callbackUrl = "/protected";
@@ -155,11 +155,12 @@ export default function Login() {
           }
         );
       } catch (error) {
+        alert(error)
         window.alert(error);
       }
     } else {
       setIsLoading(false);
-      alert("please install Metamask");
+      setOpenDialog(true);
     }
   };
 
@@ -197,10 +198,10 @@ export default function Login() {
             <CircularProgress />
           ) : (
             <Button
-              onClick={(e) => {
-                e.preventDefault();
+              onClick={() => {
                 if (!isConnected) {
-                  connect();
+                  setOpenDialog(true);
+                   connect();
                 } else {
                   handleLogin();
                 }
