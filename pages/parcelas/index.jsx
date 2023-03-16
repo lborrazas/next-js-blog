@@ -70,7 +70,7 @@ export default function Parcelas() {
     }
   }, [isLoading, data]);
 
-  const handleEditPlot = (plot) => {
+  const handleEditPlot = (plot) => { 
     setSelectedPlot(plot);
     setOpenEditDialog(true);
   };
@@ -81,7 +81,7 @@ export default function Parcelas() {
   };
 
   const columns = [
-    { field: "pid", headerName: "Id", width: 200 },
+    { field: "blockId", headerName: "Id", width: 200 },
     { field: "latitud", headerName: "Latitud", width: 90 },
     { field: "longitud", headerName: "Longitud", width: 100 },
     { field: "m2", headerName: "Metros cuadrados", width: 150 },

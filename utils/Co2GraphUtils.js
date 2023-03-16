@@ -1,3 +1,5 @@
+const constante = 0.1*1619/(15*1000*24*60*60)
+
 export function eventsToData(events) {
   let month;
   let year;
@@ -39,7 +41,7 @@ export function eventsToData(events) {
           0,
           0
         );
-        value = value + (event.date - primerDia) * event.m2used * event.m3;
+        value = value + (event.date - primerDia) * event.m2used * event.m3*constante;
         data.push({
           month: ` ${getMonthName(month)} ${event.date.getFullYear()} `,
           value: value,
@@ -47,7 +49,7 @@ export function eventsToData(events) {
         month = event.date.getMonth();
         value = 0;
       }
-      value = value + (event.date - lastEvent.date) * event.m2used * event.m3;
+      value = value + (event.date - lastEvent.date) * event.m2used * event.m3*constante;
       month = event.date.getMonth(); //todo hacer bien el calculo
       lastEvent = event;
     } else {
@@ -55,7 +57,7 @@ export function eventsToData(events) {
       const currentDate = new Date();
       value =
         value +
-        (currentDate - lastEvent.date) * lastEvent.m2used * lastEvent.m3;
+        (currentDate - lastEvent.date) * lastEvent.m2used * lastEvent.m3*constante;
       data.push({
         month: ` ${getMonthName(month)} ${lastEvent.date.getFullYear()} `,
         value: value,
@@ -72,7 +74,7 @@ export function eventsToData(events) {
   });
   const currentDate = new Date();
   value =
-    value + (currentDate - lastEvent.date) * lastEvent.m2used * lastEvent.m3;
+    value + (currentDate - lastEvent.date) * lastEvent.m2used * lastEvent.m3*constante;
   data.push({
     month: ` ${getMonthName(month)} ${lastEvent.date.getFullYear()} `,
     value: value,

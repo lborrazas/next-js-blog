@@ -83,7 +83,7 @@ export default function DashboardUser({ client }) {
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <ParcelasWidgetViewer
-            title="Co2"
+            title="CO2"
             total={total}
             color="info"
             icon="mdi:molecule-co2"

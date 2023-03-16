@@ -126,7 +126,7 @@ export default function Sidebar({ children }) {
           <div className={`${style.row}`}>
             <div className={`${style.leftButton}`}>
               <Typography variant="h6" noWrap component="div">
-                Ixalab Aplication
+                Ixalab Application
               </Typography>
             </div>
             <div className={`${style.rightButton}`}>

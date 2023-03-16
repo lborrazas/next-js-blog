@@ -71,7 +71,7 @@ export default function ParcelasGridViewer({ tokens }) {
       </Grid>
       <Grid item xs={12} sm={4} md={2}>
         <Typography variant="h5" gutterBottom>
-          Area geográfica
+          Área geográfica
         </Typography>
         <Stack spacing={2}>
           {valuesHarcoded.map(({ color, text }) => (

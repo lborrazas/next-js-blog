@@ -77,7 +77,7 @@ export default function Plot({ parcela, lastLog, owner }) {
     m2used: lastLog.m2used,
     m3: lastLog.m3,
     pid: lastLog.pid,
-    userName: owner.name,
+    userName: owner? owner.name: parcela.address,
   };
   const handleEditPlot = (plot) => {
     setOpenEditDialog(true);
@@ -100,7 +100,7 @@ export default function Plot({ parcela, lastLog, owner }) {
                 {`Parcela ${parcela.latitud} : ${parcela.longitud}`}
               </Typography>
               <Typography variant="h5" gutterBottom>
-                {`Dueño ${owner.name}`}
+                {`Dueño ${owner? owner.name: parcela.address}`}
               </Typography>
             </Box>
           </Grid>
