@@ -65,13 +65,15 @@ export default function Plot({ parcela, lastLog, owner }) {
   );
   parcela = parcela[0];
   owner = owner[0];
+  console.log(owner)
+  console.log(parcela)
   const actualData = {
     percentage: `${lastLog.m2used}`,
     m2: (`${lastLog.m2used}` / 100) * `${parcela.m2}`,
     height: `${lastLog.m3}`,
     total: `${total}`,
   };
-  const actualPlot = {
+  const actualPlot = { 
     latitud: parcela.latitud,
     longitud: parcela.longitud,
     m2: parcela.m2,
@@ -98,10 +100,10 @@ export default function Plot({ parcela, lastLog, owner }) {
           <Grid item xs={8}>
             <Box>
               <Typography variant="h4" gutterBottom>
-                {`Parcela ${parcela.latitud} : ${parcela.blockId}`}
+                {`Parcela ${parcela.latitud} : ${parcela.longitud}`}
               </Typography>
               <Typography variant="h5" gutterBottom>
-                {`Dueño ${owner? owner.name: parcela.blockId}`}
+                {`Dueño ${owner? owner.name: parcela.address}`}
               </Typography>
             </Box>
           </Grid>
