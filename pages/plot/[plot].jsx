@@ -5,6 +5,7 @@ import Grid from "@mui/material/Grid";
 import { Button } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import ParcelasWidgetViewer from "../../components/pagesComponents/parcelasWidgetViewer";
+import ImageWithHover from "../../components/ImageWithHoverComponent";
 import Co2Graph from "../../components/pagesComponents/co2Graph";
 import DataGrid from "../../components/pagesComponents/dataGrid";
 import useSWR from "swr";
@@ -97,10 +98,10 @@ export default function Plot({ parcela, lastLog, owner }) {
           <Grid item xs={8}>
             <Box>
               <Typography variant="h4" gutterBottom>
-                {`Parcela ${parcela.latitud} : ${parcela.longitud}`}
+                {`Parcela ${parcela.latitud} : ${parcela.blockId}`}
               </Typography>
               <Typography variant="h5" gutterBottom>
-                {`Dueño ${owner? owner.name: parcela.address}`}
+                {`Dueño ${owner? owner.name: parcela.blockId}`}
               </Typography>
             </Box>
           </Grid>
@@ -126,34 +127,31 @@ export default function Plot({ parcela, lastLog, owner }) {
               </Paper>
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <ParcelasWidgetViewer
-                title="Total de Parcelas"
-                total={31}
-                icon="material-symbols:token"
+              <ImageWithHover
+                  fallbackImage="https://picsum.photos/500/300"
+                  imageKey="1"
+                  parcelaId={parcela.blockId}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <ParcelasWidgetViewer
-                title="Co2"
-                total={492}
-                color="info"
-                icon="mdi:molecule-co2"
+              <ImageWithHover
+                  fallbackImage="https://picsum.photos/500/300"
+                  imageKey="2"
+                  parcelaId={parcela.blockId}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <ParcelasWidgetViewer
-                title="Plantas Nuevas"
-                total={43}
-                color="warning"
-                icon="game-icons:plant-seed"
+              <ImageWithHover
+                  fallbackImage="https://picsum.photos/500/300"
+                  imageKey="3"
+                  parcelaId={parcela.blockId}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <ParcelasWidgetViewer
-                title="Ver Todos"
-                total={100}
-                color="error"
-                icon="ic:baseline-remove-red-eye"
+              <ImageWithHover
+                  fallbackImage="https://picsum.photos/500/300"
+                  imageKey="4"
+                  parcelaId={parcela.address}
               />
             </Grid>
           </Grid>
