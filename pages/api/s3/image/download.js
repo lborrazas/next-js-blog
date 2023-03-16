@@ -7,7 +7,7 @@ export default async function handler(
     res
 ) {
     const session = await getServerSession(req, res, authOptions)
-    if (session.user.email || session.user.image == req.query.address) {
+    if (session.user.email) {
         const s3 = new S3({
             signatureVersion: 'v4',
             region: 'us-east-1',
@@ -17,7 +17,7 @@ export default async function handler(
 
         const preSignedUrl = s3.getSignedUrl("getObject", {
             Bucket: process.env.BUCKET_NAME,
-            Key: `${req.query.address}/${req.query.file}`,
+            Key: `parcela-${req.query.parcelaId}/${req.query.file}`,
             ContentType: req.query.fileType,
             Expires: 5 * 60
         })
