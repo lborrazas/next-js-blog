@@ -1,6 +1,6 @@
 const { PrismaClient } = require(".prisma/client");
 const prisma = new PrismaClient();
-const constante = 0.1*1619/(15*1000*24*60*60)
+const constante = 0.1*1619/(15*1000*24*60*60*1000)
 export default async function handle(req, res) {
   const events = await prisma.history.findMany({
     where: {

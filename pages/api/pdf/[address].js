@@ -3,13 +3,11 @@ const prisma = new PrismaClient();
 const fs = require("fs");
 
 export default async function handle(req, res) {
-  const { address } = req.query;
+  const { address } = req.query
   try {
-    const result = await prisma.$queryRaw`SELECT *
-      FROM "History"
-      INNER JOIN "Parcela"
-      ON "Parcela".id = "History".pid
-      WHERE "History".address = ${address};`;
+    const result = await prisma.$queryRaw`SELECT pid
+      FROM "Parcela"
+      WHERE "Parcela".address = ${address};`;
     console.log(address);
     const k = 0.1;
     const time = 1;
@@ -24,7 +22,7 @@ export default async function handle(req, res) {
       console.log("CSV file saved!");
     });
 
-    res.status(200).json("/reportes/" + address + ".csv");
+    res.status(200).json("reportes/" + address + ".csv");
   } catch (err) {
     res
       .status(400)

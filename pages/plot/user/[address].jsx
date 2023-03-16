@@ -61,7 +61,7 @@ export default function DashboardUser({ client }) {
         </Grid>
         <Grid item xs={4} sx={{ display: "flex", justifyContent: "end" }}>
           <Button
-            // TODO: compa tenes que definir las cosas
+            // TODO:   compa tenes que definir las cosas
             onClick={() => handleCLick()}
             variant="contained"
             startIcon={<Iconify icon="eva:plus-fill" />}
@@ -83,7 +83,7 @@ export default function DashboardUser({ client }) {
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
           <ParcelasWidgetViewer
-            title="CO2"
+            title="kg de CO2"
             total={total}
             color="info"
             icon="mdi:molecule-co2"
