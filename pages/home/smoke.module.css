@@ -1,0 +1,911 @@
+.smoke {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    background-color: #363636;
+    border-radius: 50%;
+    display: inline-block;
+    background-position: center center;
+    background-size: contain;
+    /*background-repeat: no-repeat;*/
+}
+
+@keyframes smoke1 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(24px) translateY(-259px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke1 {
+    animation: smoke1 3s;
+    animation-delay: 0.1s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke2 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(92px) translateY(-211px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke2 {
+    animation: smoke2 3s;
+    animation-delay: 0.2s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke3 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(89px) translateY(-233px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke3 {
+    animation: smoke3 3s;
+    animation-delay: 0.3s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke4 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(45px) translateY(-200px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke4 {
+    animation: smoke4 3s;
+    animation-delay: 0.4s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke5 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(24px) translateY(-219px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke5 {
+    animation: smoke5 3s;
+    animation-delay: 0.5s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke6 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(53px) translateY(-233px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke6 {
+    animation: smoke6 3s;
+    animation-delay: 0.6s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke7 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(66px) translateY(-233px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke7 {
+    animation: smoke7 3s;
+    animation-delay: 0.7s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke8 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(71px) translateY(-203px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke8 {
+    animation: smoke8 3s;
+    animation-delay: 0.8s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke9 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(92px) translateY(-211px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke9 {
+    animation: smoke9 3s;
+    animation-delay: 0.9s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke10 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(92px) translateY(-219px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke10 {
+    animation: smoke10 3s;
+    animation-delay: 1s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke11 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(92px) translateY(-233px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke11 {
+    animation: smoke11 3s;
+    animation-delay: 1.1s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke12 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(89px) translateY(-233px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke12 {
+    animation: smoke12 3s;
+    animation-delay: 1.2s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke13 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(12px) translateY(-259px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke13 {
+    animation: smoke13 3s;
+    animation-delay: 1.3s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke14 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(66px) translateY(-203px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke14 {
+    animation: smoke14 3s;
+    animation-delay: 1.4s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke15 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(92px) translateY(-259px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke15 {
+    animation: smoke15 3s;
+    animation-delay: 1.5s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke16 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(71px) translateY(-200px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke16 {
+    animation: smoke16 3s;
+    animation-delay: 1.6s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke17 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(24px) translateY(-259px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke17 {
+    animation: smoke17 3s;
+    animation-delay: 1.7s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke18 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(0px) translateY(-211px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke18 {
+    animation: smoke18 3s;
+    animation-delay: 1.8s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke19 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(71px) translateY(-253px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke19 {
+    animation: smoke19 3s;
+    animation-delay: 1.9s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke20 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(92px) translateY(-211px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke20 {
+    animation: smoke20 3s;
+    animation-delay: 2s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke21 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(38px) translateY(-219px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke21 {
+    animation: smoke21 3s;
+    animation-delay: 2.1s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke22 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(0px) translateY(-259px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke22 {
+    animation: smoke22 3s;
+    animation-delay: 2.2s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke23 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(24px) translateY(-200px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke23 {
+    animation: smoke23 3s;
+    animation-delay: 2.3s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke24 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(92px) translateY(-211px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke24 {
+    animation: smoke24 3s;
+    animation-delay: 2.4s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke25 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(12px) translateY(-253px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke25 {
+    animation: smoke25 3s;
+    animation-delay: 2.5s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke26 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(24px) translateY(-246px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke26 {
+    animation: smoke26 3s;
+    animation-delay: 2.6s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke27 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(53px) translateY(-211px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke27 {
+    animation: smoke27 3s;
+    animation-delay: 2.7s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke28 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(24px) translateY(-203px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke28 {
+    animation: smoke28 3s;
+    animation-delay: 2.8s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke29 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(53px) translateY(-246px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke29 {
+    animation: smoke29 3s;
+    animation-delay: 2.9s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke30 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(89px) translateY(-246px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke30 {
+    animation: smoke30 3s;
+    animation-delay: 3s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke31 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(12px) translateY(-219px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke31 {
+    animation: smoke31 3s;
+    animation-delay: 3.1s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke32 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(92px) translateY(-233px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke32 {
+    animation: smoke32 3s;
+    animation-delay: 3.2s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke33 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(17px) translateY(-246px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke33 {
+    animation: smoke33 3s;
+    animation-delay: 3.3s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke34 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(66px) translateY(-219px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke34 {
+    animation: smoke34 3s;
+    animation-delay: 3.4s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke35 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(12px) translateY(-203px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke35 {
+    animation: smoke35 3s;
+    animation-delay: 3.5s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke36 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(71px) translateY(-233px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke36 {
+    animation: smoke36 3s;
+    animation-delay: 3.6s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke37 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(45px) translateY(-211px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke37 {
+    animation: smoke37 3s;
+    animation-delay: 3.7s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke38 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(0px) translateY(-246px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke38 {
+    animation: smoke38 3s;
+    animation-delay: 3.8s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke39 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(38px) translateY(-253px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke39 {
+    animation: smoke39 3s;
+    animation-delay: 3.9s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke40 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(89px) translateY(-253px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke40 {
+    animation: smoke40 3s;
+    animation-delay: 4s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke41 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(53px) translateY(-203px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke41 {
+    animation: smoke41 3s;
+    animation-delay: 4.1s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke42 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(92px) translateY(-203px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke42 {
+    animation: smoke42 3s;
+    animation-delay: 4.2s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke43 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(0px) translateY(-219px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke43 {
+    animation: smoke43 3s;
+    animation-delay: 4.3s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke44 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(45px) translateY(-246px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke44 {
+    animation: smoke44 3s;
+    animation-delay: 4.4s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke45 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(92px) translateY(-203px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke45 {
+    animation: smoke45 3s;
+    animation-delay: 4.5s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke46 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(38px) translateY(-211px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke46 {
+    animation: smoke46 3s;
+    animation-delay: 4.6s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke47 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(45px) translateY(-246px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke47 {
+    animation: smoke47 3s;
+    animation-delay: 4.7s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke48 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(89px) translateY(-211px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke48 {
+    animation: smoke48 3s;
+    animation-delay: 4.8s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke49 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(38px) translateY(-219px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke49 {
+    animation: smoke49 3s;
+    animation-delay: 4.9s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke50 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(92px) translateY(-203px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke50 {
+    animation: smoke50 3s;
+    animation-delay: 5s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke51 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(66px) translateY(-246px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke51 {
+    animation: smoke51 3s;
+    animation-delay: 5.1s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke52 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(71px) translateY(-200px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke52 {
+    animation: smoke52 3s;
+    animation-delay: 5.2s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke53 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(38px) translateY(-200px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke53 {
+    animation: smoke53 3s;
+    animation-delay: 5.3s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke54 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(66px) translateY(-246px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke54 {
+    animation: smoke54 3s;
+    animation-delay: 5.4s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke55 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(0px) translateY(-200px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke55 {
+    animation: smoke55 3s;
+    animation-delay: 5.5s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke56 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(17px) translateY(-203px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke56 {
+    animation: smoke56 3s;
+    animation-delay: 5.6s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke57 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(0px) translateY(-259px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke57 {
+    animation: smoke57 3s;
+    animation-delay: 5.7s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke58 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(38px) translateY(-259px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke58 {
+    animation: smoke58 3s;
+    animation-delay: 5.8s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke59 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(53px) translateY(-203px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke59 {
+    animation: smoke59 3s;
+    animation-delay: 5.9s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes smoke60 {
+    0% {
+        transform: none;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(89px) translateY(-246px) scaleX(6) scaleY(6) scaleZ(3);
+    }
+}
+.smoke60 {
+    animation: smoke60 3s;
+    animation-delay: 6s;
+    animation-iteration-count: infinite;
+}

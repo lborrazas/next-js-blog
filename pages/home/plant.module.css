@@ -1,0 +1,138 @@
+.stem {
+    position: absolute;
+    width: 12px;
+    height: 50%;
+    left: 49%;
+    bottom: 100px;
+    background: #70B77E;
+}
+
+.leaf {
+    position: absolute;
+    width: 700%;
+    height: 10%;
+    border-radius: 50%;
+    background: #70B77E;
+}
+
+.leaf .line {
+    position: absolute;
+    width: 80%;
+    height: 1%;
+    background: rgba(0, 0, 0, 0.1);
+    top: 48%;
+}
+
+.leaf01 {
+    top: 70%;
+    left: 50%;
+    transform: rotate(-25deg);
+}
+
+.leaf02 {
+    top: 50%;
+    right: 50%;
+    transform: rotate(205deg);
+}
+
+.leaf03 {
+    top: 30%;
+    left: 50%;
+    transform: rotate(-25deg);
+}
+
+.leaf04 {
+    top: 20%;
+    right: 50%;
+    transform: rotate(205deg);
+}
+
+.leaf05 {
+    top: -17%;
+    left: -120%;
+    transform: rotate(-60deg);
+}
+
+.leaf06 {
+    top: -9%;
+    right: 22%;
+    transform: rotate(195deg);
+}
+
+/* --- ANIMATION --- */
+
+.stem, .leaf {
+    animation-duration: 1.2s !important;
+    animation-fill-mode: forwards;
+}
+
+.stem.rain {
+    animation: grow 1s linear 1;
+}
+
+@keyframes grow {
+    0% {
+        bottom: -40%;
+        width: 2%;
+    }
+
+    100% {
+        bottom: 100px;
+        width: 4%;
+    }
+}
+
+.stem.rain .leaf {
+    animation: leafGrow 1s linear 1;
+    animation-fill-mode: forwards;
+}
+
+@keyframes leafGrow {
+    0% {
+        width: 0;
+        height: 0;
+    }
+
+    100% {
+        width: 700%;
+        height: 10%;
+    }
+}
+
+.stem.rain .leaf05 {
+    animation: topLeafRight 1s linear 1;
+}
+
+@keyframes topLeafRight {
+    0% {
+        top: 5%;
+        width: 0;
+        height: 0;
+        left: 10%;
+    }
+
+    100% {
+        width: 700%;
+        height: 10%;
+        top: -17%;
+        left: -120%;
+    }
+}
+
+.stem.rain .leaf06 {
+    animation: topLeafLeft 1s linear 1;
+}
+
+@keyframes topLeafLeft {
+    0% {
+        top: 0;
+        width: 0;
+        height: 0;
+    }
+
+    100% {
+        width: 700%;
+        height: 10%;
+        top: -9%;
+    }
+}
