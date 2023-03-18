@@ -6,10 +6,8 @@ import {
 } from "../../blockchain/BlockchainContext";
 import { forwardRef, useEffect, useState } from "react";
 import contractCollector from "../../blockchain/ContractCollector";
-import Web3 from "web3";
 import { useRouter } from "next/router";
-import { User, useSetUser, useSetTokens } from "../../contexts/AppContext";
-import axios from "axios";
+import { useSetUser, useSetTokens } from "../../contexts/AppContext";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import {
@@ -115,10 +113,7 @@ export default function Login() {
   }, [vmContract, contract2, isLoading, isError, signer]);
 
   const handleLogin = async () => {
-    if (
-      !!window &&
-      !!window.ethereum
-    ) {
+    if (!!window && !!window.ethereum) {
       try {
         const callbackUrl = "/protected";
         const message = new SiweMessage({
@@ -155,7 +150,7 @@ export default function Login() {
           }
         );
       } catch (error) {
-        alert(error)
+        alert(error);
         window.alert(error);
       }
     } else {
@@ -201,7 +196,7 @@ export default function Login() {
               onClick={() => {
                 if (!isConnected) {
                   setOpenDialog(true);
-                   connect();
+                  connect();
                 } else {
                   handleLogin();
                 }
