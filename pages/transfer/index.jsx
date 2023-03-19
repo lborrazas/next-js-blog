@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAddress, useVmContract } from "../../blockchain/BlockchainContext";
 import Button from "@mui/material/Button";
@@ -26,7 +26,7 @@ export default function Transfer() {
   //todo el null hace que no haga nada, no parece un comportamiento correcto,
   // salvo que no queiras que haga llamada
 
-  const { data, error } = useSWR(
+  const { data, error , isLoading} = useSWR(
     session.address ? `api/parcela/address/${session.address}` : null,
     fetcher
   );
@@ -49,6 +49,12 @@ export default function Transfer() {
     // SelectChangeEvent
     setParcela(event.target.value);
   };
+
+  useEffect(() => {
+    if (!isLoading) {
+      setParcela(data);
+    }
+  }, [isLoading, data]);
 
   async function transaccion() {
     const max = await vmContract.tokenCounter();
@@ -114,18 +120,16 @@ export default function Transfer() {
   if (!data) {
     return <TransferSkeleton />;
   }
-
   return (
     <Paper elevation={3} sx={{ p: 3 }}>
       <Typography component="h1" variant="h4">
         Transferir parcela
       </Typography>
       <Box component="form" onSubmit={handleSignup} noValidate sx={{ mt: 1 }}>
-        <InputLabel id="parcela">Parcela</InputLabel>
+        <InputLabel>Parcela</InputLabel>
         <Select
           labelId="parcelas"
           id="parcela"
-          name="parcela"
           value={parcela}
           label="parcela"
           onChange={handleChange}

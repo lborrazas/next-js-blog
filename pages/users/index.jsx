@@ -71,11 +71,10 @@ export default function Home({ users }) {
   // let rows = data;
 
   const columns = [
-    { field: "id", headerName: "Id", width: 230 },
-    { field: "name", headerName: "Nombre", width: 150 },
-    { field: "email", headerName: "Email", width: 250 },
-    { field: "address", headerName: "Address", width: 400 },
-    { field: "isAdmin", headerName: "Admin?", width: 90 },
+    { field: "name", headerName: "Nombre", width: 210 },
+    { field: "email", headerName: "Email", width: 310 },
+    { field: "address", headerName: "Address", width: 460 },
+    { field: "isAdmin", headerName: "Admin?", width: 150 },
     {
       field: "viewinfo",
       headerName: "Información",

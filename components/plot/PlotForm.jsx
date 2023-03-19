@@ -101,7 +101,7 @@ export const PlotForm = ({ selectedPlot, handleClose, users }) => {
     } else {
       url = "/api/parcelaupdate";
       plot = {
-        pid: selectedPlot.id,
+        pid: selectedPlot.pid,
         m2used: +data.get("area-used"),
         m3: +data.get("average-height"),
         address: selectedPlot.address,
@@ -111,6 +111,7 @@ export const PlotForm = ({ selectedPlot, handleClose, users }) => {
         handleClose();
       }
     }
+    window.location.reload(true);
   };
 
   return (
@@ -174,6 +175,7 @@ export const PlotForm = ({ selectedPlot, handleClose, users }) => {
           fullWidth
           id="longitude"
           label="Longitud"
+          type="number"
           name="longitude"
         />
       </Grid>
@@ -184,6 +186,7 @@ export const PlotForm = ({ selectedPlot, handleClose, users }) => {
         <Slider
           defaultValue={selectedPlot ? selectedPlot.m2used : 0}
           id="area-used"
+          type="number"
           name="area-used"
           aria-label="Default"
           valueLabelDisplay="auto"
@@ -197,6 +200,7 @@ export const PlotForm = ({ selectedPlot, handleClose, users }) => {
           fullWidth
           id="area"
           label="Área"
+          type="number"
           name="area"
         />
       </Grid>
@@ -207,6 +211,7 @@ export const PlotForm = ({ selectedPlot, handleClose, users }) => {
           fullWidth
           id="average-height"
           label="Altura promedio"
+          type="number"
           name="average-height"
         />
       </Grid>

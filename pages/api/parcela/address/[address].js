@@ -4,8 +4,8 @@ const prisma = new PrismaClient();
 export default async function handle(req, res) {
   const { address } = req.query;
   try {
-    const result = await prisma.parcela.findMany({
-      where: { address: address },
+    const result = await prisma.Parcela.findMany({
+      // where: { address: address },
     });
     res.status(200).json(result);
   } catch (err) {
