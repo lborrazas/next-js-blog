@@ -22,7 +22,6 @@ export default async function handle(req, res) {
         result[i].userName = user[0].name;
       }
     }
-    console.log(result)
     res.status(200).json(result);
   } catch (err) {
     res.status(508).json({ err: "Error occured while adding a new food." });

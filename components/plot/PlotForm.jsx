@@ -14,6 +14,7 @@ import { useRouter } from "next/router";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
+import { Toast } from "../toast/toast";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
@@ -36,6 +37,8 @@ export const PlotForm = ({ selectedPlot, handleClose, users }) => {
   const handleChangeOwner = (e) => {
     setOwner(e.target.value);
   };
+
+  const [showMessage, setShowMessage] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -111,7 +114,11 @@ export const PlotForm = ({ selectedPlot, handleClose, users }) => {
         handleClose();
       }
     }
-    window.location.reload(true);
+    setShowMessage(true);
+    setTimeout(() => {
+      // setShowMessage(false);
+      // window.location.reload(true);
+    }, 50000); // 3 segundos de duración del mensaje
   };
 
   return (
@@ -122,6 +129,8 @@ export const PlotForm = ({ selectedPlot, handleClose, users }) => {
       spacing={1}
       id="submitid"
     >
+      {showMessage && (<Toast tipe={"success"} message={"Parcela update success!"}></Toast>)}
+
       <Grid item xs={12}>
         <InputLabel id="owner-select">Dueño</InputLabel>
         <Select

@@ -14,6 +14,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import { EditPlotDialog } from "../../components/dialog/EditPlotDialog";
 import { useSession } from "next-auth/react";
 import TextField from "@mui/material/TextField";
+import { Toast } from "../../components/toast/toast";
 
 export default function Parcelas() {
   const { data: session } = useSession();
@@ -25,7 +26,6 @@ export default function Parcelas() {
   const [selectedPlot, setSelectedPlot] = useState(undefined);
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const router = useRouter();
-
   const fetcher = (url) => fetch(url).then((res) => res.json());
   const { data, isLoading } = useSWR(
     session?.isAdmin

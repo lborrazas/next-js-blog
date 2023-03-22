@@ -90,6 +90,10 @@ export default function Plot({ parcela, lastLog, owner }) {
     setOpenEditDialog(false);
   };
 
+  const customStyles = {
+    maxHeight: "50px"
+  };
+
   if (!data) {
     //if (false){
     return <DashboardSkeleton />;
@@ -108,7 +112,7 @@ export default function Plot({ parcela, lastLog, owner }) {
             </Box>
           </Grid>
           <Grid item xs={4} sx={{ display: "flex", justifyContent: "end" }}>
-            <Button id="button-update" variant="contained">
+            <Button id="button-update" variant="contained" style={customStyles}>
               Actualizar
             </Button>
           </Grid>
