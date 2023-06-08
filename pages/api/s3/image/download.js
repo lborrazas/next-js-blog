@@ -7,7 +7,7 @@ export default async function handler(
     res
 ) {
     const session = await getServerSession(req, res, authOptions)
-    if (session.user.email) {
+    if (true) {
         const s3 = new S3({
             signatureVersion: 'v4',
             region: 'us-east-1',

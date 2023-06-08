@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import {useSession} from "next-auth/react";
 
 const ImageContainer = styled(Box)({
     position: 'relative',
@@ -49,6 +50,7 @@ function ImageWithHover({imageKey, parcelaId, defaultImage}) {
     const [file, setFile] = useState(null);
     const [isUploading, setIsUploading] = useState(false);
     const filename = `${imageKey}.jpeg`
+    const { data: session, status } = useSession();
 
     useEffect(() => {
             const fetchImage = async () => {
@@ -66,7 +68,10 @@ function ImageWithHover({imageKey, parcelaId, defaultImage}) {
         [parcelaId]);
 
     const handleMouseEnter = () => {
-        setHovered(true);
+        if(session.user.email){
+            setHovered(true);
+        }
+
     };
 
     const handleMouseLeave = () => {

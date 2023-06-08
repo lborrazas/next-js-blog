@@ -10,10 +10,8 @@ export default async function handler(
     const session = await getServerSession(req, res, authOptions)
 
     if (session.user.email)
-        //email is "IS ADMIN" and image is "ADDRESS"
     {
         const imgType = req.query.fileType.split("/")[1];
-
         console.log(req.query.parcelaId)
         const s3 = new S3({
             signatureVersion: 'v4',
